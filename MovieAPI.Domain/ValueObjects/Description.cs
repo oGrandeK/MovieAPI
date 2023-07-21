@@ -1,6 +1,6 @@
 namespace MovieAPI.Domain.ValueObjects;
 
-public class Description
+public class Description : ValueObject
 {
     public string MovieDescription { get; set; }
 

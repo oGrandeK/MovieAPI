@@ -3,9 +3,9 @@ using MovieAPI.Domain.ValueObjects;
 
 namespace MovieAPI.Domain.Entities;
 
-public class Director {
+public class Director : Entity 
+{
     // Properties
-    public int Id { get; private set; }
     public Name Name { get; private set; }
 
     // Navegation Properties
@@ -20,12 +20,12 @@ public class Director {
     }
 
     // Methods
-    public void Validate(Name name) {
+    private void Validate(Name name) {
         DomainExceptionValidation.HasError(name.FirstName.Length <= 3, "The first name must be 3 or more characters long");
         DomainExceptionValidation.HasError(name.LastName.Length < 3, "The last name must be 3 or more characters long");
     }
 
-    public void UpdateName(Name name) {
+    private void UpdateName(Name name) {
         Validate(name);
         Name = name;
     }

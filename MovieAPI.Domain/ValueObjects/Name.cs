@@ -1,6 +1,6 @@
 namespace MovieAPI.Domain.ValueObjects;
 
-public class Name
+public class Name : ValueObject
 {
     public string FirstName { get; set; }   
     public string LastName { get; set; }
