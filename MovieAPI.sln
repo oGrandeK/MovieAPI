@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieAPI.Infraestructure", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieAPI.Infraestructure.Shared", "MovieAPI.Infraestructure.Shared\MovieAPI.Infraestructure.Shared.csproj", "{9919435A-DBCD-47DE-B9F5-7023C3C37AE8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieAPI.Domain.Tests", "MovieAPI.Domain.Tests\MovieAPI.Domain.Tests.csproj", "{AA659307-1351-4C31-9BAC-10030F7025E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{9919435A-DBCD-47DE-B9F5-7023C3C37AE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9919435A-DBCD-47DE-B9F5-7023C3C37AE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9919435A-DBCD-47DE-B9F5-7023C3C37AE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA659307-1351-4C31-9BAC-10030F7025E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA659307-1351-4C31-9BAC-10030F7025E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA659307-1351-4C31-9BAC-10030F7025E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA659307-1351-4C31-9BAC-10030F7025E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

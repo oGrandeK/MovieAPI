@@ -20,6 +20,7 @@ public class Director : Entity
     }
 
     // Methods
+    // TODO: Validar Name se tiver mais de 30 caracteres, se for null, se for whitespace, se tiver digito, se tiver char especial
     private void Validate(Name name) {
         DomainExceptionValidation.HasError(name.FirstName.Length <= 3, "The first name must be 3 or more characters long");
         DomainExceptionValidation.HasError(name.LastName.Length < 3, "The last name must be 3 or more characters long");
