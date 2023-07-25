@@ -6,6 +6,7 @@ namespace MovieAPI.Domain.Tests.DirectorTests;
 [TestClass]
 public class DirectorMoviesTests
 {
+
     [TestMethod]
     public void ShouldReturnFailWhenMoviesIsEmpty() {
         var director = new Director(new Name("Armando", "Nogueira"));
