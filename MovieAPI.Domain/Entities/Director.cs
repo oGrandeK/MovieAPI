@@ -10,13 +10,14 @@ public class Director : Entity
 
     // Navegation Properties
     public int MovieId { get; set; }
-    public List<Movie>? Movies { get; set; }
+    public List<Movie> Movies { get; set; }
 
     // Constructors
     public Director(Name name)
     {
         Validate(name);
         Name = name;
+        Movies = new List<Movie>();
     }
 
     // Methods
@@ -29,5 +30,9 @@ public class Director : Entity
     private void UpdateName(Name name) {
         Validate(name);
         Name = name;
+    }
+
+    private void AddMovie(Movie movie) {
+        Movies.Add(movie);
     }
 }

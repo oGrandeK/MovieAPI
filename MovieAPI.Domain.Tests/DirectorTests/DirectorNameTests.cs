@@ -1,13 +1,13 @@
 using MovieAPI.Domain.ValueObjects;
 
-namespace MovieAPI.Domain.Tests;
+namespace MovieAPI.Domain.Tests.DirectorTests;
 
 [TestClass]
-public class DirectorTests
+public class DirectorNameTests
 {
     [TestMethod]
     public void ShouldReturnFailWhenFirstNameIsNull() {
-        var name = new Name(null, "Camargo");
+        var name = new Name(null, "Santos");
 
         Assert.IsTrue(name.FirstName is null, "Expected the first name to be null");
     }
