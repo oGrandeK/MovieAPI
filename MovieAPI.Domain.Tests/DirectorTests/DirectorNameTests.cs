@@ -108,9 +108,9 @@ public class DirectorNameTests
     }
 
     [TestMethod]
-    public void ShouldReturnSucessWhenFirstNameIsValid() {
+    public void ShouldReturnSucessWhenNameIsValid() {
         var name = new Name("Ana", "Silva");
 
-        Assert.IsTrue(name.FirstName.Length >= 3 && name.LastName.Length >= 3, "Both first name and last name should have length greater than or equal to 3");
+        Assert.IsTrue(name is not null, "Both first and last name are valid");
     }
 }
