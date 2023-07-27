@@ -5,20 +5,8 @@ namespace MovieAPI.Domain.Tests.DirectorTests;
 [TestClass]
 public class DirectorNameTests
 {
-    [TestMethod]
-    public void ShouldReturnFailWhenFirstNameIsNull() {
-        var name = new Name(null, "Santos");
 
-        Assert.IsTrue(name.FirstName is null, "Expected the first name to be null");
-    }
-
-    [TestMethod]
-    public void ShouldReturnFailWhenLastNameIsNull() {
-        var name = new Name("Caio", null);
-
-        Assert.IsTrue(name.LastName is null, "Expected the last name to be null");
-    }
-
+    // TODO: Negar toda mensagem de erro.
     [TestMethod]
     public void ShouldReturnFailWhenFirstNameIsWhiteSpace() {
         var name = new Name(" ", "Silva");

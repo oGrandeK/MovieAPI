@@ -32,6 +32,7 @@ namespace MovieAPI.Domain.Entities
             ReleaseDate = releaseDate;
             Rating = rating;
             DirectorId = directorId;
+            // Director = GetDirectorByIdAsync(directorId);
         }
 
         // Methods
@@ -41,6 +42,9 @@ namespace MovieAPI.Domain.Entities
 
             DomainExceptionValidation.HasError(description.MovieDescription.Length <= 10, "The movie description must be 10 or more characters long");
             DomainExceptionValidation.HasError(description.MovieDescription.Length > 255, "The movie description must be 255 or less characters long");
+
+            DomainExceptionValidation.HasError(description.MovieDescription is "", "Movie description cannot be empty");
+            DomainExceptionValidation.HasError(description.MovieDescription is " ", "Movie description cannot be white space");
 
             DomainExceptionValidation.HasError(!Enum.IsDefined(typeof(GenreEnumerator), genre), "The genre doesn't exist");
 
