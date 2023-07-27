@@ -9,7 +9,7 @@ public class MovieTests
     public void ShouldReturnSuccessWhenTitleIsValid() {
         var title = new Title("Toy Story");
 
-        Assert.IsTrue(title.MovieTitle is not null, "Title is valid");
+        Assert.IsTrue(title.MovieTitle is not null, "Title msut be valid");
     }
 
     [TestMethod]

@@ -5,8 +5,6 @@ namespace MovieAPI.Domain.Tests.DirectorTests;
 [TestClass]
 public class DirectorNameTests
 {
-
-    // TODO: Negar toda mensagem de erro.
     [TestMethod]
     public void ShouldReturnFailWhenFirstNameIsWhiteSpace() {
         var name = new Name(" ", "Silva");
@@ -43,21 +41,21 @@ public class DirectorNameTests
     public void ShouldReturnFailWhenFirstNameHasThreeOrLessCharacters(){
         var name = new Name("a", "Silva");
         
-        Assert.IsTrue(name.FirstName.Length <= 3, "Expected the length of the first name to be greater than or equal to 3");
+        Assert.IsTrue(name.FirstName.Length <= 3, "Expected the length of the first name to be less than or equal to 3");
     }
 
     [TestMethod]
     public void ShouldReturnFailWhenLastNameHasThreeOrLessCharacters() {
         var name = new Name("Ana", "a");
 
-        Assert.IsTrue(name.LastName.Length <= 3, "Expected the length of the last name to be greater than or equal to 3");
+        Assert.IsTrue(name.LastName.Length <= 3, "Expected the length of the last name to be less than or equal to 3");
     }
 
     [TestMethod]
     public void ShouldReturnFailWhenFirstNameHasMoreThanThirtyCharacters() {
         var name = new Name("asdeasdedsawdsawdsawdsawsdsaws", "Tonial");
 
-        Assert.IsTrue(name.FirstName.Length >= 30, "Expected the length of the first name to be less than 30 characters");
+        Assert.IsTrue(name.FirstName.Length >= 30, "Expected the length of the first name to be greater than 30 characters");
     }
 
     [TestMethod]
@@ -99,6 +97,6 @@ public class DirectorNameTests
     public void ShouldReturnSucessWhenNameIsValid() {
         var name = new Name("Ana", "Silva");
 
-        Assert.IsTrue(name is not null, "Both first and last name are valid");
+        Assert.IsTrue(name is not null, "Both first and last name are invalid");
     }
 }
