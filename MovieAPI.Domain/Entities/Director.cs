@@ -49,9 +49,4 @@ public class Director : Entity
     private void AddMovie(Movie movie) {
         Movies.Add(movie);
     }
-
-    internal void Validate()
-    {
-        throw new NotImplementedException();
-    }
 }
