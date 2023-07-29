@@ -21,7 +21,6 @@ namespace MovieAPI.Domain.Entities
         public Director Director { get; set; }
 
         // Constructors
-        // TODO -> validar o DIRECTORID e talves o DIRECTOR  
         public Movie(Title title, Description? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating, int directorId)
         {
             Validate(title, description, genre, durationInMinutes, releaseDate, rating);
@@ -32,7 +31,6 @@ namespace MovieAPI.Domain.Entities
             ReleaseDate = releaseDate;
             Rating = rating;
             DirectorId = directorId;
-            // Director = GetDirectorByIdAsync(directorId);
         }
 
         // Methods
@@ -63,15 +61,15 @@ namespace MovieAPI.Domain.Entities
             DomainExceptionValidation.HasError(rating < 0, "Movie rating cannot be negative");
         }
 
-        private void UpdateMovie(Title title, Description? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating) {
+        private void UpdateMovie(Title title, Description? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating, int directorId) {
             Validate(title, description, genre, durationInMinutes, releaseDate, rating);
-
             Title = title;
             Description = description;
             Genre = genre;
             DurationInMinutes = durationInMinutes;
             ReleaseDate = releaseDate;
             Rating = rating;
+            DirectorId = directorId;
         }
     }
 }
