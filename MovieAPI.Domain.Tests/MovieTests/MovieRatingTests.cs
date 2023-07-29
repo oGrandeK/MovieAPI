@@ -4,15 +4,6 @@ namespace MovieAPI.Domain.Tests;
 public class MovieRatingTests
 {
     [TestMethod]
-    [DataRow("Carlos")]
-    [DataRow("")]
-    [DataRow(" ")]
-    [DataRow("@")]
-    public void ShouldReturnFailWhenRatingIsInvalid(string teste) {
-        Assert.IsTrue(teste.Any(x => char.IsPunctuation(x)) || teste.Any(x => char.IsWhiteSpace(x)) || teste == "" || teste.Contains('a'), "Expected the movie rating to be string, special character or white space");
-    }
-
-    [TestMethod]
     public void ShouldReturnFailWhenRatingIsLessThan0(){
         var rating = -1;
 
