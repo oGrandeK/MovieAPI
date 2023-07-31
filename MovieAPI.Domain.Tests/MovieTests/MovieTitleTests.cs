@@ -43,8 +43,9 @@ public class MovieTests
     }
 
     [TestMethod]
-    public void ShouldReturnErrorWhenTitleIsWhiteSpace() {
-        var title = new Title(" ");
+    [DataRow("A fuga das galinhas")]
+    public void ShouldReturnErrorWhenTitleIsWhiteSpace(string dataRowTitle) {
+        var title = new Title(dataRowTitle);
 
         Assert.IsTrue(title.MovieTitle.Any(ch => char.IsWhiteSpace(ch)), "Expected the title to be white space");
     }
