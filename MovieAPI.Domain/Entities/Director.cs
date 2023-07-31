@@ -24,8 +24,8 @@ public class Director : Entity
     internal void Validate(Name name) {
         DomainExceptionValidation.HasError(name is null, "Name cannot be null");
 
-        DomainExceptionValidation.HasError(String.IsNullOrWhiteSpace(name.FirstName), "First name cannot be null or white space");
-        DomainExceptionValidation.HasError(String.IsNullOrWhiteSpace(name.LastName), "Last name cannot be null or white space");
+        DomainExceptionValidation.HasError(name.FirstName is  null, "First name cannot be null or white space");
+        DomainExceptionValidation.HasError(name.LastName is null, "Last name cannot be null or white space");
 
         DomainExceptionValidation.HasError(name.FirstName.Any(ch => char.IsDigit(ch)), "First name cannot contains digits");
         DomainExceptionValidation.HasError(name.LastName.Any(ch => char.IsDigit(ch)), "Last name cannot contains digits");
@@ -38,7 +38,6 @@ public class Director : Entity
 
         DomainExceptionValidation.HasError(name.FirstName.Length >= 30, "First name must be 30 or less characters");
         DomainExceptionValidation.HasError(name.LastName.Length >= 30, "Last name must be 30 or less characters");
-
     }
 
     private void UpdateName(Name name) {

@@ -38,6 +38,8 @@ namespace MovieAPI.Domain.Entities
             title.MovieTitle.Trim();
             description.MovieDescription.Trim();
 
+            DomainExceptionValidation.HasError(title is null, "Movie title cannot be null");
+
             DomainExceptionValidation.HasError(title.MovieTitle.Length <= 1, "Movie title must be 1 or more characters long");
             DomainExceptionValidation.HasError(title.MovieTitle.Length >= 20, "Movie title must be 20 or less characters long");
             DomainExceptionValidation.HasError(title.MovieTitle is "", "Movie title cannot be empty");
