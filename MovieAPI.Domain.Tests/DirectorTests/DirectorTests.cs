@@ -89,7 +89,7 @@ public class DirectorTests
     public void ShouldReturnDomainExceptionValidationWhenDirectorLastNameHas31orMoreCharactersLong() {
         Assert.ThrowsException<DomainExceptionValidation>(() => 
         {
-            var director = new Director(new Name("Carlos", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
+            var director = new Director(new Name("Carlos", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
         });
     }
 }

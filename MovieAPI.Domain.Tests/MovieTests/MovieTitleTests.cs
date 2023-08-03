@@ -3,7 +3,7 @@ using MovieAPI.Domain.ValueObjects;
 namespace MovieAPI.Domain.Tests.MovieTests;
 
 [TestClass]
-public class MovieTests
+public class MovieTitleTests
 {
     [TestMethod]
     public void ShouldReturnSuccessWhenTitleIsValid() {
