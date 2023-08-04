@@ -20,6 +20,12 @@ public class Director : Entity
         Movies = new List<Movie>();
     }
 
+    public Director(int id, Name name) {
+        DomainExceptionValidation.HasError(id < 0, "Invalid id value");
+        Id = id;
+        Validate(name);
+    }
+
     // Methods
     internal void Validate(Name name) {
         DomainExceptionValidation.HasError(name is null, "Name cannot be null");
@@ -45,7 +51,7 @@ public class Director : Entity
         Name = name;
     }
 
-    private void AddMovie(Movie movie) {
+    public void AddMovie(Movie movie) {
         Movies.Add(movie);
     }
 }

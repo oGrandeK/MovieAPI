@@ -111,4 +111,12 @@ public class MovieTests
             var movie = new Movie(new Title("Toy Story"), "An amazing movie to watch with your family", GenreEnumerator.Comedy, 120, new DateOnly(2019, 05, 15), -1, 1);
         });
     }
+
+    //[TestMethod]
+    public void ShouldReturnDomainExceptionValidationWhenMovieDirectorIsNull() {
+        Assert.ThrowsException<DomainExceptionValidation>(() => 
+        {
+            var movie = new Movie(new Title("Toy Story"), "An amazing movie", null, null, null, null, 10);
+        });
+    }
 }

@@ -26,17 +26,25 @@ namespace MovieAPI.Domain.Entities
         public Movie(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating, int directorId)
         {
             Validate(title, description, genre, durationInMinutes, releaseDate, rating);
-            Title = title;
-            Description = description;
-            Genre = genre;
-            DurationInMinutes = durationInMinutes;
-            ReleaseDate = releaseDate;
-            Rating = rating;
             DirectorId = directorId;
         }
 
+        public Movie(int id, Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating, int directorId)
+        {
+            Validate(title, description, genre, durationInMinutes, releaseDate, rating);
+            DirectorId = directorId;
+            Id = id;
+        }
+
+        // public static Movie Create(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating, int directorId) {
+        //     var movie = new Movie(title, description, genre, durationInMinutes, releaseDate, rating, directorId);
+        //     movie.ValidateDirector(Director);
+        // return movie;
+        // }
+
         // Methods
         private void Validate(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating) {
+            // Starting validations
             DomainExceptionValidation.HasError(title is null, "Movie title cannot be null");
 
             title.MovieTitle = title.MovieTitle.Trim();
@@ -59,17 +67,22 @@ namespace MovieAPI.Domain.Entities
             DomainExceptionValidation.HasError(releaseDate < new DateOnly(1985, 12, 28), "Movie release date cannot be inferior than 1985-12-28");
 
             DomainExceptionValidation.HasError(rating < 0, "Movie rating cannot be negative");
-        }
 
-        private void UpdateMovie(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating, int directorId) {
-            Validate(title, description, genre, durationInMinutes, releaseDate, rating);
+            // Seting attributes
             Title = title;
             Description = description;
             Genre = genre;
             DurationInMinutes = durationInMinutes;
             ReleaseDate = releaseDate;
             Rating = rating;
-            DirectorId = directorId;
+        }
+
+        // private void ValidateDirector(Director director) {
+        //     DomainExceptionValidation.HasError(Director is null, "Director doesnt exist"); 
+        // }
+
+        private void UpdateMovie(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating, int directorId) {
+            Validate(title, description, genre, durationInMinutes, releaseDate, rating);
         }
     }
 }

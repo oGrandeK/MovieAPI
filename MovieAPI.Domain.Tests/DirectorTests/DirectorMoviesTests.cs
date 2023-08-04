@@ -15,11 +15,12 @@ public class DirectorMoviesTests
     }
 
     [TestMethod]
-    public void ShouldReturnSuccessWhenMoviesIsNotNull() {
+    public void ShouldReturnSuccessWhenMoviesAreNotNull() {
         var director = new Director(new Name("Armando", "Nogueira"));
-        var movie = new Movie(new Title("Whiplash"), "Amazing Movie", Enumerators.GenreEnumerator.Drama, 120, DateOnly.FromDateTime(DateTime.UtcNow), 9.0, 1);
-        director.Movies.Add(movie);
+        var movie = new Movie(new Title("Whiplash"), "An amazing movie", Enumerators.GenreEnumerator.Drama, 160, new DateOnly(2019,12,23), 9.9, 1);
 
-        Assert.IsTrue(director.Movies.Count > 0, "Movies must contain at least one movie");
+        director.AddMovie(movie);
+        
+        Assert.IsTrue(director.Movies.Count > 0, "Director must have at least one movie");
     }
 }
