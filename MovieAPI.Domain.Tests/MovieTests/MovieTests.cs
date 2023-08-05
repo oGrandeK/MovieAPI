@@ -25,10 +25,10 @@ public class MovieTests
     }
 
     [TestMethod]
-    public void ShouldReturnDomainExceptionValidationWhenMovieTitleHasMoreThan20CharactersLong() {
+    public void ShouldReturnDomainExceptionValidationWhenMovieTitleHasMoreThan50CharactersLong() {
         Assert.ThrowsException<DomainExceptionValidation>(() =>
         {
-            var movie = new Movie(new Title("Aaaaaaaaaaaaaaaaaaaaa"), null, null, null, null, null, 1);
+            var movie = new Movie(new Title("AaaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"), null, null, null, null, null, 1);
         });
     }
 

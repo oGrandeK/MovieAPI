@@ -19,7 +19,7 @@ public class DirectorMoviesTests
         var director = new Director(new Name("Armando", "Nogueira"));
         var movie = new Movie(new Title("Whiplash"), "An amazing movie", Enumerators.GenreEnumerator.Drama, 160, new DateOnly(2019,12,23), 9.9, 1);
 
-        director.AddMovie(movie);
+        director.Movies.Add(movie);
         
         Assert.IsTrue(director.Movies.Count > 0, "Director must have at least one movie");
     }

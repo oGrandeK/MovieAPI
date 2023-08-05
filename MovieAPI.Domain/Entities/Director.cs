@@ -1,3 +1,5 @@
+#nullable enable
+
 using MovieAPI.Domain.Validation;
 using MovieAPI.Domain.ValueObjects;
 
@@ -9,8 +11,8 @@ public class Director : Entity
     public Name Name { get; private set; }
 
     // Navegation Properties
-    public int MovieId { get; set; }
-    public List<Movie> Movies { get; set; }
+    public int? MovieId { get; set; }
+    public List<Movie>? Movies { get; set; }
 
     // Constructors
     public Director(Name name)
@@ -30,7 +32,7 @@ public class Director : Entity
     internal void Validate(Name name) {
         DomainExceptionValidation.HasError(name is null, "Name cannot be null");
 
-        DomainExceptionValidation.HasError(name.FirstName is  null, "First name cannot be null or white space");
+        DomainExceptionValidation.HasError(name.FirstName is null, "First name cannot be null or white space");
         DomainExceptionValidation.HasError(name.LastName is null, "Last name cannot be null or white space");
 
         DomainExceptionValidation.HasError(name.FirstName.Any(ch => char.IsDigit(ch)), "First name cannot contains digits");
@@ -46,12 +48,8 @@ public class Director : Entity
         DomainExceptionValidation.HasError(name.LastName.Length >= 30, "Last name must be 30 or less characters");
     }
 
-    private void UpdateName(Name name) {
+    public void UpdateName(Name name) {
         Validate(name);
         Name = name;
-    }
-
-    public void AddMovie(Movie movie) {
-        Movies.Add(movie);
     }
 }

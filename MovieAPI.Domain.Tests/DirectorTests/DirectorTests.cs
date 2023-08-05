@@ -92,4 +92,22 @@ public class DirectorTests
             var director = new Director(new Name("Carlos", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
         });
     }
+
+    [TestMethod]
+    public void ShouldReturnDomainExceptionValidationWhenDirectorHasIdInferiorThan0() {
+        Assert.ThrowsException<DomainExceptionValidation>(() =>
+        {
+            var director = new Director(-1, new Name("Carlos", "Silva"));
+        });
+    }
+
+    [TestMethod]
+    public void ShouldReturnSuccessWhenUpdatingDirectorName() {
+        var director = new Director(new Name("Magnus", "Antonio"));
+        director.UpdateName(new Name("Machado", "Assis"));
+
+        bool areEqual = director.Name.FirstName == "Machado" && director.Name.LastName == "Assis";
+
+        Assert.IsTrue(areEqual);
+    }
 }

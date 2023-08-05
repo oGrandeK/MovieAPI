@@ -36,12 +36,6 @@ namespace MovieAPI.Domain.Entities
             Id = id;
         }
 
-        // public static Movie Create(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating, int directorId) {
-        //     var movie = new Movie(title, description, genre, durationInMinutes, releaseDate, rating, directorId);
-        //     movie.ValidateDirector(Director);
-        // return movie;
-        // }
-
         // Methods
         private void Validate(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating) {
             // Starting validations
@@ -51,7 +45,7 @@ namespace MovieAPI.Domain.Entities
             if(description is not null) description = description.Trim();
 
             DomainExceptionValidation.HasError(title.MovieTitle.Length <= 1, "Movie title must be 1 or more characters long");
-            DomainExceptionValidation.HasError(title.MovieTitle.Length > 20, "Movie title must be 20 or less characters long");
+            DomainExceptionValidation.HasError(title.MovieTitle.Length > 50, "Movie title must be 50 or less characters long");
             DomainExceptionValidation.HasError(string.IsNullOrEmpty(title.MovieTitle), "Movie title cannot be empty");
             DomainExceptionValidation.HasError(title.MovieTitle.Equals(" "), "Movie title cannot be white space");
             DomainExceptionValidation.HasError(title.MovieTitle.Any(ch => char.IsPunctuation(ch)), "Movie title cannot be special character");
@@ -77,12 +71,10 @@ namespace MovieAPI.Domain.Entities
             Rating = rating;
         }
 
-        // private void ValidateDirector(Director director) {
-        //     DomainExceptionValidation.HasError(Director is null, "Director doesnt exist"); 
-        // }
-
-        private void UpdateMovie(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating, int directorId) {
+        public void UpdateMovie(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating, int directorId) {
             Validate(title, description, genre, durationInMinutes, releaseDate, rating);
+            DomainExceptionValidation.HasError(directorId < 0, "directorId cannot be inferior than 0");
+            DirectorId = directorId;
         }
     }
 }

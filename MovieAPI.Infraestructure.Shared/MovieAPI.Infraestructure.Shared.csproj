@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MovieAPI.Application\MovieAPI.Application.csproj" />
+    <ProjectReference Include="..\MovieAPI.Domain\MovieAPI.Domain.csproj" />
+    <ProjectReference Include="..\MovieAPI.Infraestructure\MovieAPI.Infraestructure.csproj" />
+  </ItemGroup>
+
 </Project>

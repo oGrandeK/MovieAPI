@@ -23,7 +23,7 @@ public class MovieTitleTests
     public void ShouldReturnFailWhenTitleHasMoreThanTwentyCharacters() {
         var title = new Title("aaaaaaaaaaaaaaaaaaaa");
 
-        Assert.IsTrue(title.MovieTitle.Length >= 20, "Expected the length of movie title to be less than 20 characters");
+        Assert.IsTrue(title.MovieTitle.Length >= 50, "Expected the length of movie title to be less than 50 characters");
     }
 
     [TestMethod]
