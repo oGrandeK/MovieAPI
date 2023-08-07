@@ -16,7 +16,7 @@ public class DirectorRepository : IDirectorRepository
 
     public async Task<IEnumerable<Director>> GetDirectorsMoviesAsync()
     {
-        return await _context.Directors.Include(x => x.Movies).ToListAsync();
+        return await _context.Directors.Include(x => x.Movies).AsNoTracking().ToListAsync();
     }
 
     public async Task<Director> GetDirectorMoviesByIdAsync(int id)
@@ -26,7 +26,7 @@ public class DirectorRepository : IDirectorRepository
 
     public async Task<IEnumerable<Director>> GetDirectorsMoviesByNameAsync(string directorName)
     {
-        return await _context.Directors.Include(x => x.Movies).Where(x => x.Name.FirstName.Contains(directorName) || x.Name.LastName.Contains(directorName)).ToListAsync();
+        return await _context.Directors.Include(x => x.Movies).AsNoTracking().Where(x => x.Name.FirstName.Contains(directorName) || x.Name.LastName.Contains(directorName)).ToListAsync();
     }
 
     public async Task<Director> CreateDirectorAsync(Director director)
