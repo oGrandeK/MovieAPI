@@ -41,8 +41,8 @@ public class Director : Entity
         DomainExceptionValidation.HasError(name.FirstName.Any(ch => char.IsPunctuation(ch)), "First name cannot contain special characters");
         DomainExceptionValidation.HasError(name.LastName.Any(ch => char.IsPunctuation(ch)), "Last name cannot contain special characters");
 
-        DomainExceptionValidation.HasError(name.FirstName.Length <= 3, "First name must be 3 or more characters long");
-        DomainExceptionValidation.HasError(name.LastName.Length < 3, "Last name must be 3 or more characters long");
+        DomainExceptionValidation.HasError(name.FirstName.Length < 2, "First name must be 3 or more characters long");
+        DomainExceptionValidation.HasError(name.LastName.Length < 2, "Last name must be 3 or more characters long");
 
         DomainExceptionValidation.HasError(name.FirstName.Length >= 30, "First name must be 30 or less characters");
         DomainExceptionValidation.HasError(name.LastName.Length >= 30, "Last name must be 30 or less characters");

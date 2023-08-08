@@ -11,8 +11,7 @@ public class DirectorConfiguration : IEntityTypeConfiguration<Director>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Name.FirstName).HasMaxLength(30).IsRequired();
-        builder.Property(x => x.Name.LastName).HasMaxLength(30).IsRequired();
+        builder.Property(x => x.Name).HasMaxLength(60).IsRequired();
 
         builder.HasData(
             new Director(1, new Name("John", "Lasseter")),
