@@ -19,7 +19,6 @@ public class Director : Entity
     {
         Validate(name);
         Name = name;
-        Movies = new List<Movie>();
     }
 
     public Director(int id, Name name) {

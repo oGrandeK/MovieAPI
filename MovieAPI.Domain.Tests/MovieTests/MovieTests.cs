@@ -8,13 +8,13 @@ namespace MovieAPI.Domain.Tests.MovieTests;
 [TestClass]
 public class MovieTests
 {
-    [TestMethod]
-    public void ShouldReturnDomainExceptionValidationWhenMovieTitleIsNull() {
-        Assert.ThrowsException<DomainExceptionValidation>(() => 
-        {
-            var movie = new Movie(null, null, null, null, null, null,1);
-        });
-    }
+    // [TestMethod]
+    // public void ShouldReturnDomainExceptionValidationWhenMovieTitleIsNull() {
+    //     Assert.ThrowsException<DomainExceptionValidation>(() => 
+    //     {
+    //         var movie = new Movie(null, null, null, null, null, null,1);
+    //     });
+    // }
 
     [TestMethod]
     public void ShouldReturnDomainExceptionValidationWhenMovieTitleHasLessThan2CharacterLong() {

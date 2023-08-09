@@ -11,7 +11,11 @@ public class DirectorConfiguration : IEntityTypeConfiguration<Director>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Name).HasMaxLength(60).IsRequired();
+        builder.OwnsOne(x => x.Name, nameBuilder => 
+        {
+            nameBuilder.Property(x => x.FirstName).HasMaxLength(30).IsRequired();
+            nameBuilder.Property(x => x.LastName).HasMaxLength(30).IsRequired();
+        });
 
         builder.HasData(
             new Director(1, new Name("John", "Lasseter")),
