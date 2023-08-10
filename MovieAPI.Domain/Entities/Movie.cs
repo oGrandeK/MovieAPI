@@ -36,19 +36,21 @@ namespace MovieAPI.Domain.Entities
             Id = id;
         }
 
+        private Movie() {}
+
         // Methods
         private void Validate(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating) {
             // Starting validations
             DomainExceptionValidation.HasError(title is null, "Movie title cannot be null");
 
-            title.MovieTitle = title.MovieTitle.Trim();
+            var trimmedTitle = new Title(title?.MovieTitle?.Trim() ?? "");
             if(description is not null) description = description.Trim();
 
-            DomainExceptionValidation.HasError(title.MovieTitle.Length <= 1, "Movie title must be 1 or more characters long");
-            DomainExceptionValidation.HasError(title.MovieTitle.Length > 50, "Movie title must be 50 or less characters long");
-            DomainExceptionValidation.HasError(string.IsNullOrEmpty(title.MovieTitle), "Movie title cannot be empty");
-            DomainExceptionValidation.HasError(title.MovieTitle.Equals(" "), "Movie title cannot be white space");
-            DomainExceptionValidation.HasError(title.MovieTitle.Any(ch => char.IsPunctuation(ch)), "Movie title cannot be special character");
+            DomainExceptionValidation.HasError(trimmedTitle.MovieTitle.Length <= 1, "Movie title must be 1 or more characters long");
+            DomainExceptionValidation.HasError(trimmedTitle.MovieTitle.Length > 50, "Movie title must be 50 or less characters long");
+            DomainExceptionValidation.HasError(string.IsNullOrEmpty(trimmedTitle.MovieTitle), "Movie title cannot be empty or consist of only whitespace");
+            DomainExceptionValidation.HasError(trimmedTitle.MovieTitle.Equals(" "), "Movie title cannot be white space");
+            DomainExceptionValidation.HasError(trimmedTitle.MovieTitle.Any(ch => char.IsPunctuation(ch)), "Movie title cannot be special character");
 
             DomainExceptionValidation.HasError(description.Length < 10, "Movie description must be 10 or more characters long");
             DomainExceptionValidation.HasError(description.Length > 255, "Movie description must be 255 or less characters long");

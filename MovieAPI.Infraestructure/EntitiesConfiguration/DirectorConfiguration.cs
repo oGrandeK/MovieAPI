@@ -13,16 +13,9 @@ public class DirectorConfiguration : IEntityTypeConfiguration<Director>
 
         builder.OwnsOne(x => x.Name, nameBuilder => 
         {
-            nameBuilder.Property(x => x.FirstName).HasMaxLength(30).IsRequired();
-            nameBuilder.Property(x => x.LastName).HasMaxLength(30).IsRequired();
+            nameBuilder.Property(x => x.FirstName).HasColumnName("Name_FirstName").HasMaxLength(30).IsRequired();
+            nameBuilder.Property(x => x.LastName).HasColumnName("Name_LastName").HasMaxLength(30).IsRequired();
         });
-
-        builder.HasData(
-            new Director(1, new Name("John", "Lasseter")),
-            new Director(2, new Name("Sam", "Raimi")),
-            new Director(3, new Name("Quentin", "Tarantino")),
-            new Director(4, new Name("Chad", "Stahelski"))
-        );
 
         builder.HasMany(x => x.Movies).WithOne(x => x.Director).HasForeignKey(x => x.DirectorId);
     }

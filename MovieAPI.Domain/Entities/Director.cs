@@ -27,6 +27,8 @@ public class Director : Entity
         Validate(name);
     }
 
+    private Director() {}
+
     // Methods
     internal void Validate(Name name) {
         DomainExceptionValidation.HasError(name is null, "Name cannot be null");
