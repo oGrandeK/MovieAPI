@@ -1,5 +1,6 @@
 #nullable enable
 
+using System.Text.Json.Serialization;
 using MovieAPI.Domain.Validation;
 using MovieAPI.Domain.ValueObjects;
 
@@ -15,6 +16,7 @@ public class Director : Entity
     public List<Movie>? Movies { get; set; }
 
     // Constructors
+    [JsonConstructor]
     public Director(Name name)
     {
         Validate(name);

@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using MovieAPI.Domain.Entities;
-using MovieAPI.Domain.ValueObjects;
 using MovieAPI.Infraestructure.EntitiesConfiguration;
 
 namespace MovieAPI.Infraestructure.Context;

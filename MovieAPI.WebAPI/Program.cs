@@ -1,4 +1,5 @@
-using Microsoft.EntityFrameworkCore;
+using MovieAPI.Domain.interfaces;
+using MovieAPI.Infraestructure.Repositories;
 using MovieAPI.Infraestructure.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
