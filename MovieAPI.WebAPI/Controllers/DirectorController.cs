@@ -39,14 +39,14 @@ public class DirectorController : ControllerBase
     }
 
     [HttpPost("v1/directors")]
-    public async Task<IActionResult> CreateDirectorAsync([FromBody]Director directorData) {
+    public async Task<IActionResult> CreateDirectorAsync(Director directorData) {
         var director = await _directorRepository.CreateDirectorAsync(directorData);
 
         return Ok(director);
     }
 
     [HttpPut("v1/directors/{id:int}")]
-    public async Task<IActionResult> UpdateDirectorAsync([FromQuery]int id, [FromBody]Director directorData) {
+    public async Task<IActionResult> UpdateDirectorAsync(int id, Director directorData) {
         var director = await _directorRepository.GetDirectorMoviesByIdAsync(id) ?? null;
         if(director is null) return NotFound($"Cannot find Director by id - {id}");
 
@@ -58,7 +58,7 @@ public class DirectorController : ControllerBase
     }
 
     [HttpDelete("v1/directors/{id:int}")]
-    public async Task<IActionResult> DeleteDirectorAsync([FromQuery]int id) {
+    public async Task<IActionResult> DeleteDirectorAsync(int id) {
         var director = await _directorRepository.GetDirectorMoviesByIdAsync(id) ?? null;
         if(director is null) return NotFound($"Cannot find Director by id - {id}");
 
