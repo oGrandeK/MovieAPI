@@ -29,7 +29,7 @@ public class MovieRepository : IMovieRepository
         return await _context.Movies.Include(x => x.Director).AsNoTracking().Where(x => x.Title.MovieTitle.Contains(movieTitle)).ToListAsync();
     }
 
-    public async Task<IEnumerable<Movie>> GetMoviesDirectorsByGenre(string movieGenre)
+    public async Task<IEnumerable<Movie>> GetMoviesDirectorsByGenreAsync(string movieGenre)
     {
         return await _context.Movies.Include(x => x.Director).AsNoTracking().Where(x => x.Genre.ToString() == movieGenre).ToListAsync();
     }
