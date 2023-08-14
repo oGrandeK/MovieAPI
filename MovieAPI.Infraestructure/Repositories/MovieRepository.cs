@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.interfaces;
+using MovieAPI.Domain.Validation;
 using MovieAPI.Infraestructure.Context;
 
 namespace MovieAPI.Infraestructure.Repositories;
@@ -20,7 +21,7 @@ public class MovieRepository : IMovieRepository
 
     public async Task<Movie> GetMovieDirectorsByIdAsync(int id)
     {
-        return await _context.Movies.Include(x => x.Director).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        return await _context.Movies.Include(x => x.Director).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id) ?? throw new DomainExceptionValidation($"Movie Cannot be found by id - {id}");
     }
 
     public async Task<IEnumerable<Movie>> GetMoviesDirectorsByNameAsync(string movieTitle)
