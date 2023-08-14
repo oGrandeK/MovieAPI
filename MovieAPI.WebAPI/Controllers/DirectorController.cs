@@ -42,7 +42,7 @@ public class DirectorController : ControllerBase
     public async Task<IActionResult> CreateDirectorAsync(Director directorData) {
         var director = await _directorRepository.CreateDirectorAsync(directorData);
 
-        return Ok(director);
+        return Created($"api/[controller]/v1/directors/{director.Id}", director);
     }
 
     [HttpPut("v1/directors/{id:int}")]
