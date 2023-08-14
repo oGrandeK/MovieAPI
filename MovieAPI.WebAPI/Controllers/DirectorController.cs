@@ -25,7 +25,8 @@ public class DirectorController : ControllerBase
 
     [HttpGet("v1/directors/{id:int}")]
     public async Task<IActionResult> GetDirectorMovieByIdAsync(int id) {
-        var director = await _directorRepository.GetDirectorMoviesByIdAsync(id);
+        var director = await _directorRepository.GetDirectorMoviesByIdAsync(id) ?? null;
+        if(director is null) return NotFound($"Cannot find Director by id - {id}");
 
         return Ok(director);
     }
@@ -47,7 +48,7 @@ public class DirectorController : ControllerBase
     [HttpPut("v1/directors/{id:int}")]
     public async Task<IActionResult> UpdateDirectorAsync([FromQuery]int id, [FromBody]Director directorData) {
         var director = await _directorRepository.GetDirectorMoviesByIdAsync(id) ?? null;
-        if(director is null) return NotFound(director);
+        if(director is null) return NotFound($"Cannot find Director by id - {id}");
 
         director.UpdateName(directorData.Name);
 
@@ -59,7 +60,7 @@ public class DirectorController : ControllerBase
     [HttpDelete("v1/directors/{id:int}")]
     public async Task<IActionResult> DeleteDirectorAsync([FromQuery]int id) {
         var director = await _directorRepository.GetDirectorMoviesByIdAsync(id) ?? null;
-        if(director is null) return NotFound(director);
+        if(director is null) return NotFound($"Cannot find Director by id - {id}");
 
         await _directorRepository.DeleteDirectorAsync(director);
 
