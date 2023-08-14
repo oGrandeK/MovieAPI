@@ -5,7 +5,7 @@ namespace MovieAPI.Domain.interfaces;
 public interface IMovieRepository
 {
     Task<IEnumerable<Movie>> GetMoviesDirectorsAsync();
-    Task<Movie> GetMovieDirectorsById(int id);
+    Task<Movie> GetMovieDirectorsByIdAsync(int id);
     Task<IEnumerable<Movie>> GetMoviesDirectorsByNameAsync(string movieTitle);
     Task<IEnumerable<Movie>> GetMoviesDirectorsByGenre(string movieGenre);
     Task<Movie> CreateMovieAsync(Movie movie);

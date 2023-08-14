@@ -18,7 +18,7 @@ public class MovieRepository : IMovieRepository
         return await _context.Movies.Include(x => x.Director).AsNoTracking().ToListAsync();
     }
 
-    public async Task<Movie> GetMovieDirectorsById(int id)
+    public async Task<Movie> GetMovieDirectorsByIdAsync(int id)
     {
         return await _context.Movies.Include(x => x.Director).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
     }
