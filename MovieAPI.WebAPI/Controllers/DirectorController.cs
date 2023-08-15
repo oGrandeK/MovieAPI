@@ -33,7 +33,7 @@ public class DirectorController : ControllerBase
 
     [HttpGet("v1/directors/{name}")]
     public async Task<IActionResult> GetDirectorMovieByNameAsync(string name) {
-        var director = await _directorRepository.GetDirectorsMoviesByNameAsync(name);
+        var director = await _directorRepository.GetDirectorsMoviesByNameAsync(name.Trim());
 
         return Ok(director);
     }

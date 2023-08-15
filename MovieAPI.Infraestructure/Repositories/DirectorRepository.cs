@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.interfaces;
 using MovieAPI.Domain.Validation;
+using MovieAPI.Domain.ValueObjects;
 using MovieAPI.Infraestructure.Context;
 
 namespace MovieAPI.Infraestructure.Repositories;
