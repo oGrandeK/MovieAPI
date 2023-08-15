@@ -20,7 +20,7 @@ public class Director : Entity
     public Director(Name name)
     {
         Validate(name);
-        Name = name;
+        //Name = name;
     }
 
     public Director(int id, Name name) {
@@ -49,10 +49,12 @@ public class Director : Entity
 
         DomainExceptionValidation.HasError(name.FirstName.Length >= 30, "First name must be 30 or less characters");
         DomainExceptionValidation.HasError(name.LastName.Length >= 30, "Last name must be 30 or less characters");
+
+        Name = name;
     }
 
     public void UpdateName(Name name) {
         Validate(name);
-        Name = name;
+        //Name = name;
     }
 }
