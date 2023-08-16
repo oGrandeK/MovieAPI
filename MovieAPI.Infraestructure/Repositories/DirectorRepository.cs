@@ -28,9 +28,17 @@ public class DirectorRepository : IDirectorRepository
 
     public async Task<IEnumerable<Director>> GetDirectorsMoviesByNameAsync(string directorName)
     {
-        var test = directorName.Split(" ");
-        return await _context.Directors.Include(x => x.Movies).AsNoTracking().Where(x => x.Name.FirstName.Contains(test[0]) || x.Name.FirstName.Contains(test[1]) || x.Name.LastName.Contains(test[0]) || x.Name.LastName.Contains(test[1])).ToListAsync();
+        
         //return await _context.Directors.Include(x => x.Movies).AsNoTracking().Where(x => x.Name.FirstName.Contains(directorName) || x.Name.LastName.Contains(directorName)).ToListAsync();
+        var names = directorName.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+        var query = _context.Directors.Include(x => x.Movies).AsNoTracking();
+
+        foreach (var name in names)
+        {
+            query.Where(x => x.Name.FirstName.Contains(name) || x.Name.LastName.Contains(name));
+        }
+
+        return await query.ToListAsync();
     }
 
     public async Task<Director> CreateDirectorAsync(Director director)
