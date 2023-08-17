@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.interfaces;
-using MovieAPI.Domain.Validation;
+using MovieAPI.WebAPI.DTOs;
 
 namespace MovieAPI.WebAPI.Controllers;
 
@@ -19,8 +19,14 @@ public class DirectorController : ControllerBase
     [HttpGet("v1/directors")]
     public async Task<IActionResult> GetDirectorsAsync() {
         var directors = await _directorRepository.GetDirectorsMoviesAsync();
+        
+        var directorsDto = directors.Select(director => new GetDirectorDTO {
+            Id = director.Id,
+            Name = director.Name,
+            Movies = director.Movies
+        }).ToList();
 
-        return Ok(directors);
+        return Ok(directorsDto);
     }
 
     [HttpGet("v1/directors/{id:int}")]
@@ -28,7 +34,13 @@ public class DirectorController : ControllerBase
         var director = await _directorRepository.GetDirectorMoviesByIdAsync(id) ?? null;
         if(director is null) return NotFound($"Cannot find Director by id - {id}");
 
-        return Ok(director);
+        var directorDto = new GetDirectorDTO {
+            Id = id,
+            Name = director.Name,
+            Movies = director.Movies
+        };
+
+        return Ok(directorDto);
     }
 
     [HttpGet("v1/directors/{name}")]
@@ -39,10 +51,12 @@ public class DirectorController : ControllerBase
     }
 
     [HttpPost("v1/directors")]
-    public async Task<IActionResult> CreateDirectorAsync(Director directorData) {
-        var director = await _directorRepository.CreateDirectorAsync(directorData);
+    public async Task<IActionResult> CreateDirectorAsync(CreateDirectorDTO directorDto) {
+        var director = new Director(directorDto.Name);
 
-        return Created($"api/[controller]/v1/directors/{director.Id}", director);
+        await _directorRepository.CreateDirectorAsync(director);
+
+        return Created($"api/director/v1/directors/{director.Id}", directorDto);
     }
 
     [HttpPut("v1/directors/{id:int}")]
