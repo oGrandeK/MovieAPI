@@ -28,14 +28,12 @@ public class DirectorRepository : IDirectorRepository
 
     public async Task<IEnumerable<Director>> GetDirectorsMoviesByNameAsync(string directorName)
     {
-        
-        //return await _context.Directors.Include(x => x.Movies).AsNoTracking().Where(x => x.Name.FirstName.Contains(directorName) || x.Name.LastName.Contains(directorName)).ToListAsync();
         var names = directorName.Split(" ", StringSplitOptions.RemoveEmptyEntries);
         var query = _context.Directors.Include(x => x.Movies).AsNoTracking();
 
         foreach (var name in names)
         {
-            query.Where(x => x.Name.FirstName.Contains(name) || x.Name.LastName.Contains(name));
+            query = query.Where(x => x.Name.FirstName.Contains(name) || x.Name.LastName.Contains(name));
         }
 
         return await query.ToListAsync();
