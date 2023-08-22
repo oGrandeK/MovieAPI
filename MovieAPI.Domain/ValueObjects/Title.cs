@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace MovieAPI.Domain.ValueObjects;
 
 public class Title : ValueObject

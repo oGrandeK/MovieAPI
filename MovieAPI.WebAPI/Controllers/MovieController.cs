@@ -1,8 +1,11 @@
 using System.Runtime.Intrinsics;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.interfaces;
 using MovieAPI.Domain.Validation;
+using MovieAPI.Domain.ValueObjects;
+using MovieAPI.WebAPI.DTOs;
 
 namespace MovieAPI.WebAPI.Controllers;
 
@@ -21,7 +24,21 @@ public class MovieController : ControllerBase
     public async Task<IActionResult> GetMoviesDirectorsAsync() {
         var movies = await _movieRepository.GetMoviesDirectorsAsync();
 
-        return Ok(movies);
+        var moviesDto = movies.Select(movie => new GetMoviesDTO {
+            Id = movie.Id,
+            Title = movie.Title.MovieTitle,
+            Description = movie.Description,
+            Genre = movie.Genre,
+            DurationInMinutes = movie.DurationInMinutes,
+            ReleaseDate = movie.ReleaseDate,
+            Rating = movie.Rating,
+            Director = new DirectorDTO {
+                Id = movie.DirectorId,
+                FullName = movie.Director.Name.FirstName + " " + movie.Director.Name.LastName
+            }
+        }).ToList();
+
+        return Ok(moviesDto);
     }
 
     [HttpGet("v1/movies/{id:int}")]
@@ -47,10 +64,14 @@ public class MovieController : ControllerBase
     }
 
     [HttpPost("v1/movies")]
-    public async Task<IActionResult> CreateMovieAsync(Movie movieData) {
-        var movie = await _movieRepository.CreateMovieAsync(movieData);
+    public async Task<IActionResult> CreateMovieAsync(CreateMovieDTO movieData) {
+        
+        var title = new Title(movieData.Title.MovieTitle);
+        var movie = new Movie(title, movieData.Description, movieData.Genre, movieData.DurationInMinutes, movieData.ReleaseDate, movieData.Rating, movieData.DirectorId);
 
-        return Created($"api/[controller]/v1/{movieData.Id}", movie);
+        await _movieRepository.CreateMovieAsync(movie);
+
+        return Created($"api/[controller]/v1/{movie.Id}", movie);
     }
 
     [HttpPut("v1/movies/{id:int}")]
