@@ -7,5 +7,5 @@ public class GetDirectorDTO
 {
     public int Id { get; set; }
     public Name Name { get; set; }
-    public List<Movie>? Movies { get; set; }
+    public List<string>? Movies { get; set; }
 }
