@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Intrinsics;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Domain.Entities;
+using MovieAPI.Domain.Enumerators;
 using MovieAPI.Domain.interfaces;
 using MovieAPI.Domain.Validation;
 using MovieAPI.Domain.ValueObjects;
@@ -46,21 +48,48 @@ public class MovieController : ControllerBase
         var movie = await _movieRepository.GetMovieDirectorsByIdAsync(id) ?? null;
         if(movie is null) return NotFound($"Cannot find movie by id - {id}");
 
-        return Ok(movie);
+        var movieDto = new GetMoviesDTO {
+            Id = movie.Id,
+            Title = movie.Title.MovieTitle,
+            Description = movie.Description,
+            Genre = movie.Genre,
+            DurationInMinutes = movie.DurationInMinutes,
+            ReleaseDate = movie.ReleaseDate,
+            Rating = movie.Rating,
+            Director = new DirectorDTO {
+                Id = movie.DirectorId,
+                FullName = movie.Director.Name.FirstName + " " + movie.Director.Name.LastName
+            }
+        };
+
+        return Ok(movieDto);
     }
 
-    [HttpGet("v1/movies/{name}")]
+    [HttpGet("v1/movies/name/{name}")]
     public async Task<IActionResult> GetMoviesDirectorsByNameAsync(string name) {
         var movies = await _movieRepository.GetMoviesDirectorsByNameAsync(name);
 
         return Ok(movies);
     }
 
-    [HttpGet("v1/movies/{genre}")]
-    public async Task<IActionResult> GetMoviesDirectorsByGenreAsync(string genre) {
+    [HttpGet("v1/movies/genre/{genre}")]
+    public async Task<IActionResult> GetMoviesDirectorsByGenreAsync(GenreEnumerator genre) {
         var movies = await _movieRepository.GetMoviesDirectorsByGenreAsync(genre);
+        var moviesDto = movies.Select(movie => new GetMoviesDTO {
+            Id = movie.Id,
+            Title = movie.Title.MovieTitle,
+            Description = movie.Description,
+            Genre = movie.Genre,
+            DurationInMinutes = movie.DurationInMinutes,
+            ReleaseDate = movie.ReleaseDate,
+            Rating = movie.Rating,
+            Director = new DirectorDTO {
+                Id = movie.DirectorId,
+                FullName = movie.Director.Name.FirstName + " " + movie.Director.Name.LastName
+            }
+        });
 
-        return Ok(movies);
+        return Ok(moviesDto);
     }
 
     [HttpPost("v1/movies")]

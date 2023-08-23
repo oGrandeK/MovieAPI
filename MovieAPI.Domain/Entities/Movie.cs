@@ -1,6 +1,7 @@
 #nullable enable
 
 using System;
+using System.Text.Json.Serialization;
 using MovieAPI.Domain.Enumerators;
 using MovieAPI.Domain.interfaces;
 using MovieAPI.Domain.Validation;
