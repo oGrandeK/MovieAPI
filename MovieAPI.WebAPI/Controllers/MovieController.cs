@@ -15,6 +15,8 @@ namespace MovieAPI.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class MovieController : ControllerBase
 {
+
+    //TODO: Resolver bug onde o ReleaseDate esta vindo como 0001-01-01
     private readonly IMovieRepository _movieRepository;
 
     public MovieController(IMovieRepository movieRepository)
@@ -68,8 +70,21 @@ public class MovieController : ControllerBase
     [HttpGet("v1/movies/name/{name}")]
     public async Task<IActionResult> GetMoviesDirectorsByNameAsync(string name) {
         var movies = await _movieRepository.GetMoviesDirectorsByNameAsync(name);
+        var moviesDto = movies.Select(movie => new GetMoviesDTO {
+            Id = movie.Id,
+            Title = movie.Title.MovieTitle,
+            Description = movie.Description,
+            Genre = movie.Genre,
+            DurationInMinutes = movie.DurationInMinutes,
+            ReleaseDate = movie.ReleaseDate,
+            Rating = movie.Rating,
+            Director = new DirectorDTO {
+                Id = movie.DirectorId,
+                FullName = movie.Director.Name.FirstName + " " + movie.Director.Name.LastName
+            }
+        });
 
-        return Ok(movies);
+        return Ok(moviesDto);
     }
 
     [HttpGet("v1/movies/genre/{genre}")]
@@ -104,11 +119,12 @@ public class MovieController : ControllerBase
     }
 
     [HttpPut("v1/movies/{id:int}")]
-    public async Task<IActionResult> UpdateMovieAsync(int id, Movie movieData) {
+    public async Task<IActionResult> UpdateMovieAsync(int id, CreateMovieDTO movieData) {
         var movie = await _movieRepository.GetMovieDirectorsByIdAsync(id) ?? null;
         if(movie is null) return NotFound($"Cannot found Movie by id - {id}");
+        var title = new Title(movieData.Title.MovieTitle);
 
-        movie.UpdateMovie(movieData.Title, movieData.Description, movieData.Genre, movieData.DurationInMinutes, movieData.ReleaseDate, movieData.Rating, movieData.DirectorId);
+        movie.UpdateMovie(title, movieData.Description, movieData.Genre, movieData.DurationInMinutes, movieData.ReleaseDate, movieData.Rating, movieData.DirectorId);
 
         await _movieRepository.UpdateMovieAsync(movie);
 

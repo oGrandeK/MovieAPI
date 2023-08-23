@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.interfaces;
@@ -23,7 +24,7 @@ public class DirectorController : ControllerBase
         var directorsDto = directors.Select(director => new GetDirectorDTO {
             Id = director.Id,
             Name = director.Name,
-            Movies = director.Movies
+            Movies = director?.Movies?.Select(x => x.Title.MovieTitle).ToList()
         }).ToList();
 
         return Ok(directorsDto);
@@ -37,7 +38,7 @@ public class DirectorController : ControllerBase
         var directorDto = new GetDirectorDTO {
             Id = id,
             Name = director.Name,
-            Movies = director.Movies
+            Movies = director?.Movies?.Select(x => x.Title.MovieTitle).ToList()
         };
 
         return Ok(directorDto);
@@ -45,9 +46,14 @@ public class DirectorController : ControllerBase
 
     [HttpGet("v1/directors/{name}")]
     public async Task<IActionResult> GetDirectorMovieByNameAsync(string name) {
-        var director = await _directorRepository.GetDirectorsMoviesByNameAsync(name.Trim());
+        var directors = await _directorRepository.GetDirectorsMoviesByNameAsync(name.Trim());
+        var directorDto = directors.Select(director => new GetDirectorDTO {
+            Id = director.Id,
+            Name = director.Name,
+            Movies = director?.Movies?.Select(x => x.Title.MovieTitle).ToList()
+        });
 
-        return Ok(director);
+        return Ok(directorDto);
     }
 
     [HttpPost("v1/directors")]
@@ -60,7 +66,7 @@ public class DirectorController : ControllerBase
     }
 
     [HttpPut("v1/directors/{id:int}")]
-    public async Task<IActionResult> UpdateDirectorAsync(int id, Director directorData) {
+    public async Task<IActionResult> UpdateDirectorAsync(int id, CreateDirectorDTO directorData) {
         var director = await _directorRepository.GetDirectorMoviesByIdAsync(id) ?? null;
         if(director is null) return NotFound($"Cannot find Director by id - {id}");
 
