@@ -61,7 +61,7 @@ namespace MovieAPI.Domain.Entities
             DomainExceptionValidation.HasError(durationInMinutes < 0, "Movie duration cannot be negative");
             DomainExceptionValidation.HasError(durationInMinutes > 600, "Movie duration cannot be more than 600 minutes");
 
-            DomainExceptionValidation.HasError(releaseDate < new DateOnly(1985, 12, 28), "Movie release date cannot be inferior than 1985-12-28");
+            DomainExceptionValidation.HasError(releaseDate < new DateOnly(1888, 10, 14), "Movie release date cannot be inferior than 1985-12-28");
 
             DomainExceptionValidation.HasError(rating < 0, "Movie rating cannot be negative");
 
