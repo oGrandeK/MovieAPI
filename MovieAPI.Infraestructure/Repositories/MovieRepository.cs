@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MovieAPI.Domain.Entities;
+using MovieAPI.Domain.Enumerators;
 using MovieAPI.Domain.interfaces;
 using MovieAPI.Domain.Validation;
 using MovieAPI.Infraestructure.Context;
@@ -29,9 +30,9 @@ public class MovieRepository : IMovieRepository
         return await _context.Movies.Include(x => x.Director).AsNoTracking().Where(x => x.Title.MovieTitle.Contains(movieTitle)).ToListAsync();
     }
 
-    public async Task<IEnumerable<Movie>> GetMoviesDirectorsByGenreAsync(string movieGenre)
+    public async Task<IEnumerable<Movie>> GetMoviesDirectorsByGenreAsync(GenreEnumerator movieGenre)
     {
-        return await _context.Movies.Include(x => x.Director).AsNoTracking().Where(x => x.Genre.ToString() == movieGenre).ToListAsync();
+        return await _context.Movies.Include(x => x.Director).AsNoTracking().Where(x => x.Genre == movieGenre).ToListAsync();
     }
 
     public async Task<Movie> CreateMovieAsync(Movie movie)
