@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.Enumerators;
 using MovieAPI.Domain.ValueObjects;

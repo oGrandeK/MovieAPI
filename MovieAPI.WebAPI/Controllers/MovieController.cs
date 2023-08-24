@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Runtime.Intrinsics;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
@@ -56,7 +57,7 @@ public class MovieController : ControllerBase
             Description = movie.Description,
             Genre = movie.Genre,
             DurationInMinutes = movie.DurationInMinutes,
-            ReleaseDate = movie.ReleaseDate,
+            //ReleaseDate = movie.ReleaseDate,
             Rating = movie.Rating,
             Director = new DirectorDTO {
                 Id = movie.DirectorId,
@@ -76,7 +77,7 @@ public class MovieController : ControllerBase
             Description = movie.Description,
             Genre = movie.Genre,
             DurationInMinutes = movie.DurationInMinutes,
-            ReleaseDate = movie.ReleaseDate,
+            //ReleaseDate = movie.ReleaseDate,
             Rating = movie.Rating,
             Director = new DirectorDTO {
                 Id = movie.DirectorId,
@@ -96,7 +97,7 @@ public class MovieController : ControllerBase
             Description = movie.Description,
             Genre = movie.Genre,
             DurationInMinutes = movie.DurationInMinutes,
-            ReleaseDate = movie.ReleaseDate,
+            //ReleaseDate = movie.ReleaseDate,
             Rating = movie.Rating,
             Director = new DirectorDTO {
                 Id = movie.DirectorId,

@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -15,7 +17,7 @@ builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.Re
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => {
-    options.MapType<GenreEnumerator>(() => new OpenApiSchema { Type = "string"});
+    options.MapType<GenreEnumerator>(() => new OpenApiSchema { Type = "string" });
 });
 
 var app = builder.Build();
