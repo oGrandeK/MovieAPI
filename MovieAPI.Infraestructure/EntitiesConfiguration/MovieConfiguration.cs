@@ -20,7 +20,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         builder.Property(x => x.Description).HasMaxLength(255);
         builder.Property(x => x.Genre).HasConversion<string>();
         builder.Property(x => x.DurationInMinutes).HasColumnType("tinyint");
-        builder.Property(x => x.ReleaseDate).HasConversion(x => x.ToString(), x => new DateOnly());
+        builder.Property(x => x.ReleaseDate).HasConversion(x => x.ToString(), x => new DateTime());
         builder.Property(x => x.Rating);
     }
 }

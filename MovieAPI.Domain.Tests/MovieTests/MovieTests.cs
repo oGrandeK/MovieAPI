@@ -100,7 +100,7 @@ public class MovieTests
     public void ShouldReturnDomainExceptionValidationWhenMovieReleaseDateAreInferiorThan19851228() {
         Assert.ThrowsException<DomainExceptionValidation>(() => 
         {
-            var movie = new Movie(new Title("Toy Story"), "An amazing movie to watch with your family", GenreEnumerator.Comedy, 120, new DateOnly(1984, 12, 28), null, 1);
+            var movie = new Movie(new Title("Toy Story"), "An amazing movie to watch with your family", GenreEnumerator.Comedy, 120, new DateTime(1984, 12, 28), null, 1);
         });
     }
 
@@ -108,7 +108,7 @@ public class MovieTests
     public void ShouldReturnDomainExceptionValidationWhenMovieRatingHasLessThan0() {
         Assert.ThrowsException<DomainExceptionValidation>(() => 
         {
-            var movie = new Movie(new Title("Toy Story"), "An amazing movie to watch with your family", GenreEnumerator.Comedy, 120, new DateOnly(2019, 05, 15), -1, 1);
+            var movie = new Movie(new Title("Toy Story"), "An amazing movie to watch with your family", GenreEnumerator.Comedy, 120, new DateTime(2019, 05, 15), -1, 1);
         });
     }
 

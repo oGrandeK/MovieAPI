@@ -16,7 +16,7 @@ namespace MovieAPI.Domain.Entities
         public string? Description { get; private set; }
         public GenreEnumerator? Genre { get; private set; }
         public short? DurationInMinutes { get; private set; }
-        public DateOnly? ReleaseDate { get; private set; }
+        public DateTime? ReleaseDate { get; private set; }
         public double? Rating { get; private set; }
 
         // Navigation Properties
@@ -24,13 +24,13 @@ namespace MovieAPI.Domain.Entities
         public Director Director { get; set; }
 
         // Constructors
-        public Movie(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating, int directorId)
+        public Movie(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating, int directorId)
         {
             Validate(title, description, genre, durationInMinutes, releaseDate, rating);
             DirectorId = directorId;
         }
 
-        public Movie(int id, Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating, int directorId)
+        public Movie(int id, Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating, int directorId)
         {
             Validate(title, description, genre, durationInMinutes, releaseDate, rating);
             DirectorId = directorId;
@@ -40,7 +40,7 @@ namespace MovieAPI.Domain.Entities
         private Movie() {}
 
         // Methods
-        private void Validate(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating) {
+        private void Validate(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating) {
             // Starting validations
             DomainExceptionValidation.HasError(title is null, "Movie title cannot be null");
 
@@ -61,7 +61,7 @@ namespace MovieAPI.Domain.Entities
             DomainExceptionValidation.HasError(durationInMinutes < 0, "Movie duration cannot be negative");
             DomainExceptionValidation.HasError(durationInMinutes > 600, "Movie duration cannot be more than 600 minutes");
 
-            DomainExceptionValidation.HasError(releaseDate < new DateOnly(1888, 10, 14), "Movie release date cannot be inferior than 1985-12-28");
+            DomainExceptionValidation.HasError(releaseDate < new DateTime(1888, 10, 14), "Movie release date cannot be inferior than 1985-12-28");
 
             DomainExceptionValidation.HasError(rating < 0, "Movie rating cannot be negative");
 
@@ -74,7 +74,7 @@ namespace MovieAPI.Domain.Entities
             Rating = rating;
         }
 
-        public void UpdateMovie(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateOnly? releaseDate, double? rating, int directorId) {
+        public void UpdateMovie(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating, int directorId) {
             Validate(title, description, genre, durationInMinutes, releaseDate, rating);
             DomainExceptionValidation.HasError(directorId < 0, "directorId cannot be inferior than 0");
             DirectorId = directorId;
