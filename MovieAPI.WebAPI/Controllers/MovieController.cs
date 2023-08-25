@@ -16,8 +16,6 @@ namespace MovieAPI.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class MovieController : ControllerBase
 {
-
-    //TODO: Resolver bug onde o ReleaseDate esta vindo como 0001-01-01
     private readonly IMovieRepository _movieRepository;
 
     public MovieController(IMovieRepository movieRepository)
@@ -35,7 +33,7 @@ public class MovieController : ControllerBase
             Description = movie.Description,
             Genre = movie.Genre,
             DurationInMinutes = movie.DurationInMinutes,
-            ReleaseDate = movie.ReleaseDate,
+            ReleaseDate = movie.ReleaseDate.HasValue ? new DateOnly(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateOnly(),
             Rating = movie.Rating,
             Director = new DirectorDTO {
                 Id = movie.DirectorId,
@@ -57,7 +55,7 @@ public class MovieController : ControllerBase
             Description = movie.Description,
             Genre = movie.Genre,
             DurationInMinutes = movie.DurationInMinutes,
-            //ReleaseDate = movie.ReleaseDate,
+            ReleaseDate = movie.ReleaseDate.HasValue ? new DateOnly(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateOnly(),
             Rating = movie.Rating,
             Director = new DirectorDTO {
                 Id = movie.DirectorId,
@@ -77,7 +75,7 @@ public class MovieController : ControllerBase
             Description = movie.Description,
             Genre = movie.Genre,
             DurationInMinutes = movie.DurationInMinutes,
-            //ReleaseDate = movie.ReleaseDate,
+            ReleaseDate = movie.ReleaseDate.HasValue ? new DateOnly(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateOnly(),
             Rating = movie.Rating,
             Director = new DirectorDTO {
                 Id = movie.DirectorId,
@@ -97,7 +95,7 @@ public class MovieController : ControllerBase
             Description = movie.Description,
             Genre = movie.Genre,
             DurationInMinutes = movie.DurationInMinutes,
-            //ReleaseDate = movie.ReleaseDate,
+            ReleaseDate = movie.ReleaseDate.HasValue ? new DateOnly(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateOnly(),
             Rating = movie.Rating,
             Director = new DirectorDTO {
                 Id = movie.DirectorId,

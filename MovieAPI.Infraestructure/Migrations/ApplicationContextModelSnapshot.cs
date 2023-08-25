@@ -62,8 +62,8 @@ namespace MovieAPI.Infraestructure.Migrations
                     b.Property<double?>("Rating")
                         .HasColumnType("float");
 
-                    b.Property<string>("ReleaseDate")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("ReleaseDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
