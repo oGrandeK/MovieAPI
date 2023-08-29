@@ -1,5 +1,6 @@
 using System.Security.AccessControl;
 using Microsoft.AspNetCore.Mvc;
+using MovieAPI.Application.Interfaces;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.interfaces;
 using MovieAPI.WebAPI.DTOs;
