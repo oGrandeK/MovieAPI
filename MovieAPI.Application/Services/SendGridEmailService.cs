@@ -1,10 +1,11 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Reflection.Metadata.Ecma335;
+using MovieAPI.Application.Interfaces;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace MovieAPI.Application.Interfaces;
+namespace MovieAPI.Application.Services;
 
 public class SendGridEmailService : IEmailService
 {
