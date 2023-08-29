@@ -17,7 +17,9 @@
       "applicationUrl": "https://localhost:7050;http://localhost:5081",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "SendGrid" : "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"
+        "SendGrid" : "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",
+        "TwilioSid" : "ACf0782d60cbaf7894539ca30769be9645",
+        "TwilioToken" : "008fc5302a5e1d148f3afe75ba6dab41"
       }
     },
     "IIS Express": {
