@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MovieAPI.Application.Interfaces;
+using MovieAPI.Application.Services;
 using MovieAPI.Domain.interfaces;
 using MovieAPI.Infraestructure.Context;
 using MovieAPI.Infraestructure.Repositories;
@@ -17,6 +18,7 @@ public static class DependencyInjection
         services.AddTransient<IMovieRepository, MovieRepository>();
 
         services.AddSingleton<IEmailService, SendGridEmailService>();
+        services.AddSingleton<ISmsService, TwilioSmsService>();
 
         return services;
     }
