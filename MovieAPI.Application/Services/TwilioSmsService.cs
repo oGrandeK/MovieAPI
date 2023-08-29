@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Microsoft.VisualBasic;
 using MovieAPI.Application.Interfaces;
 using Twilio;
@@ -17,14 +18,10 @@ public class TwilioSmsService : ISmsService
         _authToken = Environment.GetEnvironmentVariable("TwilioToken") ?? throw new NullReferenceException("Twilio Token cannot be found");
     }
 
-    public bool SendSms(string from, string to, string body)
+    public void SendSms(string from, string to, string body)
     {
         TwilioClient.Init(_accountSid, _authToken);
 
         var message = MessageResource.Create(body: body, from: new Twilio.Types.PhoneNumber(from), to: new Twilio.Types.PhoneNumber(to));
-
-        var teste = message.Status;
-
-        return true;
     }
 }
