@@ -1,9 +1,6 @@
 #nullable enable
 
-using System;
-using System.Text.Json.Serialization;
 using MovieAPI.Domain.Enumerators;
-using MovieAPI.Domain.interfaces;
 using MovieAPI.Domain.Validation;
 using MovieAPI.Domain.ValueObjects;
 
@@ -26,18 +23,16 @@ namespace MovieAPI.Domain.Entities
         // Constructors
         public Movie(Title title, int directorId, string? description = null, GenreEnumerator? genre = null, short? durationInMinutes = null, DateTime? releaseDate = null, double? rating = null)
         {
-            Validate(description, genre, durationInMinutes, releaseDate, rating);
+            Validate(title, description, genre, durationInMinutes, releaseDate, rating);
 
-            Title = new Title(title);
             DirectorId = directorId;
         }
 
         public Movie(int id, Title title, int directorId, string? description = null, GenreEnumerator? genre = null, short? durationInMinutes = null, DateTime? releaseDate = null, double? rating = null)
         {
-            Validate(description, genre, durationInMinutes, releaseDate, rating);
+            Validate(title, description, genre, durationInMinutes, releaseDate, rating);
 
             Id = id;
-            Title = new Title(title);
 
             if(directorId < 1) throw new DomainExceptionValidation("Id do diretor não pode ser inferior a 1");
 
@@ -48,7 +43,7 @@ namespace MovieAPI.Domain.Entities
 
         // Methods
         public void UpdateMovie(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating, int directorId) {
-            Validate(description, genre, durationInMinutes, releaseDate, rating);
+            Validate(title, description, genre, durationInMinutes, releaseDate, rating);
 
             if(directorId < 1) throw new DomainExceptionValidation("Id do diretor não pode ser inferior a 1");
 
@@ -56,7 +51,7 @@ namespace MovieAPI.Domain.Entities
             DirectorId = directorId;
         }
 
-        public void Validate(string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating) {
+        public void Validate(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating) {
             if(string.IsNullOrEmpty(description)) throw new DomainExceptionValidation("Descrição do filme não pode ser vazio ou nulo");
             if(description.Trim().Length > 255) throw new DomainExceptionValidation("Descrição do filme não pode conter mais que 255 caracteres");
 
@@ -68,6 +63,7 @@ namespace MovieAPI.Domain.Entities
 
             if(rating < 0) throw new DomainExceptionValidation("Nota do filme não pode ser inferior a 0");
 
+            Title = new Title(title);
             Description = description.Trim();
             Genre = genre;
             DurationInMinutes = durationInMinutes;
