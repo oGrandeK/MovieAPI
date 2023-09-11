@@ -12,7 +12,7 @@ namespace MovieAPI.Domain.Entities
     public class Movie : Entity
     {
         // Properties
-        public Title Title { get; private set; }
+        public Title Title { get; private set; } = null!;
         public string? Description { get; private set; }
         public GenreEnumerator? Genre { get; private set; }
         public short? DurationInMinutes { get; private set; }
@@ -21,63 +21,58 @@ namespace MovieAPI.Domain.Entities
 
         // Navigation Properties
         public int DirectorId { get; set; }
-        public Director Director { get; set; }
+        public Director Director { get; set; } = null!;
 
         // Constructors
-        public Movie(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating, int directorId)
+        public Movie(Title title, int directorId, string? description = null, GenreEnumerator? genre = null, short? durationInMinutes = null, DateTime? releaseDate = null, double? rating = null)
         {
-            Validate(title, description, genre, durationInMinutes, releaseDate, rating);
+            Validate(description, genre, durationInMinutes, releaseDate, rating);
+
+            Title = new Title(title);
             DirectorId = directorId;
         }
 
-        public Movie(int id, Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating, int directorId)
+        public Movie(int id, Title title, int directorId, string? description = null, GenreEnumerator? genre = null, short? durationInMinutes = null, DateTime? releaseDate = null, double? rating = null)
         {
-            Validate(title, description, genre, durationInMinutes, releaseDate, rating);
-            DirectorId = directorId;
+            Validate(description, genre, durationInMinutes, releaseDate, rating);
+
             Id = id;
+            Title = new Title(title);
+
+            if(directorId < 1) throw new DomainExceptionValidation("Id do diretor não pode ser inferior a 1");
+
+            DirectorId = directorId;
         }
 
         private Movie() {}
 
         // Methods
-        private void Validate(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating) {
-            // Starting validations
-            DomainExceptionValidation.HasError(title is null, "Movie title cannot be null");
+        public void UpdateMovie(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating, int directorId) {
+            Validate(description, genre, durationInMinutes, releaseDate, rating);
 
-            var trimmedTitle = new Title(title?.MovieTitle?.Trim() ?? "");
-            if(description is not null) description = description.Trim();
+            if(directorId < 1) throw new DomainExceptionValidation("Id do diretor não pode ser inferior a 1");
 
-            DomainExceptionValidation.HasError(trimmedTitle.MovieTitle.Length <= 1, "Movie title must be 1 or more characters long");
-            DomainExceptionValidation.HasError(trimmedTitle.MovieTitle.Length > 50, "Movie title must be 50 or less characters long");
-            DomainExceptionValidation.HasError(string.IsNullOrEmpty(trimmedTitle.MovieTitle), "Movie title cannot be empty or consist of only whitespace");
-            DomainExceptionValidation.HasError(trimmedTitle.MovieTitle.Equals(" "), "Movie title cannot be white space");
-            DomainExceptionValidation.HasError(trimmedTitle.MovieTitle.Any(ch => char.IsPunctuation(ch)), "Movie title cannot be special character");
+            Title = new Title(title);
+            DirectorId = directorId;
+        }
 
-            DomainExceptionValidation.HasError(description.Length < 10, "Movie description must be 10 or more characters long");
-            DomainExceptionValidation.HasError(description.Length > 255, "Movie description must be 255 or less characters long");
+        public void Validate(string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating) {
+            if(string.IsNullOrEmpty(description)) throw new DomainExceptionValidation("Descrição do filme não pode ser vazio ou nulo");
+            if(description.Trim().Length > 255) throw new DomainExceptionValidation("Descrição do filme não pode conter mais que 255 caracteres");
 
-            DomainExceptionValidation.HasError(!Enum.IsDefined(typeof(GenreEnumerator), genre), "The genre doesn't exist");
+            if(genre != null && !Enum.IsDefined(typeof(GenreEnumerator), genre)) throw new DomainExceptionValidation("Genêro do filme não existe");
 
-            DomainExceptionValidation.HasError(durationInMinutes < 0, "Movie duration cannot be negative");
-            DomainExceptionValidation.HasError(durationInMinutes > 600, "Movie duration cannot be more than 600 minutes");
+            if(durationInMinutes < 1 || durationInMinutes > 600) throw new DomainExceptionValidation("Duração do filme deve estar entre 1 e 600 minutos");
 
-            DomainExceptionValidation.HasError(releaseDate < new DateTime(1888, 10, 14), "Movie release date cannot be inferior than 1985-12-28");
+            if(releaseDate < new DateTime(1888, 10, 14)) throw new DomainExceptionValidation("Data de lançamento do filme não pode ser anterior que 14/10/1888");
 
-            DomainExceptionValidation.HasError(rating < 0, "Movie rating cannot be negative");
+            if(rating < 0) throw new DomainExceptionValidation("Nota do filme não pode ser inferior a 0");
 
-            // Seting attributes
-            Title = title;
-            Description = description;
+            Description = description.Trim();
             Genre = genre;
             DurationInMinutes = durationInMinutes;
             ReleaseDate = releaseDate;
             Rating = rating;
-        }
-
-        public void UpdateMovie(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating, int directorId) {
-            Validate(title, description, genre, durationInMinutes, releaseDate, rating);
-            DomainExceptionValidation.HasError(directorId < 0, "directorId cannot be inferior than 0");
-            DirectorId = directorId;
         }
     }
 }
