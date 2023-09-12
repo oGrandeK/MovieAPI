@@ -17,6 +17,8 @@ public class Name : ValueObject
 
         if(firstName.Length < 3 || lastName.Length < 3) throw new DomainExceptionValidation("Primeiro nome e sobrenome devem conter mais que 2 caracteres");
 
+        if(firstName.Length > 100 || lastName.Length > 100) throw new DomainExceptionValidation("Primeiro nome e sobrenome devem conter menos que 100 caracterers");
+
         if(firstName.Any(ch => char.IsPunctuation(ch)) || lastName.Any(ch => char.IsPunctuation(ch))) throw new DomainExceptionValidation("Primeiro nome e sobrenome não podem conter caracter especial");
 
         if(firstName.Any(ch => char.IsDigit(ch)) || lastName.Any(ch => char.IsDigit(ch))) throw new DomainExceptionValidation("Primeiro nome e sobrenome não devem conter dígitos");
