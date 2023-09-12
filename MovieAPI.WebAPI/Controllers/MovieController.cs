@@ -33,7 +33,7 @@ public class MovieController : ControllerBase
             Description = movie.Description,
             Genre = movie.Genre,
             DurationInMinutes = movie.DurationInMinutes,
-            ReleaseDate = movie.ReleaseDate.HasValue ? new DateOnly(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateOnly(),
+            ReleaseDate = movie.ReleaseDate.HasValue ? new DateTime(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateTime(),
             Rating = movie.Rating,
             Director = new DirectorDTO {
                 Id = movie.DirectorId,
@@ -55,7 +55,7 @@ public class MovieController : ControllerBase
             Description = movie.Description,
             Genre = movie.Genre,
             DurationInMinutes = movie.DurationInMinutes,
-            ReleaseDate = movie.ReleaseDate.HasValue ? new DateOnly(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateOnly(),
+            ReleaseDate = movie.ReleaseDate.HasValue ? new DateTime(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateTime(),
             Rating = movie.Rating,
             Director = new DirectorDTO {
                 Id = movie.DirectorId,
@@ -75,7 +75,7 @@ public class MovieController : ControllerBase
             Description = movie.Description,
             Genre = movie.Genre,
             DurationInMinutes = movie.DurationInMinutes,
-            ReleaseDate = movie.ReleaseDate.HasValue ? new DateOnly(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateOnly(),
+            ReleaseDate = movie.ReleaseDate.HasValue ? new DateTime(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateTime(),
             Rating = movie.Rating,
             Director = new DirectorDTO {
                 Id = movie.DirectorId,
@@ -95,7 +95,7 @@ public class MovieController : ControllerBase
             Description = movie.Description,
             Genre = movie.Genre,
             DurationInMinutes = movie.DurationInMinutes,
-            ReleaseDate = movie.ReleaseDate.HasValue ? new DateOnly(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateOnly(),
+            ReleaseDate = movie.ReleaseDate.HasValue ? new DateTime(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateTime(),
             Rating = movie.Rating,
             Director = new DirectorDTO {
                 Id = movie.DirectorId,
@@ -110,7 +110,7 @@ public class MovieController : ControllerBase
     public async Task<IActionResult> CreateMovieAsync(CreateMovieDTO movieData) {
         
         var title = new Title(movieData.Title.MovieTitle);
-        var movie = new Movie(title, movieData.Description, movieData.Genre, movieData.DurationInMinutes, movieData.ReleaseDate, movieData.Rating, movieData.DirectorId);
+        var movie = new Movie(title, movieData.DirectorId, movieData.Description, movieData.Genre, movieData.DurationInMinutes, movieData.ReleaseDate, movieData.Rating);
 
         await _movieRepository.CreateMovieAsync(movie);
 
