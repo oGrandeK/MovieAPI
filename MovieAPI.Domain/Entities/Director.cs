@@ -9,7 +9,7 @@ namespace MovieAPI.Domain.Entities;
 public class Director : Entity 
 {
     // Properties
-    public Name Name { get; private set; }
+    public Name Name { get; private set; } = null!;
 
     // Navegation Properties
     public int? MovieId { get; set; }
@@ -19,42 +19,27 @@ public class Director : Entity
     [JsonConstructor]
     public Director(Name name)
     {
-        Validate(name);
-        //Name = name;
+        ValidateName(name);
     }
 
     public Director(int id, Name name) {
-        DomainExceptionValidation.HasError(id < 0, "Invalid id value");
+        if(id < 1) throw new DomainExceptionValidation("Id não pode ser inferior a 1");
+
         Id = id;
-        Validate(name);
+
+        ValidateName(name);
     }
 
     private Director() {}
 
     // Methods
-    internal void Validate(Name name) {
-        DomainExceptionValidation.HasError(name is null, "Name cannot be null");
+    private static Name ValidateName(Name name) {
+        var nameParts = name.ToString().Split(" ");
 
-        DomainExceptionValidation.HasError(name.FirstName is null, "First name cannot be null or white space");
-        DomainExceptionValidation.HasError(name.LastName is null, "Last name cannot be null or white space");
-
-        DomainExceptionValidation.HasError(name.FirstName.Any(ch => char.IsDigit(ch)), "First name cannot contains digits");
-        DomainExceptionValidation.HasError(name.LastName.Any(ch => char.IsDigit(ch)), "Last name cannot contains digits");
-
-        DomainExceptionValidation.HasError(name.FirstName.Any(ch => char.IsPunctuation(ch)), "First name cannot contain special characters");
-        DomainExceptionValidation.HasError(name.LastName.Any(ch => char.IsPunctuation(ch)), "Last name cannot contain special characters");
-
-        DomainExceptionValidation.HasError(name.FirstName.Length < 2, "First name must be 3 or more characters long");
-        DomainExceptionValidation.HasError(name.LastName.Length < 2, "Last name must be 3 or more characters long");
-
-        DomainExceptionValidation.HasError(name.FirstName.Length >= 30, "First name must be 30 or less characters");
-        DomainExceptionValidation.HasError(name.LastName.Length >= 30, "Last name must be 30 or less characters");
-
-        Name = name;
+        return new Name(nameParts[0], nameParts[1]);
     }
 
     public void UpdateName(Name name) {
-        Validate(name);
-        //Name = name;
+        Name = ValidateName(name);
     }
 }
