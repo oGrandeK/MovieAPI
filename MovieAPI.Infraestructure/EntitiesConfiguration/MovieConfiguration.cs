@@ -1,8 +1,6 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MovieAPI.Domain.Entities;
-using MovieAPI.Domain.ValueObjects;
 
 namespace MovieAPI.Infraestructure.EntitiesConfiguration;
 
