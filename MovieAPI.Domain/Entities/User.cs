@@ -20,6 +20,9 @@ public class User : Entity
     {
         _passwordService = passwordService;
 
+        Name = name;
+        Email = email;
+
         Password = _passwordService.Hash(password);
     }
 }
