@@ -42,7 +42,7 @@ namespace MovieAPI.Domain.Entities
         private Movie() {}
 
         // Methods
-        public void UpdateMovie(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating, int directorId) {
+        public void UpdateMovie(Title title, int directorId, string? description = null, GenreEnumerator? genre = null, short? durationInMinutes = null, DateTime? releaseDate = null, double? rating = null) {
             Validate(title, description, genre, durationInMinutes, releaseDate, rating);
 
             if(directorId < 1) throw new DomainExceptionValidation("Id do diretor não pode ser inferior a 1");
@@ -51,7 +51,7 @@ namespace MovieAPI.Domain.Entities
             DirectorId = directorId;
         }
 
-        public void Validate(Title title, string? description, GenreEnumerator? genre, short? durationInMinutes, DateTime? releaseDate, double? rating) {
+        public void Validate(Title title, string? description = null, GenreEnumerator? genre = null, short? durationInMinutes = null, DateTime? releaseDate = null, double? rating = null) {
             if(string.IsNullOrEmpty(description)) throw new DomainExceptionValidation("Descrição do filme não pode ser vazio ou nulo");
             if(description.Trim().Length > 255) throw new DomainExceptionValidation("Descrição do filme não pode conter mais que 255 caracteres");
 
