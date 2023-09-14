@@ -1,23 +1,23 @@
 using MovieAPI.Application.Interfaces.UseCases.DirectorUseCases;
-using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.interfaces;
 
 namespace MovieAPI.Application.UseCases.DirectorUseCases;
 
-public class ListAllDirectorsUseCase : IListAllDirectorsUseCase
+public class DeleteDirectorUseCase : IDeleteDirectorUseCase
 {
     private readonly IDirectorRepository _directorRepository;
 
-    public ListAllDirectorsUseCase(IDirectorRepository directorRepository)
+    public DeleteDirectorUseCase(IDirectorRepository directorRepository)
     {
         _directorRepository = directorRepository;
     }
 
-    public async Task<IEnumerable<Director>> Execute()
+    public async Task Execute(int id)
     {
         try
         {
-            return await _directorRepository.GetDirectorsMoviesAsync();
+            var director = await _directorRepository.GetDirectorMoviesByIdAsync(id);
+            await _directorRepository.DeleteDirectorAsync(director);
         }
         catch (Exception ex)
         {

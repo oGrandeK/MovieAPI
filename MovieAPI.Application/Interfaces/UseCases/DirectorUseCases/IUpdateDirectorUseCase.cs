@@ -2,7 +2,7 @@ using MovieAPI.Domain.Entities;
 
 namespace MovieAPI.Application.Interfaces.UseCases.DirectorUseCases;
 
-public interface IListDirectorByIdUseCase
+public interface IUpdateDirectorUseCase
 {
-    public Task<Director> Execute(int id);
+    public Task Execute(int id, Director directorData);
 }

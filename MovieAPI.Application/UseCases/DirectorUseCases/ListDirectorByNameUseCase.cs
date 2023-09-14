@@ -4,20 +4,17 @@ using MovieAPI.Domain.interfaces;
 
 namespace MovieAPI.Application.UseCases.DirectorUseCases;
 
-public class ListAllDirectorsUseCase : IListAllDirectorsUseCase
+public class ListDirectorByNameUseCase : IListDirectorByNameUseCase
 {
     private readonly IDirectorRepository _directorRepository;
 
-    public ListAllDirectorsUseCase(IDirectorRepository directorRepository)
-    {
-        _directorRepository = directorRepository;
-    }
+    public ListDirectorByNameUseCase(IDirectorRepository directorRepository) => _directorRepository = directorRepository;
 
-    public async Task<IEnumerable<Director>> Execute()
+    public async Task<IEnumerable<Director>> Execute(string name)
     {
         try
         {
-            return await _directorRepository.GetDirectorsMoviesAsync();
+            return await _directorRepository.GetDirectorsMoviesByNameAsync(name);
         }
         catch (Exception ex)
         {
