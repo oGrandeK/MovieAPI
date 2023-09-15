@@ -1,9 +1,11 @@
 using System.Security.AccessControl;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Application.Interfaces;
+using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Application.Services;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.interfaces;
+using MovieAPI.Domain.Validation;
 using MovieAPI.WebAPI.DTOs;
 
 namespace MovieAPI.WebAPI.Controllers;
@@ -12,78 +14,82 @@ namespace MovieAPI.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class DirectorController : ControllerBase
 {
-    private readonly IDirectorRepository _directorRepository;
+    private readonly IDirectorService _directorService;
 
-    public DirectorController(IDirectorRepository directorRepository)
+    public DirectorController(IDirectorService directorService)
     {
-        _directorRepository = directorRepository;
+        _directorService = directorService;
     }
 
     [HttpGet("v1/directors")]
-    public async Task<IActionResult> GetDirectorsAsync() {
-        var directors = await _directorRepository.GetDirectorsMoviesAsync();
-        
-        var directorsDto = directors.Select(director => new GetDirectorDTO {
-            Id = director.Id,
-            Name = director.Name,
-            Movies = director?.Movies?.Select(x => x.Title.MovieTitle).ToList()
-        }).ToList();
-
-        return Ok(directorsDto);
-    }
+    public async Task<IActionResult> GetAllDirector() => Ok(await _directorService.ListAllDirectors());
 
     [HttpGet("v1/directors/{id:int}")]
-    public async Task<IActionResult> GetDirectorMovieByIdAsync(int id) {
-        var director = await _directorRepository.GetDirectorMoviesByIdAsync(id);
-        if(director is null) return NotFound($"Cannot find Director by id - {id}");
-
-        var directorDto = new GetDirectorDTO {
-            Id = id,
-            Name = director.Name,
-            Movies = director?.Movies?.Select(x => x.Title.MovieTitle).ToList()
-        };
-
-        return Ok(directorDto);
+    public async Task<IActionResult> GetDirectorById(int id) {
+        try
+        {
+            return Ok(await _directorService.ListDirectorById(id));
+        }
+        catch (DomainExceptionValidation ex)
+        {
+            return NotFound($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        }
+        catch(Exception ex) {
+            return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        }
     }
 
     [HttpGet("v1/directors/{name}")]
-    public async Task<IActionResult> GetDirectorMovieByNameAsync(string name) {
-        var directors = await _directorRepository.GetDirectorsMoviesByNameAsync(name.Trim());
-        var directorDto = directors.Select(director => new GetDirectorDTO {
-            Id = director.Id,
-            Name = director.Name,
-            Movies = director?.Movies?.Select(x => x.Title.MovieTitle).ToList()
-        });
-
-        return Ok(directorDto);
+    public async Task<IActionResult> GetDirectorsByName(string name) {
+        try
+        {
+            return Ok(await _directorService.ListDirectorByName(name));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        }
     }
 
     [HttpPost("v1/directors")]
-    public async Task<IActionResult> CreateDirectorAsync(CreateDirectorDTO directorDto) {
-        var director = new Director(directorDto.Name);
-
-        await _directorRepository.CreateDirectorAsync(director);
-
-        return Created($"api/director/v1/directors/{director.Id}", directorDto);
+    public async Task<IActionResult> AddDirector(Director directorData) {
+        try
+        {
+            var newDirector = new Director(directorData.Name);
+            await _directorService.AddDirector(newDirector);
+            return CreatedAtAction($"{nameof(GetDirectorById)}", new { id = newDirector.Id }, newDirector);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        }
     }
 
     [HttpPut("v1/directors/{id:int}")]
-    public async Task<IActionResult> UpdateDirectorAsync(int id, CreateDirectorDTO directorData) {
-        var director = await _directorRepository.GetDirectorMoviesByIdAsync(id);
-
-        director?.UpdateName(directorData.Name);
-
-        await _directorRepository.UpdateDirectorAsync(director);
-
-        return Ok(director);
+    public async Task<IActionResult> UpdateDirector(int id, Director directorData) {
+        try
+        {
+            var director = directorData;
+            await _directorService.UpdateDirector(id, director);
+            return Ok(director);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        }
     }
 
     [HttpDelete("v1/directors/{id:int}")]
-    public async Task<IActionResult> DeleteDirectorAsync(int id) {
-        var director = await _directorRepository.GetDirectorMoviesByIdAsync(id);
-
-        await _directorRepository.DeleteDirectorAsync(director);
-
-        return Ok(director);
+    public async Task<IActionResult> DeleteDirector(int id) {
+        try
+        {
+            var director = await _directorService.ListDirectorById(id);
+            await _directorService.DeleteDirector(director.Id);
+            return Ok(director);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        }
     }
 }
