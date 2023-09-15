@@ -19,15 +19,16 @@ public class Director : Entity
     [JsonConstructor]
     public Director(Name name)
     {
-        ValidateName(name);
+        Name = ValidateName(name);
     }
 
     public Director(int id, Name name) {
         if(id < 1) throw new DomainExceptionValidation("Id não pode ser inferior a 1");
 
         Id = id;
+        Name = name;
 
-        ValidateName(name);
+        Name = ValidateName(name);
     }
 
     private Director() {}
