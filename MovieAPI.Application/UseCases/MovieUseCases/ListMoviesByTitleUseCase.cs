@@ -4,11 +4,11 @@ using MovieAPI.Domain.interfaces;
 
 namespace MovieAPI.Application.UseCases.MovieUsecases;
 
-public class ListMoviesByNameUseCase : IListMoviesByNameUseCase
+public class ListMoviesByTitleUseCase : IListMoviesByTitleUseCase
 {
     private readonly IMovieRepository _movieRepository;
 
-    public ListMoviesByNameUseCase(IMovieRepository movieRepository)
+    public ListMoviesByTitleUseCase(IMovieRepository movieRepository)
     {
         _movieRepository = movieRepository;
     }
