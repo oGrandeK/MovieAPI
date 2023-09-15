@@ -10,10 +10,10 @@ public class DirectorService : IDirectorService
     private readonly IDeleteDirectorUseCase _deleteDirectorUseCase;
     private readonly IListAllDirectorsUseCase _listAllDirectors;
     private readonly IListDirectorByIdUseCase _listDirectorById;
-    private readonly IListDirectorByNameUseCase _listDirectorByName;
+    private readonly IListDirectorsByNameUseCase _listDirectorByName;
     private readonly IUpdateDirectorUseCase _updateDirectorUseCase;
 
-    public DirectorService(IAddDirectorUseCase addDirectorUseCase, IDeleteDirectorUseCase deleteDirectorUseCase, IListAllDirectorsUseCase listAllDirectors, IListDirectorByIdUseCase listDirectorById, IListDirectorByNameUseCase listDirectorByName, IUpdateDirectorUseCase updateDirectorUseCase)
+    public DirectorService(IAddDirectorUseCase addDirectorUseCase, IDeleteDirectorUseCase deleteDirectorUseCase, IListAllDirectorsUseCase listAllDirectors, IListDirectorByIdUseCase listDirectorById, IListDirectorsByNameUseCase listDirectorByName, IUpdateDirectorUseCase updateDirectorUseCase)
     {
         _addDirectorUseCase = addDirectorUseCase;
         _deleteDirectorUseCase = deleteDirectorUseCase;
