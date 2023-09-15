@@ -119,11 +119,10 @@ public class MovieController : ControllerBase
 
     [HttpPut("v1/movies/{id:int}")]
     public async Task<IActionResult> UpdateMovieAsync(int id, CreateMovieDTO movieData) {
-        var movie = await _movieRepository.GetMovieDirectorsByIdAsync(id) ?? null;
-        if(movie is null) return NotFound($"Cannot found Movie by id - {id}");
+        var movie = await _movieRepository.GetMovieDirectorsByIdAsync(id);
         var title = new Title(movieData.Title.MovieTitle);
 
-        movie.UpdateMovie(title, movieData.Description, movieData.Genre, movieData.DurationInMinutes, movieData.ReleaseDate, movieData.Rating, movieData.DirectorId);
+        movie.UpdateMovie(title, movieData.DirectorId, movieData.Description, movieData.Genre, movieData.DurationInMinutes, movieData.ReleaseDate, movieData.Rating);
 
         await _movieRepository.UpdateMovieAsync(movie);
 
@@ -132,8 +131,7 @@ public class MovieController : ControllerBase
 
     [HttpDelete("v1/movies/{id:int}")]
     public async Task<IActionResult> DeleteMovieAsync(int id) {
-        var movie = await _movieRepository.GetMovieDirectorsByIdAsync(id) ?? null;
-        if(movie is null) return NotFound($"Movie cannot be found by id - {id}");
+        var movie = await _movieRepository.GetMovieDirectorsByIdAsync(id);
 
         await _movieRepository.DeleteMovieAsync(movie);
         
