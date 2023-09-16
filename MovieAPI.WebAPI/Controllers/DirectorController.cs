@@ -1,12 +1,7 @@
-using System.Security.AccessControl;
 using Microsoft.AspNetCore.Mvc;
-using MovieAPI.Application.Interfaces;
 using MovieAPI.Application.Interfaces.Services;
-using MovieAPI.Application.Services;
 using MovieAPI.Domain.Entities;
-using MovieAPI.Domain.interfaces;
 using MovieAPI.Domain.Validation;
-using MovieAPI.WebAPI.DTOs;
 
 namespace MovieAPI.WebAPI.Controllers;
 
@@ -22,7 +17,16 @@ public class DirectorController : ControllerBase
     }
 
     [HttpGet("v1/directors")]
-    public async Task<IActionResult> GetAllDirector() => Ok(await _directorService.ListAllDirectors());
+    public async Task<IActionResult> GetAllDirector() {
+        try
+        {
+            return Ok(await _directorService.ListAllDirectors());
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        }
+    }
 
     [HttpGet("v1/directors/{id:int}")]
     public async Task<IActionResult> GetDirectorById(int id) {
@@ -57,7 +61,11 @@ public class DirectorController : ControllerBase
         {
             var newDirector = new Director(directorData.Name);
             await _directorService.AddDirector(newDirector);
-            return CreatedAtAction($"{nameof(GetDirectorById)}", new { id = newDirector.Id }, newDirector);
+            return CreatedAtAction(nameof(GetDirectorById), new { id = newDirector.Id }, newDirector);
+        }
+        catch(DomainExceptionValidation ex) 
+        {
+            return BadRequest($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
         }
         catch (Exception ex)
         {
@@ -86,6 +94,10 @@ public class DirectorController : ControllerBase
             var director = await _directorService.ListDirectorById(id);
             await _directorService.DeleteDirector(director.Id);
             return Ok(director);
+        }
+        catch (DomainExceptionValidation ex)
+        {
+            return NotFound($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
         }
         catch (Exception ex)
         {
