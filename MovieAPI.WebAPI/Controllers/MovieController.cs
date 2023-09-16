@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Runtime.Intrinsics;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.Enumerators;
 using MovieAPI.Domain.interfaces;
@@ -16,125 +17,112 @@ namespace MovieAPI.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class MovieController : ControllerBase
 {
-    private readonly IMovieRepository _movieRepository;
+    private readonly IMovieService _movieService;
 
-    public MovieController(IMovieRepository movieRepository)
+    public MovieController(IMovieService movieService)
     {
-        _movieRepository = movieRepository;
+        _movieService = movieService;
     }
 
     [HttpGet("v1/movies")]
-    public async Task<IActionResult> GetMoviesDirectorsAsync() {
-        var movies = await _movieRepository.GetMoviesDirectorsAsync();
-
-        var moviesDto = movies.Select(movie => new GetMoviesDTO {
-            Id = movie.Id,
-            Title = movie.Title.MovieTitle,
-            Description = movie.Description,
-            Genre = movie.Genre,
-            DurationInMinutes = movie.DurationInMinutes,
-            ReleaseDate = movie.ReleaseDate.HasValue ? new DateTime(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateTime(),
-            Rating = movie.Rating,
-            Director = new DirectorDTO {
-                Id = movie.DirectorId,
-                FullName = movie.Director.Name.FirstName + " " + movie.Director.Name.LastName
-            }
-        }).ToList();
-
-        return Ok(moviesDto);
+    public async Task<IActionResult> GetAllMovies() {
+        try
+        {
+            return Ok(await _movieService.ListAllMovies());
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        }
     }
 
     [HttpGet("v1/movies/{id:int}")]
-    public async Task<IActionResult> GetMoviesDirectorsByIdAsync(int id) {
-        var movie = await _movieRepository.GetMovieDirectorsByIdAsync(id) ?? null;
-        if(movie is null) return NotFound($"Cannot find movie by id - {id}");
-
-        var movieDto = new GetMoviesDTO {
-            Id = movie.Id,
-            Title = movie.Title.MovieTitle,
-            Description = movie.Description,
-            Genre = movie.Genre,
-            DurationInMinutes = movie.DurationInMinutes,
-            ReleaseDate = movie.ReleaseDate.HasValue ? new DateTime(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateTime(),
-            Rating = movie.Rating,
-            Director = new DirectorDTO {
-                Id = movie.DirectorId,
-                FullName = movie.Director.Name.FirstName + " " + movie.Director.Name.LastName
-            }
-        };
-
-        return Ok(movieDto);
-    }
-
-    [HttpGet("v1/movies/name/{name}")]
-    public async Task<IActionResult> GetMoviesDirectorsByNameAsync(string name) {
-        var movies = await _movieRepository.GetMoviesDirectorsByNameAsync(name);
-        var moviesDto = movies.Select(movie => new GetMoviesDTO {
-            Id = movie.Id,
-            Title = movie.Title.MovieTitle,
-            Description = movie.Description,
-            Genre = movie.Genre,
-            DurationInMinutes = movie.DurationInMinutes,
-            ReleaseDate = movie.ReleaseDate.HasValue ? new DateTime(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateTime(),
-            Rating = movie.Rating,
-            Director = new DirectorDTO {
-                Id = movie.DirectorId,
-                FullName = movie.Director.Name.FirstName + " " + movie.Director.Name.LastName
-            }
-        });
-
-        return Ok(moviesDto);
+    public async Task<IActionResult> GetMovieById(int id) {
+        try
+        {
+            return Ok(await _movieService.ListMovieById(id));
+        }
+        catch (DomainExceptionValidation ex)
+        {
+            return NotFound($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
+        }
+        catch(Exception ex) {
+            return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        }
     }
 
     [HttpGet("v1/movies/genre/{genre}")]
-    public async Task<IActionResult> GetMoviesDirectorsByGenreAsync(GenreEnumerator genre) {
-        var movies = await _movieRepository.GetMoviesDirectorsByGenreAsync(genre);
-        var moviesDto = movies.Select(movie => new GetMoviesDTO {
-            Id = movie.Id,
-            Title = movie.Title.MovieTitle,
-            Description = movie.Description,
-            Genre = movie.Genre,
-            DurationInMinutes = movie.DurationInMinutes,
-            ReleaseDate = movie.ReleaseDate.HasValue ? new DateTime(movie.ReleaseDate.Value.Year, movie.ReleaseDate.Value.Month, movie.ReleaseDate.Value.Day) : new DateTime(),
-            Rating = movie.Rating,
-            Director = new DirectorDTO {
-                Id = movie.DirectorId,
-                FullName = movie.Director.Name.FirstName + " " + movie.Director.Name.LastName
-            }
-        });
-
-        return Ok(moviesDto);
+    public async Task<IActionResult> GetMovieByGenre(GenreEnumerator genre) {
+        try
+        {
+            return Ok(await _movieService.ListMoviesByGenre(genre));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        }
     }
 
+    [HttpGet("v1/movies/{title}")]
+    public async Task<IActionResult> GetMoviesByTitle(string title) {
+        try
+        {
+            return Ok(await _movieService.ListMoviesByTitle(title));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
+        }
+    }
+
+    //! Resolver erro
     [HttpPost("v1/movies")]
-    public async Task<IActionResult> CreateMovieAsync(CreateMovieDTO movieData) {
-        
-        var title = new Title(movieData.Title.MovieTitle);
-        var movie = new Movie(title, movieData.DirectorId, movieData.Description, movieData.Genre, movieData.DurationInMinutes, movieData.ReleaseDate, movieData.Rating);
-
-        await _movieRepository.CreateMovieAsync(movie);
-
-        return Created($"api/[controller]/v1/{movie.Id}", movie);
+    public async Task<IActionResult> AddMovie(Movie movieData) {
+        try
+        {
+            var newMovie = new Movie(movieData.Title, movieData.DirectorId, movieData.Description, movieData.Genre, movieData.DurationInMinutes, movieData.ReleaseDate, movieData.Rating);
+            await _movieService.AddMovie(newMovie);
+            return CreatedAtAction(nameof(GetMovieById), new { id = newMovie.Id}, newMovie);
+        }
+        catch (DomainExceptionValidation ex)
+        {
+            return BadRequest($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
+        }
+        catch(Exception ex) 
+        {
+            return BadRequest($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
+        }
     }
 
     [HttpPut("v1/movies/{id:int}")]
-    public async Task<IActionResult> UpdateMovieAsync(int id, CreateMovieDTO movieData) {
-        var movie = await _movieRepository.GetMovieDirectorsByIdAsync(id);
-        var title = new Title(movieData.Title.MovieTitle);
-
-        movie.UpdateMovie(title, movieData.DirectorId, movieData.Description, movieData.Genre, movieData.DurationInMinutes, movieData.ReleaseDate, movieData.Rating);
-
-        await _movieRepository.UpdateMovieAsync(movie);
-
-        return Ok(movie);
+    public async Task<IActionResult> UpdateMovie(int id, Movie movieData) {
+        try
+        {
+            var movie = movieData;
+            await _movieService.UpdateMovie(id, movie);
+            return Ok(movie);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
+        }
     }
 
     [HttpDelete("v1/movies/{id:int}")]
-    public async Task<IActionResult> DeleteMovieAsync(int id) {
-        var movie = await _movieRepository.GetMovieDirectorsByIdAsync(id);
-
-        await _movieRepository.DeleteMovieAsync(movie);
-        
-        return Ok(movie);
+    public async Task<IActionResult> DeleteMovie(int id) {
+        try
+        {
+            var movie = await _movieService.ListMovieById(id);
+            await _movieService.DeleteMovie(movie.DirectorId);
+            return Ok(movie);
+        }
+        catch(DomainExceptionValidation ex)
+        {
+            return NotFound($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
+        }
     }
 }
