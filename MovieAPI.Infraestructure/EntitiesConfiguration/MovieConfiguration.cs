@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MovieAPI.Domain.Entities;
+using MovieAPI.Domain.Enumerators;
 
 namespace MovieAPI.Infraestructure.EntitiesConfiguration;
 
@@ -10,15 +11,23 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
     {
         builder.HasKey(x => x.Id);
 
-        builder.OwnsOne(x => x.Title, titleBuilder => 
-        {
-            titleBuilder.Property(x => x.MovieTitle).HasMaxLength(50).IsRequired();
-        });
+        builder.OwnsOne(x => x.Title).Property(x => x.MovieTitle).HasColumnType("NVARCHAR").HasMaxLength(100).HasColumnName("Title").IsRequired();
 
-        builder.Property(x => x.Description).HasMaxLength(255);
-        builder.Property(x => x.Genre).HasConversion<string>();
-        builder.Property(x => x.DurationInMinutes).HasColumnType("tinyint");
-        builder.Property(x => x.ReleaseDate).HasConversion(x => x, x => x);
-        builder.Property(x => x.Rating);
+        builder.Property(x => x.Description).HasColumnType("NVARCHAR").HasMaxLength(200).HasColumnName("Description").IsRequired(false);
+
+        builder.Property(x => x.Genre)
+        .HasConversion(
+            x => x != null ? x.ToString() : null, // Convertendo enum GenreEnumerator para string
+            x => string.IsNullOrEmpty(x) ? default(GenreEnumerator) : (GenreEnumerator)Enum.Parse(typeof(GenreEnumerator), x) // Convertendo string para enum GenreEnumerator
+        ).IsRequired(false);
+
+        builder.Property(x => x.DurationInMinutes).HasColumnType("SMALLINT").HasColumnName("Duration in minutes").IsRequired(false);
+
+        builder.Property(x => x.ReleaseDate).HasColumnType("DATE").HasColumnName("Release date").IsRequired(false);
+
+        builder.Property(x => x.Rating).HasColumnType("FLOAT").HasColumnName("Rating").IsRequired(false);
+
+        // Redundância, não necessita ter mapeado em ambas as configs... somente em uma está bom.
+        builder.HasOne(x => x.Director).WithMany(x => x.Movies).HasForeignKey(x => x.DirectorId);
     }
 }
