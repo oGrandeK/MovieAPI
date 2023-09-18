@@ -19,7 +19,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         .HasConversion(
             x => x != null ? x.ToString() : null, // Convertendo enum GenreEnumerator para string
             x => string.IsNullOrEmpty(x) ? default(GenreEnumerator) : (GenreEnumerator)Enum.Parse(typeof(GenreEnumerator), x) // Convertendo string para enum GenreEnumerator
-        ).IsRequired(false);
+        ).HasMaxLength(100).IsRequired(false);
 
         builder.Property(x => x.DurationInMinutes).HasColumnType("SMALLINT").HasColumnName("Duration in minutes").IsRequired(false);
 
