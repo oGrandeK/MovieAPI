@@ -119,9 +119,8 @@ public class MovieController : ControllerBase
     {
         try
         {
-            var movie = await _movieService.ListMovieById(id);
-            await _movieService.DeleteMovie(movie.DirectorId);
-            return Ok(movie);
+            await _movieService.DeleteMovie(id);
+            return Ok();
         }
         catch (DomainExceptionValidation ex)
         {
