@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using MovieAPI.Domain.Validation;
 
@@ -13,24 +12,25 @@ public class Name : ValueObject
     [JsonConstructor]
     public Name(string firstName, string lastName)
     {
-        if(string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName)) throw new DomainExceptionValidation("Primeiro nome ou sobrenome não podem ser nulos ou vazios");
+        if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName)) throw new DomainExceptionValidation("Primeiro nome ou sobrenome não podem ser nulos ou vazios");
 
-        if(firstName.Length < 3 || lastName.Length < 3) throw new DomainExceptionValidation("Primeiro nome e sobrenome devem conter mais que 2 caracteres");
+        if (firstName.Length < 3 || lastName.Length < 3) throw new DomainExceptionValidation("Primeiro nome e sobrenome devem conter mais que 2 caracteres");
 
-        if(firstName.Length > 100 || lastName.Length > 100) throw new DomainExceptionValidation("Primeiro nome e sobrenome devem conter menos que 100 caracterers");
+        if (firstName.Length > 100 || lastName.Length > 100) throw new DomainExceptionValidation("Primeiro nome e sobrenome devem conter menos que 100 caracterers");
 
-        if(firstName.Any(ch => char.IsPunctuation(ch)) || lastName.Any(ch => char.IsPunctuation(ch))) throw new DomainExceptionValidation("Primeiro nome e sobrenome não podem conter caracter especial");
+        if (firstName.Any(ch => char.IsPunctuation(ch)) || lastName.Any(ch => char.IsPunctuation(ch))) throw new DomainExceptionValidation("Primeiro nome e sobrenome não podem conter caracter especial");
 
-        if(firstName.Any(ch => char.IsDigit(ch)) || lastName.Any(ch => char.IsDigit(ch))) throw new DomainExceptionValidation("Primeiro nome e sobrenome não devem conter dígitos");
+        if (firstName.Any(ch => char.IsDigit(ch)) || lastName.Any(ch => char.IsDigit(ch))) throw new DomainExceptionValidation("Primeiro nome e sobrenome não devem conter dígitos");
 
         FirstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(firstName.Trim());
         LastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(lastName.Trim());
     }
 
-    private Name() {}
+    private Name() { }
 
     public static implicit operator string(Name name) => name.ToString();
-    public static implicit operator Name(string fullname) {
+    public static implicit operator Name(string fullname)
+    {
         var parts = fullname.Split(" ");
 
         return new Name(parts[0], parts[1]);
