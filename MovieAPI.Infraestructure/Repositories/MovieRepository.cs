@@ -37,10 +37,17 @@ public class MovieRepository : IMovieRepository
 
     public async Task<Movie> CreateMovieAsync(Movie movie)
     {
-        _context.Movies.Add(movie);
-        await _context.SaveChangesAsync();
+        var movieExist = await MovieExist(movie.Title);
 
-        return movie;
+        if (!movieExist)
+        {
+            _context.Movies.Add(movie);
+            await _context.SaveChangesAsync();
+
+            return movie;
+        }
+
+        throw new DomainExceptionValidation("Filme ja existente");
     }
 
     public async Task<Movie> UpdateMovieAsync(Movie movie)
@@ -58,5 +65,18 @@ public class MovieRepository : IMovieRepository
         await _context.SaveChangesAsync();
 
         return movie;
+    }
+
+    public async Task<bool> MovieExist(string movieTitle)
+    {
+        try
+        {
+            var existingMovie = await GetMoviesDirectorsByNameAsync(movieTitle);
+            return true;
+        }
+        catch (DomainExceptionValidation)
+        {
+            return false;
+        }
     }
 }

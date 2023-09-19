@@ -56,8 +56,7 @@ namespace MovieAPI.Domain.Entities
 
         public void Validate(Title title, string? description = null, GenreEnumerator? genre = null, short? durationInMinutes = null, DateTime? releaseDate = null, double? rating = null)
         {
-            if (string.IsNullOrEmpty(description)) throw new DomainExceptionValidation("Descrição do filme não pode ser vazio ou nulo");
-            if (description.Trim().Length > 255) throw new DomainExceptionValidation("Descrição do filme não pode conter mais que 255 caracteres");
+            if (!string.IsNullOrEmpty(description) && description.Trim().Length > 255) throw new DomainExceptionValidation("Descrição do filme não pode conter mais que 255 caracteres");
 
             if (genre != null && !Enum.IsDefined(typeof(GenreEnumerator), genre)) throw new DomainExceptionValidation("Genêro do filme não existe");
 
@@ -68,7 +67,7 @@ namespace MovieAPI.Domain.Entities
             if (rating < 0) throw new DomainExceptionValidation("Nota do filme não pode ser inferior a 0");
 
             Title = new Title(title);
-            Description = description.Trim();
+            Description = description?.Trim();
             Genre = genre;
             DurationInMinutes = durationInMinutes;
             ReleaseDate = releaseDate;

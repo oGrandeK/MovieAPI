@@ -12,4 +12,5 @@ public interface IMovieRepository
     Task<Movie> CreateMovieAsync(Movie movie);
     Task<Movie> UpdateMovieAsync(Movie movie);
     Task<Movie> DeleteMovieAsync(Movie movie);
+    Task<bool> MovieExist(string movieTitle);
 }

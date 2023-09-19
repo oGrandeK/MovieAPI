@@ -1,15 +1,8 @@
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Runtime.Intrinsics;
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.Enumerators;
-using MovieAPI.Domain.interfaces;
 using MovieAPI.Domain.Validation;
-using MovieAPI.Domain.ValueObjects;
-using MovieAPI.WebAPI.DTOs;
 
 namespace MovieAPI.WebAPI.Controllers;
 

@@ -15,7 +15,6 @@ public class AddMovieUseCase : IAddMovieUseCase
 
     public async Task Execute(Movie movie)
     {
-        // TODO: Criar método que verifica se já existe esse Movie dentro do repositorio
         try
         {
             await _movieRepository.CreateMovieAsync(movie);
