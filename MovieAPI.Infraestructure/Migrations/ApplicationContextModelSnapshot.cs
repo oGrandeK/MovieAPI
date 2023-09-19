@@ -35,7 +35,7 @@ namespace MovieAPI.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Directors");
+                    b.ToTable("Directors", (string)null);
                 });
 
             modelBuilder.Entity("MovieAPI.Domain.Entities.Movie", b =>
@@ -74,7 +74,7 @@ namespace MovieAPI.Infraestructure.Migrations
 
                     b.HasIndex("DirectorId");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("MovieAPI.Domain.Entities.User", b =>
@@ -87,12 +87,12 @@ namespace MovieAPI.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("MovieAPI.Domain.Entities.Director", b =>
                 {
-                    b.OwnsOne("MovieAPI.Domain.ValueObjects.Name", "Name", b1 =>
+                    b.OwnsOne("MovieAPI.Domain.Entities.Director.Name#MovieAPI.Domain.ValueObjects.Name", "Name", b1 =>
                         {
                             b1.Property<int>("DirectorId")
                                 .HasColumnType("int");
@@ -111,7 +111,7 @@ namespace MovieAPI.Infraestructure.Migrations
 
                             b1.HasKey("DirectorId");
 
-                            b1.ToTable("Directors");
+                            b1.ToTable("Directors", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("DirectorId");
@@ -129,7 +129,7 @@ namespace MovieAPI.Infraestructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("MovieAPI.Domain.ValueObjects.Title", "Title", b1 =>
+                    b.OwnsOne("MovieAPI.Domain.Entities.Movie.Title#MovieAPI.Domain.ValueObjects.Title", "Title", b1 =>
                         {
                             b1.Property<int>("MovieId")
                                 .HasColumnType("int");
@@ -142,7 +142,7 @@ namespace MovieAPI.Infraestructure.Migrations
 
                             b1.HasKey("MovieId");
 
-                            b1.ToTable("Movies");
+                            b1.ToTable("Movies", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("MovieId");
@@ -156,32 +156,7 @@ namespace MovieAPI.Infraestructure.Migrations
 
             modelBuilder.Entity("MovieAPI.Domain.Entities.User", b =>
                 {
-                    b.OwnsOne("MovieAPI.Domain.ValueObjects.Name", "Name", b1 =>
-                        {
-                            b1.Property<int>("UserId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("FirstName")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("NVARCHAR(100)")
-                                .HasColumnName("FirstName");
-
-                            b1.Property<string>("LastName")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("NVARCHAR(100)")
-                                .HasColumnName("LastName");
-
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("Users");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
-                    b.OwnsOne("MovieAPI.Domain.ValueObjects.Email", "Email", b1 =>
+                    b.OwnsOne("MovieAPI.Domain.Entities.User.Email#MovieAPI.Domain.ValueObjects.Email", "Email", b1 =>
                         {
                             b1.Property<int>("UserId")
                                 .HasColumnType("int");
@@ -193,12 +168,12 @@ namespace MovieAPI.Infraestructure.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("Users");
+                            b1.ToTable("Users", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
 
-                            b1.OwnsOne("MovieAPI.Domain.ValueObjects.Verification", "Verification", b2 =>
+                            b1.OwnsOne("MovieAPI.Domain.Entities.User.Email#MovieAPI.Domain.ValueObjects.Email.Verification#MovieAPI.Domain.ValueObjects.Verification", "Verification", b2 =>
                                 {
                                     b2.Property<int>("EmailUserId")
                                         .HasColumnType("int");
@@ -218,7 +193,7 @@ namespace MovieAPI.Infraestructure.Migrations
 
                                     b2.HasKey("EmailUserId");
 
-                                    b2.ToTable("Users");
+                                    b2.ToTable("Users", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("EmailUserId");
@@ -227,7 +202,32 @@ namespace MovieAPI.Infraestructure.Migrations
                             b1.Navigation("Verification");
                         });
 
-                    b.OwnsOne("MovieAPI.Domain.ValueObjects.Password", "Password", b1 =>
+                    b.OwnsOne("MovieAPI.Domain.Entities.User.Name#MovieAPI.Domain.ValueObjects.Name", "Name", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("NVARCHAR(100)")
+                                .HasColumnName("FirstName");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("NVARCHAR(100)")
+                                .HasColumnName("LastName");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Users", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.OwnsOne("MovieAPI.Domain.Entities.User.Password#MovieAPI.Domain.ValueObjects.Password", "Password", b1 =>
                         {
                             b1.Property<int>("UserId")
                                 .HasColumnType("int");
@@ -239,7 +239,7 @@ namespace MovieAPI.Infraestructure.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("Users");
+                            b1.ToTable("Users", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
