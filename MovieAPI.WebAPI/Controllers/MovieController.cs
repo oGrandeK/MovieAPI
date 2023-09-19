@@ -25,7 +25,8 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet("v1/movies")]
-    public async Task<IActionResult> GetAllMovies() {
+    public async Task<IActionResult> GetAllMovies()
+    {
         try
         {
             return Ok(await _movieService.ListAllMovies());
@@ -37,7 +38,8 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet("v1/movies/{id:int}")]
-    public async Task<IActionResult> GetMovieById(int id) {
+    public async Task<IActionResult> GetMovieById(int id)
+    {
         try
         {
             return Ok(await _movieService.ListMovieById(id));
@@ -46,13 +48,15 @@ public class MovieController : ControllerBase
         {
             return NotFound($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
         }
-        catch(Exception ex) {
+        catch (Exception ex)
+        {
             return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
         }
     }
 
     [HttpGet("v1/movies/genre/{genre}")]
-    public async Task<IActionResult> GetMovieByGenre(GenreEnumerator genre) {
+    public async Task<IActionResult> GetMovieByGenre(GenreEnumerator genre)
+    {
         try
         {
             return Ok(await _movieService.ListMoviesByGenre(genre));
@@ -64,7 +68,8 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet("v1/movies/{title}")]
-    public async Task<IActionResult> GetMoviesByTitle(string title) {
+    public async Task<IActionResult> GetMoviesByTitle(string title)
+    {
         try
         {
             return Ok(await _movieService.ListMoviesByTitle(title));
@@ -75,27 +80,28 @@ public class MovieController : ControllerBase
         }
     }
 
-    //! Resolver erro
     [HttpPost("v1/movies")]
-    public async Task<IActionResult> AddMovie(Movie movieData) {
+    public async Task<IActionResult> AddMovie(Movie movieData)
+    {
         try
         {
             var newMovie = new Movie(movieData.Title, movieData.DirectorId, movieData.Description, movieData.Genre, movieData.DurationInMinutes, movieData.ReleaseDate, movieData.Rating);
             await _movieService.AddMovie(newMovie);
-            return CreatedAtAction(nameof(GetMovieById), new { id = newMovie.Id}, newMovie);
+            return CreatedAtAction(nameof(GetMovieById), new { id = newMovie.Id }, newMovie);
         }
         catch (DomainExceptionValidation ex)
         {
             return BadRequest($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
         }
-        catch(Exception ex) 
+        catch (Exception ex)
         {
             return BadRequest($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
         }
     }
 
     [HttpPut("v1/movies/{id:int}")]
-    public async Task<IActionResult> UpdateMovie(int id, Movie movieData) {
+    public async Task<IActionResult> UpdateMovie(int id, Movie movieData)
+    {
         try
         {
             var movie = movieData;
@@ -109,14 +115,15 @@ public class MovieController : ControllerBase
     }
 
     [HttpDelete("v1/movies/{id:int}")]
-    public async Task<IActionResult> DeleteMovie(int id) {
+    public async Task<IActionResult> DeleteMovie(int id)
+    {
         try
         {
             var movie = await _movieService.ListMovieById(id);
             await _movieService.DeleteMovie(movie.DirectorId);
             return Ok(movie);
         }
-        catch(DomainExceptionValidation ex)
+        catch (DomainExceptionValidation ex)
         {
             return NotFound($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
         }

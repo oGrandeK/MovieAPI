@@ -22,7 +22,7 @@ public class MovieRepository : IMovieRepository
 
     public async Task<Movie> GetMovieDirectorsByIdAsync(int id)
     {
-        return await _context.Movies.Include(x => x.Director).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id) ?? throw new DomainExceptionValidation($"Movie Cannot be found by id - {id}");
+        return await _context.Movies.Include(x => x.Director).FirstOrDefaultAsync(x => x.Id == id) ?? throw new DomainExceptionValidation($"Movie Cannot be found by id - {id}");
     }
 
     public async Task<IEnumerable<Movie>> GetMoviesDirectorsByNameAsync(string movieTitle)
@@ -45,6 +45,7 @@ public class MovieRepository : IMovieRepository
 
     public async Task<Movie> UpdateMovieAsync(Movie movie)
     {
+        await _context.Entry(movie).Reference(m => m.Director).LoadAsync();
         _context.Movies.Update(movie);
         await _context.SaveChangesAsync();
 
