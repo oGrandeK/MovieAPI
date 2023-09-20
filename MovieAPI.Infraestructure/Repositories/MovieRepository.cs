@@ -27,7 +27,11 @@ public class MovieRepository : IMovieRepository
 
     public async Task<IEnumerable<Movie>> GetMoviesDirectorsByNameAsync(string movieTitle)
     {
-        return await _context.Movies.Include(x => x.Director).AsNoTracking().Where(x => x.Title.MovieTitle.Contains(movieTitle)).ToListAsync();
+        var movies = await _context.Movies.Include(x => x.Director).AsNoTracking().Where(x => x.Title.MovieTitle.Contains(movieTitle)).ToListAsync();
+
+        if (movies.Count == 0) throw new DomainExceptionValidation($"Movie cannot be found by title - {movieTitle}");
+
+        return movies;
     }
 
     public async Task<IEnumerable<Movie>> GetMoviesDirectorsByGenreAsync(GenreEnumerator movieGenre)
