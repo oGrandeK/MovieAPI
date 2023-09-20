@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.interfaces;
 using MovieAPI.Domain.Validation;
-using MovieAPI.Domain.ValueObjects;
 using MovieAPI.Infraestructure.Context;
 
 namespace MovieAPI.Infraestructure.Repositories;
@@ -36,7 +35,11 @@ public class DirectorRepository : IDirectorRepository
             query = query.Where(x => x.Name.FirstName.Contains(name) || x.Name.LastName.Contains(name));
         }
 
-        return await query.ToListAsync();
+        var directors = await query.ToListAsync();
+
+        if (directors.Count == 0) throw new DomainExceptionValidation($"Director cannot by found by title - {directorName}");
+
+        return directors;
     }
 
     public async Task<Director> CreateDirectorAsync(Director director)
