@@ -51,7 +51,7 @@ public class MovieRepository : IMovieRepository
             return movie;
         }
 
-        throw new DomainExceptionValidation("Filme ja existente");
+        throw new DomainExceptionValidation("Movie already exists");
     }
 
     public async Task<Movie> UpdateMovieAsync(Movie movie)
