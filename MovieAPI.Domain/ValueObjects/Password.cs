@@ -6,7 +6,7 @@ public class Password : ValueObject
 
     private Password()
     {
-        
+
     }
 
     public Password(string hash)
