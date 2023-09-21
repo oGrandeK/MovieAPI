@@ -16,11 +16,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.OwnsOne(x => x.Email).Property(x => x.Address).HasColumnName("Email").IsRequired();
 
-        builder.OwnsOne(x => x.Email).OwnsOne(x => x.Verification).Property(x => x.Code).HasColumnName("EmailVerificationCode").IsRequired();
+        builder.OwnsOne(x => x.Email).OwnsOne(x => x.Verification).Property(x => x.Code).HasColumnName("EmailVerificationCode").IsRequired(true);
 
-        builder.OwnsOne(x => x.Email).OwnsOne(x => x.Verification).Property(x => x.ExpiresAt).HasColumnName("EmailVerificationExpiresAt");
+        builder.OwnsOne(x => x.Email).OwnsOne(x => x.Verification).Property(x => x.ExpiresAt).HasColumnName("EmailVerificationExpiresAt").IsRequired(false);
 
-        builder.OwnsOne(x => x.Email).OwnsOne(x => x.Verification).Property(x => x.VerifiedAt).HasColumnName("EmailVerificationVerifiedAt");
+        builder.OwnsOne(x => x.Email).OwnsOne(x => x.Verification).Property(x => x.VerifiedAt).HasColumnName("EmailVerificationVerifiedAt").IsRequired(false);
 
         builder.OwnsOne(x => x.Email).OwnsOne(x => x.Verification).Ignore(x => x.IsActive);
 
