@@ -1,8 +1,5 @@
-using System.Runtime.CompilerServices;
-using Microsoft.VisualBasic;
-using MovieAPI.Application.Interfaces;
+using MovieAPI.Application.Interfaces.Services;
 using Twilio;
-using Twilio.Exceptions;
 using Twilio.Rest.Api.V2010.Account;
 
 namespace MovieAPI.Application.Services;

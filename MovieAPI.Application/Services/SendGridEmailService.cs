@@ -1,7 +1,4 @@
-using System.Net;
-using System.Net.Http.Headers;
-using System.Reflection.Metadata.Ecma335;
-using MovieAPI.Application.Interfaces;
+using MovieAPI.Application.Interfaces.Services;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
