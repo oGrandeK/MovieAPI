@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MovieAPI.Application.Interfaces;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Application.Interfaces.UseCases.DirectorUseCases;
 using MovieAPI.Application.Interfaces.UseCases.MovieUseCases;
@@ -16,7 +15,8 @@ namespace MovieAPI.Infraestructure.Shared;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration) {
+    public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
+    {
         services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName)));
 
         services.AddScoped<IDirectorRepository, DirectorRepository>();
@@ -41,6 +41,9 @@ public static class DependencyInjection
         services.AddScoped<IListMoviesByGenreUseCase, ListMoviesByGenreUseCase>();
         services.AddScoped<IListMoviesByTitleUseCase, ListMoviesByTitleUseCase>();
         services.AddScoped<IUpdateMovieUseCase, UpdateMovieUseCase>();
+
+        services.AddTransient<ITokenService, TokenService>();
+        services.AddTransient<IPasswordService, PasswordService>();
 
         return services;
     }
