@@ -12,24 +12,24 @@ namespace MovieAPI.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly ApplicationContext _context;
     private readonly IPasswordService _passwordService;
     private readonly ITokenService _tokenService;
+    private readonly IUserService _userService;
 
-    public UserController(ApplicationContext applicationContext, IPasswordService passwordService, ITokenService tokenService)
+    public UserController(IPasswordService passwordService, ITokenService tokenService, IUserService userService)
     {
-        _context = applicationContext;
         _passwordService = passwordService;
         _tokenService = tokenService;
+        _userService = userService;
     }
 
     [HttpPost("v1/accounts/register")]
     public async Task<IActionResult> Register(CreateUserDTO user)
     {
+
         var hashedPassword = _passwordService.Hash(user.Password);
         var newUser = new User(user.FullName, user.Email, hashedPassword);
-        await _context.Users.AddAsync(newUser);
-        await _context.SaveChangesAsync();
+        await _userService.AddUser(newUser);
 
         return Ok(newUser);
     }
@@ -37,7 +37,7 @@ public class UserController : ControllerBase
     [HttpPost("v1/accounts/login")]
     public async Task<IActionResult> Login(User userData)
     {
-        var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email == userData.Email) ?? throw new Exception("Usuário ou senha inválido");
+        var user = await _userService.ListUserByEmail(userData.Email);
         if (!_passwordService.Verify(user.Password.Hash, userData.Password)) throw new Exception("Usuário ou senha inválido");
 
         var token = _tokenService.GenerateToken(user);
