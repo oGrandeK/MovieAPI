@@ -17,7 +17,8 @@ public class DirectorController : ControllerBase
     }
 
     [HttpGet("v1/directors")]
-    public async Task<IActionResult> GetAllDirector() {
+    public async Task<IActionResult> GetAllDirector()
+    {
         try
         {
             return Ok(await _directorService.ListAllDirectors());
@@ -29,7 +30,8 @@ public class DirectorController : ControllerBase
     }
 
     [HttpGet("v1/directors/{id:int}")]
-    public async Task<IActionResult> GetDirectorById(int id) {
+    public async Task<IActionResult> GetDirectorById(int id)
+    {
         try
         {
             return Ok(await _directorService.ListDirectorById(id));
@@ -38,13 +40,15 @@ public class DirectorController : ControllerBase
         {
             return NotFound($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
         }
-        catch(Exception ex) {
+        catch (Exception ex)
+        {
             return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
         }
     }
 
     [HttpGet("v1/directors/{name}")]
-    public async Task<IActionResult> GetDirectorsByName(string name) {
+    public async Task<IActionResult> GetDirectorsByName(string name)
+    {
         try
         {
             return Ok(await _directorService.ListDirectorByName(name));
@@ -56,14 +60,15 @@ public class DirectorController : ControllerBase
     }
 
     [HttpPost("v1/directors")]
-    public async Task<IActionResult> AddDirector(Director directorData) {
+    public async Task<IActionResult> AddDirector(Director directorData)
+    {
         try
         {
             var newDirector = new Director(directorData.Name);
             await _directorService.AddDirector(newDirector);
             return CreatedAtAction(nameof(GetDirectorById), new { id = newDirector.Id }, newDirector);
         }
-        catch(DomainExceptionValidation ex) 
+        catch (DomainExceptionValidation ex)
         {
             return BadRequest($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
         }
@@ -74,7 +79,8 @@ public class DirectorController : ControllerBase
     }
 
     [HttpPut("v1/directors/{id:int}")]
-    public async Task<IActionResult> UpdateDirector(int id, Director directorData) {
+    public async Task<IActionResult> UpdateDirector(int id, Director directorData)
+    {
         try
         {
             var director = directorData;
@@ -88,7 +94,8 @@ public class DirectorController : ControllerBase
     }
 
     [HttpDelete("v1/directors/{id:int}")]
-    public async Task<IActionResult> DeleteDirector(int id) {
+    public async Task<IActionResult> DeleteDirector(int id)
+    {
         try
         {
             var director = await _directorService.ListDirectorById(id);
