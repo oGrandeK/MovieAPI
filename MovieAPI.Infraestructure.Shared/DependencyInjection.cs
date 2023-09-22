@@ -4,9 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Application.Interfaces.UseCases.DirectorUseCases;
 using MovieAPI.Application.Interfaces.UseCases.MovieUseCases;
+using MovieAPI.Application.Interfaces.UseCases.UserUseCases;
 using MovieAPI.Application.Services;
 using MovieAPI.Application.UseCases.DirectorUseCases;
 using MovieAPI.Application.UseCases.MovieUsecases;
+using MovieAPI.Application.UseCases.UserUseCases;
 using MovieAPI.Domain.interfaces;
 using MovieAPI.Infraestructure.Context;
 using MovieAPI.Infraestructure.Repositories;
@@ -27,6 +29,7 @@ public static class DependencyInjection
 
         services.AddScoped<IDirectorService, DirectorService>();
         services.AddScoped<IMovieService, MovieService>();
+        services.AddScoped<IUserService, UserService>();
 
         services.AddScoped<IAddDirectorUseCase, AddDirectorUseCase>();
         services.AddScoped<IDeleteDirectorUseCase, DeleteDirectorUseCase>();
@@ -34,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<IListDirectorByIdUseCase, ListDirectorByIdUseCase>();
         services.AddScoped<IListDirectorsByNameUseCase, ListDirectorsByNameUseCase>();
         services.AddScoped<IUpdateDirectorUseCase, UpdateDirectorUseCase>();
+
         services.AddScoped<IAddMovieUseCase, AddMovieUseCase>();
         services.AddScoped<IDeleteMovieUseCase, DeleteMovieUseCase>();
         services.AddScoped<IListAllMoviesUseCase, ListAllMoviesUseCase>();
@@ -41,6 +45,14 @@ public static class DependencyInjection
         services.AddScoped<IListMoviesByGenreUseCase, ListMoviesByGenreUseCase>();
         services.AddScoped<IListMoviesByTitleUseCase, ListMoviesByTitleUseCase>();
         services.AddScoped<IUpdateMovieUseCase, UpdateMovieUseCase>();
+
+        services.AddScoped<IAddUserUseCase, AddUserUseCase>();
+        services.AddScoped<IDeleteUserUseCase, DeleteUserUseCase>();
+        services.AddScoped<IListAllUsersUseCase, ListAllUsersUseCase>();
+        services.AddScoped<IListUserByIdUseCase, ListUserByIdUseCase>();
+        services.AddScoped<IListUsersByNameUseCase, ListUsersByNameUseCase>();
+        services.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
+        services.AddScoped<IListUserByEmailUseCase, ListUserByEmailUseCase>();
 
         services.AddTransient<ITokenService, TokenService>();
         services.AddTransient<IPasswordService, PasswordService>();
