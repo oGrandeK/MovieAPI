@@ -24,7 +24,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("v1/accounts/register")]
-    public async Task<IActionResult> Register(CreateUserDTO user)
+    public async Task<IActionResult> Register(RegisterUserDTO user)
     {
         var hashedPassword = _passwordService.Hash(user.Password);
         var newUser = new User(user.Name, user.Email, hashedPassword);
