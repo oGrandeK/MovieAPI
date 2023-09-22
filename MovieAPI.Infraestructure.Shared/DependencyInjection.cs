@@ -23,6 +23,7 @@ public static class DependencyInjection
 
         services.AddScoped<IDirectorRepository, DirectorRepository>();
         services.AddScoped<IMovieRepository, MovieRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddTransient<IEmailService, SendGridEmailService>();
         services.AddTransient<ISmsService, TwilioSmsService>();
