@@ -13,11 +13,11 @@ public class AddUserUseCase : IAddUserUseCase
         _userRepository = userRepository;
     }
 
-    public async Task Execute(User user)
+    public async Task<User> Execute(User user)
     {
         try
         {
-            await _userRepository.CreateUserAsync(user);
+            return await _userRepository.CreateUserAsync(user);
         }
         catch (Exception ex)
         {

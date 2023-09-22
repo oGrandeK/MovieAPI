@@ -1,4 +1,5 @@
 using MovieAPI.Application.Interfaces.UseCases.UserUseCases;
+using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.interfaces;
 
 namespace MovieAPI.Application.UseCases.UserUseCases;
@@ -12,12 +13,14 @@ public class DeleteUserUseCase : IDeleteUserUseCase
         _userRepository = userRepository;
     }
 
-    public async Task Execute(int id)
+    public async Task<User> Execute(int id)
     {
         try
         {
             var user = await _userRepository.GetUserByIdAsync(id);
             await _userRepository.DeleteUserAsync(user);
+
+            return user;
         }
         catch (Exception ex)
         {
