@@ -19,4 +19,12 @@ public class User : Entity
         Email = email;
         Password = hashedPassword;
     }
+
+    public void UpdateUser(string fullname, string email, string hash)
+    {
+        var names = fullname.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+        Name = new Name(names[0], names[1]);
+        Email = email;
+        Password = hash;
+    }
 }
