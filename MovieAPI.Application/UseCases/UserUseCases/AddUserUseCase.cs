@@ -1,6 +1,7 @@
 using MovieAPI.Application.Interfaces.UseCases.UserUseCases;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.interfaces;
+using MovieAPI.Domain.Validation;
 
 namespace MovieAPI.Application.UseCases.UserUseCases;
 
@@ -17,6 +18,11 @@ public class AddUserUseCase : IAddUserUseCase
     {
         try
         {
+            var existingUser = await _userRepository.GetUserByEmailAsync(user.Email.Address);
+            if (existingUser != null && !string.IsNullOrEmpty(existingUser.Email.Address)) throw new Exception("Email já cadastrado");
+        }
+        catch (DomainExceptionValidation)
+        {
             return await _userRepository.CreateUserAsync(user);
         }
         catch (Exception ex)
@@ -25,5 +31,7 @@ public class AddUserUseCase : IAddUserUseCase
             Console.WriteLine($"Error message: {ex.StackTrace}");
             throw;
         }
+
+        return user;
     }
 }
