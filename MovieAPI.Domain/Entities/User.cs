@@ -13,7 +13,7 @@ public class User : Entity
 
     }
 
-    public User(string name, string email, string hashedPassword)
+    public User(Name name, string email, string hashedPassword)
     {
         Name = name;
         Email = email;
