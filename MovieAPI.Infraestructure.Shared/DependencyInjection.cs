@@ -60,11 +60,6 @@ public static class DependencyInjection
         services.AddTransient<ITokenService, TokenService>();
         services.AddTransient<IPasswordService, PasswordService>();
 
-        services.Configure<Configuration>(x =>
-        {
-            x.JwtKey = configuration["JwtKey"];
-        });
-
         return services;
     }
 }
