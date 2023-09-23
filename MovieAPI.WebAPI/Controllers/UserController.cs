@@ -34,7 +34,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("v1/accounts/login")]
-    public async Task<IActionResult> Login(User userData)
+    public async Task<IActionResult> Login(LoginUserDTO userData)
     {
         var user = await _userService.ListUserByEmail(userData.Email);
         if (!_passwordService.Verify(user.Password.Hash, userData.Password)) throw new Exception("Usuário ou senha inválido");
