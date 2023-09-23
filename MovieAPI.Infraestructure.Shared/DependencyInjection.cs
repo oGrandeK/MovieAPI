@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using MovieAPI.Application;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Application.Interfaces.UseCases.DirectorUseCases;
 using MovieAPI.Application.Interfaces.UseCases.MovieUseCases;
@@ -57,6 +59,11 @@ public static class DependencyInjection
 
         services.AddTransient<ITokenService, TokenService>();
         services.AddTransient<IPasswordService, PasswordService>();
+
+        services.Configure<Configuration>(x =>
+        {
+            x.JwtKey = configuration["JwtKey"];
+        });
 
         return services;
     }
