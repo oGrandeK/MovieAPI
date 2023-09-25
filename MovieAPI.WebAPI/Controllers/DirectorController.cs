@@ -4,7 +4,6 @@ using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.Validation;
 using MovieAPI.WebAPI.DTOs.Directors;
-using MovieAPI.WebAPI.DTOs.Movies;
 
 namespace MovieAPI.WebAPI.Controllers;
 
@@ -27,7 +26,7 @@ public class DirectorController : ControllerBase
             var directors = await _directorService.ListAllDirectors();
             var directorsDTO = directors.Select(director => new GetDirectorsDTO(
                 FullName: director.Name.ToString(),
-                Movies: director.Movies?.Select(movie => new MoviesDetailsDTO(
+                Movies: director.Movies?.Select(movie => new DirectorsMoviesDetailsDTO(
                     Title: movie.Title,
                     Genre: movie.Genre ?? null,
                     ReleaseDate: movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToShortDateString() : string.Empty,
@@ -49,7 +48,7 @@ public class DirectorController : ControllerBase
             var director = await _directorService.ListDirectorById(id);
             var directorDTO = new GetDirectorsDTO(
                 director.Name.ToString(),
-                director.Movies?.Select(movie => new MoviesDetailsDTO(
+                director.Movies?.Select(movie => new DirectorsMoviesDetailsDTO(
                     movie.Title,
                     movie.Genre ?? null,
                     movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToShortDateString() : string.Empty,
@@ -76,7 +75,7 @@ public class DirectorController : ControllerBase
             var directors = await _directorService.ListDirectorByName(name);
             var directorsDTO = directors.Select(director => new GetDirectorsDTO(
                 director.Name.ToString(),
-                director.Movies?.Select(movie => new MoviesDetailsDTO(
+                director.Movies?.Select(movie => new DirectorsMoviesDetailsDTO(
                     movie.Title,
                     movie.Genre ?? null,
                     movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToLongDateString() : string.Empty,
