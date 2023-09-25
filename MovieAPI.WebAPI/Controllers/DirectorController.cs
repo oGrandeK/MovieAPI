@@ -1,7 +1,10 @@
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.Validation;
+using MovieAPI.WebAPI.DTOs.Directors;
+using MovieAPI.WebAPI.DTOs.Movies;
 
 namespace MovieAPI.WebAPI.Controllers;
 
@@ -17,11 +20,20 @@ public class DirectorController : ControllerBase
     }
 
     [HttpGet("v1/directors")]
-    public async Task<IActionResult> GetAllDirector()
+    public async Task<IActionResult> GetAllDirectors()
     {
         try
         {
-            return Ok(await _directorService.ListAllDirectors());
+            var directors = await _directorService.ListAllDirectors();
+            var directorsDTO = directors.Select(director => new GetDirectorsDTO(
+                FullName: director.Name.ToString(),
+                Movies: director.Movies?.Select(movie => new MoviesDetailsDTO(
+                    Title: movie.Title,
+                    Genre: movie.Genre ?? null,
+                    ReleaseDate: movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToShortDateString() : string.Empty,
+                    Rating: movie.Rating ?? null)).ToList()
+                ));
+            return Ok(directorsDTO);
         }
         catch (Exception ex)
         {
@@ -34,7 +46,17 @@ public class DirectorController : ControllerBase
     {
         try
         {
-            return Ok(await _directorService.ListDirectorById(id));
+            var director = await _directorService.ListDirectorById(id);
+            var directorDTO = new GetDirectorsDTO(
+                director.Name.ToString(),
+                director.Movies?.Select(movie => new MoviesDetailsDTO(
+                    movie.Title,
+                    movie.Genre ?? null,
+                    movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToShortDateString() : string.Empty,
+                    movie.Rating ?? null
+                )).ToList());
+
+            return Ok(directorDTO);
         }
         catch (DomainExceptionValidation ex)
         {
@@ -51,6 +73,16 @@ public class DirectorController : ControllerBase
     {
         try
         {
+            var directors = await _directorService.ListDirectorByName(name);
+            var directorsDTO = directors.Select(director => new GetDirectorsDTO(
+                director.Name.ToString(),
+                director.Movies?.Select(movie => new MoviesDetailsDTO(
+                    movie.Title,
+                    movie.Genre ?? null,
+                    movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToLongDateString() : string.Empty,
+                    movie.Rating ?? null
+                )).ToList()
+            ));
             return Ok(await _directorService.ListDirectorByName(name));
         }
         catch (Exception ex)
@@ -60,7 +92,7 @@ public class DirectorController : ControllerBase
     }
 
     [HttpPost("v1/directors")]
-    public async Task<IActionResult> AddDirector(Director directorData)
+    public async Task<IActionResult> AddDirector(CreateDirectorDTO directorData)
     {
         try
         {
@@ -79,11 +111,11 @@ public class DirectorController : ControllerBase
     }
 
     [HttpPut("v1/directors/{id:int}")]
-    public async Task<IActionResult> UpdateDirector(int id, Director directorData)
+    public async Task<IActionResult> UpdateDirector(int id, CreateDirectorDTO directorData)
     {
         try
         {
-            var director = directorData;
+            var director = new Director(directorData.Name);
             await _directorService.UpdateDirector(id, director);
             return Ok(director);
         }
