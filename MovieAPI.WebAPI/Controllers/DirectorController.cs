@@ -1,4 +1,3 @@
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
@@ -25,6 +24,7 @@ public class DirectorController : ControllerBase
         {
             var directors = await _directorService.ListAllDirectors();
             var directorsDTO = directors.Select(director => new GetDirectorsDTO(
+                director.Id,
                 FullName: director.Name.ToString(),
                 Movies: director.Movies?.Select(movie => new DirectorsMoviesDetailsDTO(
                     Title: movie.Title,
@@ -47,6 +47,7 @@ public class DirectorController : ControllerBase
         {
             var director = await _directorService.ListDirectorById(id);
             var directorDTO = new GetDirectorsDTO(
+                id,
                 director.Name.ToString(),
                 director.Movies?.Select(movie => new DirectorsMoviesDetailsDTO(
                     movie.Title,
@@ -74,6 +75,7 @@ public class DirectorController : ControllerBase
         {
             var directors = await _directorService.ListDirectorByName(name);
             var directorsDTO = directors.Select(director => new GetDirectorsDTO(
+                director.Id,
                 director.Name.ToString(),
                 director.Movies?.Select(movie => new DirectorsMoviesDetailsDTO(
                     movie.Title,
