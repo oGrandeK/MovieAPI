@@ -1,8 +1,9 @@
-using System.ComponentModel;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace MovieAPI.Domain.Enumerators;
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum GenreEnumerator
 {
     [EnumMember(Value = "Action")]

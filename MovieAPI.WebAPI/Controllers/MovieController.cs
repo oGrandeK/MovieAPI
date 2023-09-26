@@ -3,6 +3,7 @@ using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.Enumerators;
 using MovieAPI.Domain.Validation;
+using MovieAPI.WebAPI.DTOs.Movies;
 
 namespace MovieAPI.WebAPI.Controllers;
 
@@ -22,7 +23,19 @@ public class MovieController : ControllerBase
     {
         try
         {
-            return Ok(await _movieService.ListAllMovies());
+            var movies = await _movieService.ListAllMovies();
+            var moviesDTO = movies.Select(movie => new GetMoviesDTO(
+                movie.Id,
+                movie.Title,
+                movie.Description ?? string.Empty,
+                movie.Genre.ToString(),
+                movie.DurationInMinutes ?? default,
+                movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToShortDateString() : string.Empty,
+                movie.Rating ?? default,
+                movie.Director?.Name ?? string.Empty
+            ));
+
+            return Ok(moviesDTO);
         }
         catch (Exception ex)
         {
@@ -35,7 +48,19 @@ public class MovieController : ControllerBase
     {
         try
         {
-            return Ok(await _movieService.ListMovieById(id));
+            var movie = await _movieService.ListMovieById(id);
+            var movieDTO = new GetMoviesDTO(
+                id,
+                movie.Title,
+                movie.Description ?? string.Empty,
+                movie.Genre.ToString(),
+                movie.DurationInMinutes ?? default,
+                movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToShortDateString() : string.Empty,
+                movie.Rating ?? default,
+                movie.Director?.Name ?? string.Empty
+            );
+
+            return Ok(movieDTO);
         }
         catch (DomainExceptionValidation ex)
         {
@@ -52,7 +77,19 @@ public class MovieController : ControllerBase
     {
         try
         {
-            return Ok(await _movieService.ListMoviesByGenre(genre));
+            var movies = await _movieService.ListMoviesByGenre(genre);
+            var moviesDTO = movies.Select(movie => new GetMoviesDTO(
+                movie.Id,
+                movie.Title,
+                movie.Description ?? string.Empty,
+                movie.Genre.ToString(),
+                movie.DurationInMinutes ?? default,
+                movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToShortDateString() : string.Empty,
+                movie.Rating ?? default,
+                movie.Director?.Name ?? string.Empty
+            ));
+
+            return Ok(moviesDTO);
         }
         catch (Exception ex)
         {
@@ -74,11 +111,13 @@ public class MovieController : ControllerBase
     }
 
     [HttpPost("v1/movies")]
-    public async Task<IActionResult> AddMovie(Movie movieData)
+    public async Task<IActionResult> AddMovie(CreateMovieDTO movieData)
     {
         try
         {
-            var newMovie = new Movie(movieData.Title, movieData.DirectorId, movieData.Description, movieData.Genre, movieData.DurationInMinutes, movieData.ReleaseDate, movieData.Rating);
+            GenreEnumerator? genre = !string.IsNullOrEmpty(movieData.Genre) ? (GenreEnumerator)Enum.Parse(typeof(GenreEnumerator), movieData.Genre, true) : null;
+
+            var newMovie = new Movie(movieData.Title, movieData.Director, movieData.Description, genre, movieData.DurationInMinutes, DateTime.Parse(movieData.ReleaseDate ?? string.Empty), movieData.Rating);
             await _movieService.AddMovie(newMovie);
             return CreatedAtAction(nameof(GetMovieById), new { id = newMovie.Id }, newMovie);
         }
@@ -93,11 +132,13 @@ public class MovieController : ControllerBase
     }
 
     [HttpPut("v1/movies/{id:int}")]
-    public async Task<IActionResult> UpdateMovie(int id, Movie movieData)
+    public async Task<IActionResult> UpdateMovie(int id, CreateMovieDTO movieData)
     {
         try
         {
-            var movie = movieData;
+            GenreEnumerator? genre = !string.IsNullOrEmpty(movieData.Genre) ? (GenreEnumerator)Enum.Parse(typeof(GenreEnumerator), movieData.Genre, true) : null;
+
+            var movie = new Movie(movieData.Title, movieData.Director, movieData.Description, genre, movieData.DurationInMinutes, DateTime.Parse(movieData.ReleaseDate ?? string.Empty), movieData.Rating);
             await _movieService.UpdateMovie(id, movie);
             return Ok(movie);
         }
