@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MovieAPI.Infraestructure.Shared;
+using MovieAPI.WebAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +28,10 @@ builder.Services.AddAuthentication(x =>
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(x =>
+{
+    x.SchemaFilter<EnumTypeFilter>();
+});
 
 var app = builder.Build();
 
