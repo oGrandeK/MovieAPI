@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using MovieAPI.Application.Interfaces.Services;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -6,17 +7,16 @@ namespace MovieAPI.Application.Services;
 
 public class SendGridEmailService : IEmailService
 {
-    private readonly string _sendGridApiKey;
-
-    public SendGridEmailService()
+    private readonly SendGridConfig _sendGridConfig;
+    public SendGridEmailService(IOptions<SendGridConfig> sendGridConfig)
     {
-        _sendGridApiKey = Environment.GetEnvironmentVariable("SendGrid") ?? throw new NullReferenceException("SendGrid Api Key cannot be found");
+        _sendGridConfig = sendGridConfig.Value;
     }
 
     public async Task<bool> SendEmailAsync(string receiver, string subject, string body)
     {
-        var client = new SendGridClient(_sendGridApiKey);
-        var from = new EmailAddress("kelvimkauam@outlook.com.br", "oGrandeK");
+        var from = new EmailAddress(_sendGridConfig.SendGridEmail, "oGrandeK");
+        var client = new SendGridClient(_sendGridConfig.SendGridKey);
         var to = new EmailAddress(receiver);
         var msg = MailHelper.CreateSingleEmail(from, to, subject, null, body);
 

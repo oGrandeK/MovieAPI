@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using MovieAPI.Application;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Application.Interfaces.UseCases.DirectorUseCases;
 using MovieAPI.Application.Interfaces.UseCases.MovieUseCases;

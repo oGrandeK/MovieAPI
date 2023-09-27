@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using MovieAPI.Application;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
-using MovieAPI.Infraestructure.Context;
 using MovieAPI.WebAPI.DTOs.Users;
 
 namespace MovieAPI.WebAPI.Controllers;
@@ -24,11 +24,11 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("v1/accounts/register")]
-    public async Task<IActionResult> Register(RegisterUserDTO user)
+    public async Task<IActionResult> Register(RegisterUserDTO user, [FromServices] IOptions<SendGridConfig> options)
     {
         var hashedPassword = _passwordService.Hash(user.Password);
         var newUser = new User(user.Name, user.Email, hashedPassword);
-        await _userService.AddUser(newUser);
+        await _userService.AddUser(newUser, options);
 
         return Ok(newUser);
     }
