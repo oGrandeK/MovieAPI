@@ -24,7 +24,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("v1/accounts/register")]
-    public async Task<IActionResult> Register(RegisterUserDTO user, [FromServices] IOptions<SendGridConfig> options)
+    public async Task<IActionResult> Register(RegisterUserDTO user, [FromServices] IConfiguration options)
     {
         var hashedPassword = _passwordService.Hash(user.Password);
         var newUser = new User(user.Name, user.Email, hashedPassword);

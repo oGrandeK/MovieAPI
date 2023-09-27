@@ -9,7 +9,8 @@ using MovieAPI.WebAPI;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.Configure<SendGridConfig>(builder.Configuration.GetSection("SendGridConfig"));
+//builder.Services.Configure<SendGridConfig>(builder.Configuration.GetSection("SendGridConfig"));
+builder.Configuration.GetSection("SendGridConfig");
 builder.Configuration.AddUserSecrets<Program>();
 builder.Services.AddServices(builder.Configuration);
 var key = builder.Configuration.GetValue<string>("JwtKey");

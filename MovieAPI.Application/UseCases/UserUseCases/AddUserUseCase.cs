@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MovieAPI.Application.Interfaces.UseCases.UserUseCases;
 using MovieAPI.Application.Services;
@@ -16,7 +17,7 @@ public class AddUserUseCase : IAddUserUseCase
         _userRepository = userRepository;
     }
 
-    public async Task<User> Execute(User user, IOptions<SendGridConfig> options)
+    public async Task<User> Execute(User user, IConfiguration options)
     {
         try
         {
