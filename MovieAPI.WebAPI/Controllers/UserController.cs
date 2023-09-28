@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using MovieAPI.Application;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
 using MovieAPI.WebAPI.DTOs.Users;
@@ -24,11 +22,11 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("v1/accounts/register")]
-    public async Task<IActionResult> Register(RegisterUserDTO user, [FromServices] IConfiguration options)
+    public async Task<IActionResult> Register(RegisterUserDTO user)
     {
         var hashedPassword = _passwordService.Hash(user.Password);
         var newUser = new User(user.Name, user.Email, hashedPassword);
-        await _userService.AddUser(newUser, options);
+        await _userService.AddUser(newUser);
 
         return Ok(newUser);
     }

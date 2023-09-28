@@ -2,16 +2,14 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using MovieAPI.Application;
 using MovieAPI.Infraestructure.Shared;
 using MovieAPI.WebAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//builder.Services.Configure<SendGridConfig>(builder.Configuration.GetSection("SendGridConfig"));
-builder.Configuration.GetSection("SendGridConfig");
-builder.Configuration.AddUserSecrets<Program>();
+//builder.Configuration.AddUserSecrets<Program>();
+
 builder.Services.AddServices(builder.Configuration);
 var key = builder.Configuration.GetValue<string>("JwtKey");
 builder.Services.AddAuthentication(x =>

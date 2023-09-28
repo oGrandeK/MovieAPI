@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using MovieAPI.Application.Interfaces.UseCases.UserUseCases;
 using MovieAPI.Application.Services;
 using MovieAPI.Domain.Entities;
@@ -17,7 +15,7 @@ public class AddUserUseCase : IAddUserUseCase
         _userRepository = userRepository;
     }
 
-    public async Task<User> Execute(User user, IConfiguration options)
+    public async Task<User> Execute(User user)
     {
         try
         {
@@ -26,7 +24,7 @@ public class AddUserUseCase : IAddUserUseCase
         }
         catch (DomainExceptionValidation)
         {
-            var emailService = new SendGridEmailService(options);
+            var emailService = new SendGridEmailService();
             await emailService.SendEmailAsync(user.Email, "Bem vindo", $"Seu código de acesso {user.Email.Verification.Code}");
 
             return await _userRepository.CreateUserAsync(user);
