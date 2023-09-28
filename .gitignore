@@ -455,4 +455,4 @@ $RECYCLE.BIN/
 
 
 ## Secrets
-/SendGridConfig.cs
+MovieAPI.Application/SendGridConfig.cs
