@@ -32,7 +32,7 @@ public class AddUserUseCase : IAddUserUseCase
         catch (Exception ex)
         {
             Console.WriteLine($"Error message: {ex.Message}");
-            Console.WriteLine($"Error message: {ex.StackTrace}");
+            Console.WriteLine($"Error stacktrace: {ex.StackTrace}");
             throw;
         }
 
