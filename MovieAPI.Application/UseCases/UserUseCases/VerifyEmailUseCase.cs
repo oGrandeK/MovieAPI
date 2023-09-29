@@ -1,23 +1,28 @@
 using MovieAPI.Application.Interfaces.UseCases.UserUseCases;
 using MovieAPI.Domain.Entities;
+using MovieAPI.Domain.interfaces;
 using MovieAPI.Domain.Validation;
 
 namespace MovieAPI.Application.UseCases.UserUseCases;
 
 public class VerifyEmailUseCase : IVerifyEmailUseCase
 {
-    public bool Verify(string verificationCode, User user)
+    private readonly IUserRepository _userRepository;
+
+    public VerifyEmailUseCase(IUserRepository userRepository)
+    {
+        _userRepository = userRepository;
+    }
+
+    public async Task<User> Verify(string verificationCode, string email)
     {
         // Verificar codigo enviado com codigo do usuario que esta no banco.
         try
         {
-            if (user.Email.Verification.Code != verificationCode)
-                return false;
-            else
-            {
-                user.Email.Verification.Verify(verificationCode);
-                return true;
-            }
+            var user = await _userRepository.GetUserByEmailAsync(email);
+            user.Email.Verification.Verify(verificationCode);
+            await _userRepository.UpdateUserAsync(user);
+            return user;
         }
         catch (DomainExceptionValidation ex)
         {

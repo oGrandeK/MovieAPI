@@ -4,5 +4,5 @@ namespace MovieAPI.Application.Interfaces.UseCases.UserUseCases;
 
 public interface IVerifyEmailUseCase
 {
-    public bool Verify(string verificationCode, User user);
+    public Task<User> Verify(string verificationCode, string email);
 }

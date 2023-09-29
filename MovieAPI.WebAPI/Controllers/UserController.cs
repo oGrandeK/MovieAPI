@@ -46,17 +46,10 @@ public class UserController : ControllerBase
         return Ok(token);
     }
 
+    //TODO: Testar método
     [HttpPost("v1/accounts/verifyEmail/{verificatinCode}")]
-    public async Task<IActionResult> VerifyEmail(string verificatinCode, string email)
-    {
-        var user = await _userService.ListUserByEmail(email);
-        _userService.VerifyEmail(verificatinCode, user);
-        await _userRepository.UpdateUserAsync(user);
+    public async Task<IActionResult> VerifyEmail(string verificatinCode, string email) => Ok(await _userService.VerifyEmail(verificatinCode, email));
 
-        var response = (user.Email, " Email ativado com sucesso");
-
-        return Ok(response);
-    }
 
     [HttpPost("v1/accounts/resendVerificationCode/{email}")]
     public async Task<IActionResult> Resend(string email)
