@@ -1,5 +1,6 @@
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Application.Interfaces.UseCases.UserUseCases;
+using MovieAPI.Application.UseCases.UserUseCases;
 using MovieAPI.Domain.Entities;
 
 namespace MovieAPI.Application.Services;
@@ -13,8 +14,9 @@ public class UserService : IUserService
     private readonly IAddUserUseCase _AddUserUseCase;
     private readonly IUpdateUserUseCase _UpdateUserUseCase;
     private readonly IDeleteUserUseCase _DeleteUserUseCase;
+    private readonly IVerifyEmailUseCase _VerifyEmailUseCase;
 
-    public UserService(IListAllUsersUseCase listAllUsersUseCase, IListUserByIdUseCase listUserByIdUseCase, IListUserByEmailUseCase listUserByEmailUseCase, IListUsersByNameUseCase listUsersByNameUseCase, IAddUserUseCase addUserUseCase, IUpdateUserUseCase updateUserUseCase, IDeleteUserUseCase deleteUserUseCase)
+    public UserService(IListAllUsersUseCase listAllUsersUseCase, IListUserByIdUseCase listUserByIdUseCase, IListUserByEmailUseCase listUserByEmailUseCase, IListUsersByNameUseCase listUsersByNameUseCase, IAddUserUseCase addUserUseCase, IUpdateUserUseCase updateUserUseCase, IDeleteUserUseCase deleteUserUseCase, IVerifyEmailUseCase verifyEmailUseCase)
     {
         _listAllUsersUseCase = listAllUsersUseCase;
         _listUserByIdUseCase = listUserByIdUseCase;
@@ -23,6 +25,7 @@ public class UserService : IUserService
         _AddUserUseCase = addUserUseCase;
         _UpdateUserUseCase = updateUserUseCase;
         _DeleteUserUseCase = deleteUserUseCase;
+        _VerifyEmailUseCase = verifyEmailUseCase;
     }
 
     public async Task<IEnumerable<User>> ListAllUsers() => await _listAllUsersUseCase.Execute();
@@ -33,4 +36,11 @@ public class UserService : IUserService
 
     public async Task<User> UpdateUser(int id, User user, string newHash) => await _UpdateUserUseCase.Execute(id, user, newHash);
     public async Task<User> DeleteUser(int id) => await _DeleteUserUseCase.Execute(id);
+
+    public User VerifyEmail(string verificatinCode, User user)
+    {
+        _VerifyEmailUseCase.Verify(verificatinCode, user);
+
+        return user;
+    }
 }
