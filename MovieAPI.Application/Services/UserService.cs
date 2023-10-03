@@ -14,8 +14,9 @@ public class UserService : IUserService
     private readonly IUpdateUserUseCase _UpdateUserUseCase;
     private readonly IDeleteUserUseCase _DeleteUserUseCase;
     private readonly IVerifyEmailUseCase _VerifyEmailUseCase;
+    private readonly IResendEmailVerificationCodeUseCase _ResendEmailVerificationCodeUseCase;
 
-    public UserService(IListAllUsersUseCase listAllUsersUseCase, IListUserByIdUseCase listUserByIdUseCase, IListUserByEmailUseCase listUserByEmailUseCase, IListUsersByNameUseCase listUsersByNameUseCase, IAddUserUseCase addUserUseCase, IUpdateUserUseCase updateUserUseCase, IDeleteUserUseCase deleteUserUseCase, IVerifyEmailUseCase verifyEmailUseCase)
+    public UserService(IListAllUsersUseCase listAllUsersUseCase, IListUserByIdUseCase listUserByIdUseCase, IListUserByEmailUseCase listUserByEmailUseCase, IListUsersByNameUseCase listUsersByNameUseCase, IAddUserUseCase addUserUseCase, IUpdateUserUseCase updateUserUseCase, IDeleteUserUseCase deleteUserUseCase, IVerifyEmailUseCase verifyEmailUseCase, IResendEmailVerificationCodeUseCase resendEmailVerificationCodeUseCase)
     {
         _listAllUsersUseCase = listAllUsersUseCase;
         _listUserByIdUseCase = listUserByIdUseCase;
@@ -25,6 +26,7 @@ public class UserService : IUserService
         _UpdateUserUseCase = updateUserUseCase;
         _DeleteUserUseCase = deleteUserUseCase;
         _VerifyEmailUseCase = verifyEmailUseCase;
+        _ResendEmailVerificationCodeUseCase = resendEmailVerificationCodeUseCase;
     }
 
     public async Task<IEnumerable<User>> ListAllUsers() => await _listAllUsersUseCase.Execute();
@@ -35,5 +37,5 @@ public class UserService : IUserService
     public async Task<User> UpdateUser(int id, User user, string newHash) => await _UpdateUserUseCase.Execute(id, user, newHash);
     public async Task<User> DeleteUser(int id) => await _DeleteUserUseCase.Execute(id);
     public async Task<User> VerifyEmail(string verificatinCode, string email) => await _VerifyEmailUseCase.Verify(verificatinCode, email);
-
+    public async Task<User> ResendEmailVerificationCode(string email) => await _ResendEmailVerificationCodeUseCase.Resend(email);
 }

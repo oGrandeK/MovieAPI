@@ -12,4 +12,5 @@ public interface IUserService
     Task<User> UpdateUser(int id, User user, string newHash);
     Task<User> DeleteUser(int id);
     Task<User> VerifyEmail(string verificatinCode, string email);
+    Task<User> ResendEmailVerificationCode(string email);
 }
