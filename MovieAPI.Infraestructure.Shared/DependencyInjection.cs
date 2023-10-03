@@ -19,7 +19,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName)));
+        services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("Não foi possivel conectar com o banco"), b => b.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName)));
 
         services.AddScoped<IDirectorRepository, DirectorRepository>();
         services.AddScoped<IMovieRepository, MovieRepository>();
