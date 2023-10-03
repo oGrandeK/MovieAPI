@@ -1,9 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
-using MovieAPI.Domain.interfaces;
 using MovieAPI.Domain.Validation;
 using MovieAPI.WebAPI.DTOs.Users;
 
@@ -53,8 +51,8 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPost("v1/accounts/verifyEmail/{verificatinCode}")]
-    public async Task<IActionResult> VerifyEmail(string verificatinCode, [FromQuery, Required] string email) => Ok(await _userService.VerifyEmail(verificatinCode, email));
+    [HttpPost("v1/accounts/verifyEmail/{email}")]
+    public async Task<IActionResult> VerifyEmail([FromQuery, Required] string verificationCode, string email) => Ok(await _userService.VerifyEmail(verificationCode, email));
 
     [HttpPost("v1/accounts/resendVerificationCode/{email}")]
     public async Task<IActionResult> Resend(string email) => Ok(await _userService.ResendEmailVerificationCode(email));
