@@ -1,4 +1,6 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MovieAPI.Application.DTOs.Movies;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.Enumerators;
@@ -12,35 +14,43 @@ namespace MovieAPI.WebAPI.Controllers;
 public class MovieController : ControllerBase
 {
     private readonly IMovieService _movieService;
+    private readonly IMapper _mapper;
 
-    public MovieController(IMovieService movieService)
+    public MovieController(IMovieService movieService, IMapper mapper)
     {
         _movieService = movieService;
+        _mapper = mapper;
     }
 
     [HttpGet("v1/movies")]
     public async Task<IActionResult> GetAllMovies()
     {
-        try
-        {
-            var movies = await _movieService.ListAllMovies();
-            var moviesDTO = movies.Select(movie => new GetMoviesDTO(
-                movie.Id,
-                movie.Title,
-                movie.Description ?? string.Empty,
-                movie.Genre.ToString(),
-                movie.DurationInMinutes ?? default,
-                movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToShortDateString() : string.Empty,
-                movie.Rating ?? default,
-                movie.Director?.Name ?? string.Empty
-            ));
+        // try
+        // {
+        //     var movies = await _movieService.ListAllMovies();
 
-            return Ok(moviesDTO);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
-        }
+        //     var moviesDTO = movies.Select(movie => new GetMoviesDTO(
+        //         movie.Id,
+        //         movie.Title,
+        //         movie.Description ?? string.Empty,
+        //         movie.Genre.ToString(),
+        //         movie.DurationInMinutes ?? default,
+        //         movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToShortDateString() : string.Empty,
+        //         movie.Rating ?? default,
+        //         movie.Director?.Name ?? string.Empty
+        //     ));
+
+        //     return Ok(moviesDTO);
+        // }
+        // catch (Exception ex)
+        // {
+        //     return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        // }
+
+        var movies = await _movieService.ListAllMovies();
+        var moviesDTO = _mapper.Map<IEnumerable<Application.DTOs.Movies.GetMoviesDTO>>(movies);
+
+        return Ok(moviesDTO);
     }
 
     [HttpGet("v1/movies/{id:int}")]
@@ -49,7 +59,7 @@ public class MovieController : ControllerBase
         try
         {
             var movie = await _movieService.ListMovieById(id);
-            var movieDTO = new GetMoviesDTO(
+            var movieDTO = new DTOs.Movies.GetMoviesDTO(
                 id,
                 movie.Title,
                 movie.Description ?? string.Empty,
@@ -78,7 +88,7 @@ public class MovieController : ControllerBase
         try
         {
             var movies = await _movieService.ListMoviesByGenre(genre);
-            var moviesDTO = movies.Select(movie => new GetMoviesDTO(
+            var moviesDTO = movies.Select(movie => new DTOs.Movies.GetMoviesDTO(
                 movie.Id,
                 movie.Title,
                 movie.Description ?? string.Empty,
@@ -111,7 +121,7 @@ public class MovieController : ControllerBase
     }
 
     [HttpPost("v1/movies")]
-    public async Task<IActionResult> AddMovie(CreateMovieDTO movieData)
+    public async Task<IActionResult> AddMovie(DTOs.Movies.CreateMovieDTO movieData)
     {
         try
         {
@@ -132,7 +142,7 @@ public class MovieController : ControllerBase
     }
 
     [HttpPut("v1/movies/{id:int}")]
-    public async Task<IActionResult> UpdateMovie(int id, CreateMovieDTO movieData)
+    public async Task<IActionResult> UpdateMovie(int id, DTOs.Movies.CreateMovieDTO movieData)
     {
         try
         {

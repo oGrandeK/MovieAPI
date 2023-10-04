@@ -5,6 +5,8 @@ using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Application.Interfaces.UseCases.DirectorUseCases;
 using MovieAPI.Application.Interfaces.UseCases.MovieUseCases;
 using MovieAPI.Application.Interfaces.UseCases.UserUseCases;
+using MovieAPI.Application.Mappings.Directors;
+using MovieAPI.Application.Mappings.Movies;
 using MovieAPI.Application.Services;
 using MovieAPI.Application.UseCases.DirectorUseCases;
 using MovieAPI.Application.UseCases.MovieUsecases;
@@ -59,6 +61,8 @@ public static class DependencyInjection
 
         services.AddTransient<ITokenService, TokenService>();
         services.AddTransient<IPasswordService, PasswordService>();
+
+        services.AddAutoMapper(typeof(DirectorsMapping), typeof(MoviesMapping));
 
         return services;
     }
