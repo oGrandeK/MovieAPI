@@ -1,11 +1,9 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using MovieAPI.Application.DTOs.Movies;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.Enumerators;
 using MovieAPI.Domain.Validation;
-using MovieAPI.WebAPI.DTOs.Movies;
 
 namespace MovieAPI.WebAPI.Controllers;
 
@@ -25,28 +23,6 @@ public class MovieController : ControllerBase
     [HttpGet("v1/movies")]
     public async Task<IActionResult> GetAllMovies()
     {
-        // try
-        // {
-        //     var movies = await _movieService.ListAllMovies();
-
-        //     var moviesDTO = movies.Select(movie => new GetMoviesDTO(
-        //         movie.Id,
-        //         movie.Title,
-        //         movie.Description ?? string.Empty,
-        //         movie.Genre.ToString(),
-        //         movie.DurationInMinutes ?? default,
-        //         movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToShortDateString() : string.Empty,
-        //         movie.Rating ?? default,
-        //         movie.Director?.Name ?? string.Empty
-        //     ));
-
-        //     return Ok(moviesDTO);
-        // }
-        // catch (Exception ex)
-        // {
-        //     return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
-        // }
-
         var movies = await _movieService.ListAllMovies();
         var moviesDTO = _mapper.Map<IEnumerable<Application.DTOs.Movies.GetMoviesDTO>>(movies);
 
@@ -59,16 +35,7 @@ public class MovieController : ControllerBase
         try
         {
             var movie = await _movieService.ListMovieById(id);
-            var movieDTO = new DTOs.Movies.GetMoviesDTO(
-                id,
-                movie.Title,
-                movie.Description ?? string.Empty,
-                movie.Genre.ToString(),
-                movie.DurationInMinutes ?? default,
-                movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToShortDateString() : string.Empty,
-                movie.Rating ?? default,
-                movie.Director?.Name ?? string.Empty
-            );
+            var movieDTO = _mapper.Map<Application.DTOs.Movies.GetMoviesDTO>(movie);
 
             return Ok(movieDTO);
         }
@@ -88,16 +55,7 @@ public class MovieController : ControllerBase
         try
         {
             var movies = await _movieService.ListMoviesByGenre(genre);
-            var moviesDTO = movies.Select(movie => new DTOs.Movies.GetMoviesDTO(
-                movie.Id,
-                movie.Title,
-                movie.Description ?? string.Empty,
-                movie.Genre.ToString(),
-                movie.DurationInMinutes ?? default,
-                movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToShortDateString() : string.Empty,
-                movie.Rating ?? default,
-                movie.Director?.Name ?? string.Empty
-            ));
+            var moviesDTO = _mapper.Map<IEnumerable<Application.DTOs.Movies.GetMoviesDTO>>(movies);
 
             return Ok(moviesDTO);
         }
@@ -112,7 +70,10 @@ public class MovieController : ControllerBase
     {
         try
         {
-            return Ok(await _movieService.ListMoviesByTitle(title));
+            var movies = await _movieService.ListMoviesByTitle(title);
+            var moviesDTO = _mapper.Map<IEnumerable<Application.DTOs.Movies.GetMoviesDTO>>(movies);
+
+            return Ok(moviesDTO);
         }
         catch (Exception ex)
         {
@@ -121,15 +82,14 @@ public class MovieController : ControllerBase
     }
 
     [HttpPost("v1/movies")]
-    public async Task<IActionResult> AddMovie(DTOs.Movies.CreateMovieDTO movieData)
+    public async Task<IActionResult> AddMovie(Application.DTOs.Movies.CreateMovieDTO movieData)
     {
         try
         {
-            GenreEnumerator? genre = !string.IsNullOrEmpty(movieData.Genre) ? (GenreEnumerator)Enum.Parse(typeof(GenreEnumerator), movieData.Genre, true) : null;
+            var movie = _mapper.Map<Movie>(movieData);
+            await _movieService.AddMovie(movie);
 
-            var newMovie = new Movie(movieData.Title, movieData.Director, movieData.Description, genre, movieData.DurationInMinutes, DateTime.Parse(movieData.ReleaseDate ?? string.Empty), movieData.Rating);
-            await _movieService.AddMovie(newMovie);
-            return CreatedAtAction(nameof(GetMovieById), new { id = newMovie.Id }, newMovie);
+            return CreatedAtAction(nameof(GetMovieById), new { id = movie.Id }, movie);
         }
         catch (DomainExceptionValidation ex)
         {
@@ -142,13 +102,11 @@ public class MovieController : ControllerBase
     }
 
     [HttpPut("v1/movies/{id:int}")]
-    public async Task<IActionResult> UpdateMovie(int id, DTOs.Movies.CreateMovieDTO movieData)
+    public async Task<IActionResult> UpdateMovie(int id, Application.DTOs.Movies.CreateMovieDTO movieData)
     {
         try
         {
-            GenreEnumerator? genre = !string.IsNullOrEmpty(movieData.Genre) ? (GenreEnumerator)Enum.Parse(typeof(GenreEnumerator), movieData.Genre, true) : null;
-
-            var movie = new Movie(movieData.Title, movieData.Director, movieData.Description, genre, movieData.DurationInMinutes, DateTime.Parse(movieData.ReleaseDate ?? string.Empty), movieData.Rating);
+            var movie = _mapper.Map<Movie>(movieData);
             await _movieService.UpdateMovie(id, movie);
             return Ok(movie);
         }
