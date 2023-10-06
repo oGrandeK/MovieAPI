@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MovieAPI.Application.DTOs.Movies;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.Enumerators;
@@ -24,7 +25,7 @@ public class MovieController : ControllerBase
     public async Task<IActionResult> GetAllMovies()
     {
         var movies = await _movieService.ListAllMovies();
-        var moviesDTO = _mapper.Map<IEnumerable<Application.DTOs.Movies.GetMoviesDTO>>(movies);
+        var moviesDTO = _mapper.Map<IEnumerable<GetMoviesDTO>>(movies);
 
         return Ok(moviesDTO);
     }
@@ -35,7 +36,7 @@ public class MovieController : ControllerBase
         try
         {
             var movie = await _movieService.ListMovieById(id);
-            var movieDTO = _mapper.Map<Application.DTOs.Movies.GetMoviesDTO>(movie);
+            var movieDTO = _mapper.Map<GetMoviesDTO>(movie);
 
             return Ok(movieDTO);
         }
@@ -55,7 +56,7 @@ public class MovieController : ControllerBase
         try
         {
             var movies = await _movieService.ListMoviesByGenre(genre);
-            var moviesDTO = _mapper.Map<IEnumerable<Application.DTOs.Movies.GetMoviesDTO>>(movies);
+            var moviesDTO = _mapper.Map<IEnumerable<GetMoviesDTO>>(movies);
 
             return Ok(moviesDTO);
         }
@@ -71,7 +72,7 @@ public class MovieController : ControllerBase
         try
         {
             var movies = await _movieService.ListMoviesByTitle(title);
-            var moviesDTO = _mapper.Map<IEnumerable<Application.DTOs.Movies.GetMoviesDTO>>(movies);
+            var moviesDTO = _mapper.Map<IEnumerable<GetMoviesDTO>>(movies);
 
             return Ok(moviesDTO);
         }
@@ -82,7 +83,7 @@ public class MovieController : ControllerBase
     }
 
     [HttpPost("v1/movies")]
-    public async Task<IActionResult> AddMovie(Application.DTOs.Movies.CreateMovieDTO movieData)
+    public async Task<IActionResult> AddMovie(CreateMovieDTO movieData)
     {
         try
         {
@@ -102,7 +103,7 @@ public class MovieController : ControllerBase
     }
 
     [HttpPut("v1/movies/{id:int}")]
-    public async Task<IActionResult> UpdateMovie(int id, Application.DTOs.Movies.CreateMovieDTO movieData)
+    public async Task<IActionResult> UpdateMovie(int id, CreateMovieDTO movieData)
     {
         try
         {

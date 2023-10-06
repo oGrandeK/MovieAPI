@@ -1,9 +1,9 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MovieAPI.Application.DTOs.Directors;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.Validation;
-using MovieAPI.WebAPI.DTOs.Directors;
 
 namespace MovieAPI.WebAPI.Controllers;
 
@@ -26,7 +26,7 @@ public class DirectorController : ControllerBase
         try
         {
             var directors = await _directorService.ListAllDirectors();
-            var directorsDTO = _mapper.Map<IEnumerable<Application.DTOs.Directors.GetDirectorsDTO>>(directors);
+            var directorsDTO = _mapper.Map<IEnumerable<GetDirectorsDTO>>(directors);
 
             return Ok(directorsDTO);
         }
@@ -48,7 +48,7 @@ public class DirectorController : ControllerBase
         try
         {
             var director = await _directorService.ListDirectorById(id);
-            var directorDTO = _mapper.Map<Application.DTOs.Directors.GetDirectorsDTO>(director);
+            var directorDTO = _mapper.Map<GetDirectorsDTO>(director);
 
             return Ok(directorDTO);
         }
@@ -68,7 +68,7 @@ public class DirectorController : ControllerBase
         try
         {
             var directors = await _directorService.ListDirectorByName(name);
-            var directorsDTO = _mapper.Map<IEnumerable<Application.DTOs.Directors.GetDirectorsDTO>>(directors);
+            var directorsDTO = _mapper.Map<IEnumerable<GetDirectorsDTO>>(directors);
             return Ok(directorsDTO);
         }
         catch (Exception ex)
@@ -78,7 +78,7 @@ public class DirectorController : ControllerBase
     }
 
     [HttpPost("v1/directors")]
-    public async Task<IActionResult> AddDirector(Application.DTOs.Directors.CreateDirectorDTO directorData)
+    public async Task<IActionResult> AddDirector(CreateDirectorDTO directorData)
     {
         try
         {
@@ -97,7 +97,7 @@ public class DirectorController : ControllerBase
     }
 
     [HttpPut("v1/directors/{id:int}")]
-    public async Task<IActionResult> UpdateDirector(int id, Application.DTOs.Directors.CreateDirectorDTO directorData)
+    public async Task<IActionResult> UpdateDirector(int id, CreateDirectorDTO directorData)
     {
         try
         {
