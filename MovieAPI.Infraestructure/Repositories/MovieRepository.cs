@@ -17,15 +17,21 @@ public class MovieRepository : IMovieRepository
     }
     public async Task<IEnumerable<Movie>> GetMoviesDirectorsAsync() => await _context.Movies.Include(x => x.Director).AsNoTracking().ToListAsync();
 
-    public async Task<Movie> GetMovieDirectorsByIdAsync(int id) => await _context.Movies.Include(x => x.Director).FirstOrDefaultAsync(x => x.Id == id) ?? throw new DomainExceptionValidation($"Movie Cannot be found by id - {id}");
+    public async Task<Movie> GetMovieDirectorsByIdAsync(int id) => await _context.Movies.Include(x => x.Director).AsNoTracking().SingleOrDefaultAsync(x => x.Id == id) ?? throw new DomainExceptionValidation($"Movie Cannot be found by id - {id}");
 
     public async Task<IEnumerable<Movie>> GetMoviesDirectorsByNameAsync(string movieTitle)
     {
-        //TODO: Refatorar método pra ficar igual o GetDirectorsMoviesName() do repo do director
+        var names = movieTitle.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+        var query = _context.Movies.Include(x => x.Director).AsNoTracking();
 
-        var movies = await _context.Movies.Include(x => x.Director).AsNoTracking().Where(x => x.Title.MovieTitle.Contains(movieTitle)).ToListAsync();
+        foreach (var name in names)
+        {
+            query = query.Where(x => x.Title.MovieTitle.Contains(name));
+        }
 
-        if (movies.Count == 0) throw new DomainExceptionValidation($"Movie cannot be found by title - {movieTitle}");
+        var movies = await query.ToListAsync();
+
+        if (movies.Count.Equals(0)) throw new DomainExceptionValidation($"Movie cannot be found by title - {movieTitle}");
 
         return movies;
     }
@@ -41,8 +47,7 @@ public class MovieRepository : IMovieRepository
 
         if (!movieExist)
         {
-            //TODO: Alterar .Add para .AddAsync
-            _context.Movies.Add(movie);
+            await _context.Movies.AddAsync(movie);
             await _context.SaveChangesAsync();
 
             return movie;
