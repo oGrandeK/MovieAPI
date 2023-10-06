@@ -17,7 +17,7 @@ public class DirectorRepository : IDirectorRepository
 
     public async Task<IEnumerable<Director>> GetDirectorsMoviesAsync() => await _context.Directors.Include(x => x.Movies).AsNoTracking().ToListAsync();
 
-    public async Task<Director> GetDirectorMoviesByIdAsync(int id) => await _context.Directors.Include(x => x.Movies).FirstOrDefaultAsync(x => x.Id == id) ?? throw new DomainExceptionValidation($"Director cannot be found by id - {id}");
+    public async Task<Director> GetDirectorMoviesByIdAsync(int id) => await _context.Directors.Include(x => x.Movies).AsNoTracking().SingleOrDefaultAsync(x => x.Id == id) ?? throw new DomainExceptionValidation($"Director cannot be found by id - {id}");
 
     public async Task<IEnumerable<Director>> GetDirectorsMoviesByNameAsync(string directorName)
     {
@@ -38,11 +38,17 @@ public class DirectorRepository : IDirectorRepository
 
     public async Task<Director> CreateDirectorAsync(Director director)
     {
-        //TODO : Alterar .Add para .AddAsync
-        _context.Directors.Add(director);
-        await _context.SaveChangesAsync();
+        var directorExist = await DirectorExist(director.Name);
 
-        return director;
+        if (!directorExist)
+        {
+            await _context.Directors.AddAsync(director);
+            await _context.SaveChangesAsync();
+
+            return director;
+        }
+
+        throw new DomainExceptionValidation("Director already exists");
     }
 
     public async Task<Director> UpdateDirectorAsync(Director director)
@@ -59,5 +65,18 @@ public class DirectorRepository : IDirectorRepository
         await _context.SaveChangesAsync();
 
         return director;
+    }
+
+    public async Task<bool> DirectorExist(string directorName)
+    {
+        try
+        {
+            var existingDirector = await GetDirectorsMoviesByNameAsync(directorName);
+            return true;
+        }
+        catch (DomainExceptionValidation)
+        {
+            return false;
+        }
     }
 }
