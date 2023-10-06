@@ -8,7 +8,9 @@ public class DirectorsMapping : Profile
 {
     public DirectorsMapping()
     {
-        CreateMap<Director, CreateDirectorDTO>().ReverseMap();
-        CreateMap<Director, GetDirectorsDTO>().ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.Name.FirstName} {src.Name.LastName}")).ForMember(dest => dest.Movies, opt => opt.MapFrom(src => src.Movies)).ReverseMap();
+        CreateMap<Movie, MovieDTO>();
+
+        CreateMap<Director, GetDirectorsDTO>()
+            .ForMember(dest => dest.Movies, opt => opt.MapFrom(src => src.Movies.Select(x => new MovieDTO(x.Id, x.Title))));
     }
 }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
@@ -11,34 +12,24 @@ namespace MovieAPI.WebAPI.Controllers;
 public class DirectorController : ControllerBase
 {
     private readonly IDirectorService _directorService;
+    private readonly IMapper _mapper;
 
-    public DirectorController(IDirectorService directorService)
+    public DirectorController(IDirectorService directorService, IMapper mapper)
     {
         _directorService = directorService;
+        _mapper = mapper;
     }
 
     [HttpGet("v1/directors")]
     public async Task<IActionResult> GetAllDirectors()
     {
-        try
-        {
-            var directors = await _directorService.ListAllDirectors();
-            var directorsDTO = directors.Select(director => new GetDirectorsDTO(
-                director.Id,
-                FullName: director.Name.ToString(),
-                Movies: director.Movies?.Select(movie => new DirectorsMoviesDetailsDTO(
-                    Title: movie.Title,
-                    Genre: movie.Genre ?? null,
-                    ReleaseDate: movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToShortDateString() : string.Empty,
-                    Rating: movie.Rating ?? null)).ToList()
-                ));
-            return Ok(directorsDTO);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
-        }
+        var directors = await _directorService.ListAllDirectors();
+        var directorsDTO = _mapper.Map<IEnumerable<Application.DTOs.Directors.GetDirectorsDTO>>(directors);
+
+        return Ok(directorsDTO);
     }
+
+
 
     [HttpGet("v1/directors/{id:int}")]
     public async Task<IActionResult> GetDirectorById(int id)
@@ -46,15 +37,7 @@ public class DirectorController : ControllerBase
         try
         {
             var director = await _directorService.ListDirectorById(id);
-            var directorDTO = new GetDirectorsDTO(
-                id,
-                director.Name.ToString(),
-                director.Movies?.Select(movie => new DirectorsMoviesDetailsDTO(
-                    movie.Title,
-                    movie.Genre ?? null,
-                    movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToShortDateString() : string.Empty,
-                    movie.Rating ?? null
-                )).ToList());
+            var directorDTO = _mapper.Map<Application.DTOs.Directors.GetDirectorsDTO>(director);
 
             return Ok(directorDTO);
         }
