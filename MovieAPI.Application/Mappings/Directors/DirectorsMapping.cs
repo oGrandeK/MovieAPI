@@ -12,5 +12,8 @@ public class DirectorsMapping : Profile
 
         CreateMap<Director, GetDirectorsDTO>()
             .ForMember(dest => dest.Movies, opt => opt.MapFrom(src => src.Movies.Select(x => new MovieDTO(x.Id, x.Title, x.ReleaseDate.ToString() ?? string.Empty))));
+
+        CreateMap<CreateDirectorDTO, Director>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
     }
 }

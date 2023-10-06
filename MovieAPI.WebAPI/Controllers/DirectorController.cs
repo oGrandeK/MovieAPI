@@ -23,10 +23,21 @@ public class DirectorController : ControllerBase
     [HttpGet("v1/directors")]
     public async Task<IActionResult> GetAllDirectors()
     {
-        var directors = await _directorService.ListAllDirectors();
-        var directorsDTO = _mapper.Map<IEnumerable<Application.DTOs.Directors.GetDirectorsDTO>>(directors);
+        try
+        {
+            var directors = await _directorService.ListAllDirectors();
+            var directorsDTO = _mapper.Map<IEnumerable<Application.DTOs.Directors.GetDirectorsDTO>>(directors);
 
-        return Ok(directorsDTO);
+            return Ok(directorsDTO);
+        }
+        catch (DomainExceptionValidation ex)
+        {
+            return NotFound($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        }
     }
 
 
@@ -57,17 +68,8 @@ public class DirectorController : ControllerBase
         try
         {
             var directors = await _directorService.ListDirectorByName(name);
-            var directorsDTO = directors.Select(director => new GetDirectorsDTO(
-                director.Id,
-                director.Name.ToString(),
-                director.Movies?.Select(movie => new DirectorsMoviesDetailsDTO(
-                    movie.Title,
-                    movie.Genre ?? null,
-                    movie.ReleaseDate != null ? movie.ReleaseDate.Value.ToLongDateString() : string.Empty,
-                    movie.Rating ?? null
-                )).ToList()
-            ));
-            return Ok(await _directorService.ListDirectorByName(name));
+            var directorsDTO = _mapper.Map<IEnumerable<Application.DTOs.Directors.GetDirectorsDTO>>(directors);
+            return Ok(directorsDTO);
         }
         catch (Exception ex)
         {
@@ -76,7 +78,7 @@ public class DirectorController : ControllerBase
     }
 
     [HttpPost("v1/directors")]
-    public async Task<IActionResult> AddDirector(CreateDirectorDTO directorData)
+    public async Task<IActionResult> AddDirector(Application.DTOs.Directors.CreateDirectorDTO directorData)
     {
         try
         {
@@ -95,13 +97,13 @@ public class DirectorController : ControllerBase
     }
 
     [HttpPut("v1/directors/{id:int}")]
-    public async Task<IActionResult> UpdateDirector(int id, CreateDirectorDTO directorData)
+    public async Task<IActionResult> UpdateDirector(int id, Application.DTOs.Directors.CreateDirectorDTO directorData)
     {
         try
         {
             var director = new Director(directorData.Name);
             await _directorService.UpdateDirector(id, director);
-            return Ok(director);
+            return NoContent();
         }
         catch (Exception ex)
         {
@@ -116,7 +118,7 @@ public class DirectorController : ControllerBase
         {
             var director = await _directorService.ListDirectorById(id);
             await _directorService.DeleteDirector(director.Id);
-            return Ok(director);
+            return NoContent();
         }
         catch (DomainExceptionValidation ex)
         {
