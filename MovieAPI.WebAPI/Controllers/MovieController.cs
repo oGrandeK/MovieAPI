@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Application.DTOs.Movies;
 using MovieAPI.Application.Interfaces.Services;
@@ -82,6 +83,7 @@ public class MovieController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPost("v1/movies")]
     public async Task<IActionResult> AddMovie(CreateMovieDTO movieData)
     {
@@ -102,6 +104,7 @@ public class MovieController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPut("v1/movies/{id:int}")]
     public async Task<IActionResult> UpdateMovie(int id, CreateMovieDTO movieData)
     {
@@ -117,6 +120,7 @@ public class MovieController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpDelete("v1/movies/{id:int}")]
     public async Task<IActionResult> DeleteMovie(int id)
     {

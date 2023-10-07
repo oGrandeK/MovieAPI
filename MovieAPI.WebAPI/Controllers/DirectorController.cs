@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Application.DTOs.Directors;
 using MovieAPI.Application.Interfaces.Services;
@@ -21,12 +22,17 @@ public class DirectorController : ControllerBase
     }
 
     [HttpGet("v1/directors")]
-    public async Task<IActionResult> GetAllDirectors()
+    public async Task<IActionResult> GetAllDirectors([FromQuery] int page = 1)
     {
         try
         {
+            int pageSize = 10;
+
             var directors = await _directorService.ListAllDirectors();
-            var directorsDTO = _mapper.Map<IEnumerable<GetDirectorsDTO>>(directors);
+
+            var paginatedDirectors = directors.Skip((page - 1) * pageSize).Take(pageSize);
+
+            var directorsDTO = _mapper.Map<IEnumerable<GetDirectorsDTO>>(paginatedDirectors);
 
             return Ok(directorsDTO);
         }
@@ -39,8 +45,6 @@ public class DirectorController : ControllerBase
             return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
         }
     }
-
-
 
     [HttpGet("v1/directors/{id:int}")]
     public async Task<IActionResult> GetDirectorById(int id)
@@ -77,6 +81,7 @@ public class DirectorController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPost("v1/directors")]
     public async Task<IActionResult> AddDirector(CreateDirectorDTO directorData)
     {
@@ -96,6 +101,7 @@ public class DirectorController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPut("v1/directors/{id:int}")]
     public async Task<IActionResult> UpdateDirector(int id, CreateDirectorDTO directorData)
     {
@@ -111,6 +117,7 @@ public class DirectorController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpDelete("v1/directors/{id:int}")]
     public async Task<IActionResult> DeleteDirector(int id)
     {

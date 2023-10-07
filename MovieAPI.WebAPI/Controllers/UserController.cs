@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Application.Interfaces.Services;
 using MovieAPI.Domain.Entities;
@@ -22,6 +23,7 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
+    [Authorize]
     [HttpPost("v1/accounts/register")]
     public async Task<IActionResult> Register(RegisterUserDTO user)
     {
@@ -51,8 +53,8 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPost("v1/accounts/verifyEmail/{email}")]
-    public async Task<IActionResult> VerifyEmail([FromQuery, Required] string verificationCode, string email) => Ok(await _userService.VerifyEmail(verificationCode, email));
+    [HttpPost("v1/accounts/verifyEmail")]
+    public async Task<IActionResult> VerifyEmail([FromQuery, Required] string email, [FromQuery, Required] string verificationCode) => Ok(await _userService.VerifyEmail(verificationCode, email));
 
     [HttpPost("v1/accounts/resendVerificationCode/{email}")]
     public async Task<IActionResult> Resend(string email) => Ok(await _userService.ResendEmailVerificationCode(email));
