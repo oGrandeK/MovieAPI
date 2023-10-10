@@ -58,6 +58,7 @@ public static class DependencyInjection
         services.AddScoped<IListUserByEmailUseCase, ListUserByEmailUseCase>();
         services.AddTransient<IVerifyEmailUseCase, VerifyEmailUseCase>();
         services.AddTransient<IResendEmailVerificationCodeUseCase, ResendEmailVerificationCodeUseCase>();
+        services.AddTransient<IChangePasswordUseCase, ChangePasswordUseCase>();
 
         services.AddTransient<ITokenService, TokenService>();
         services.AddTransient<IPasswordService, PasswordService>();

@@ -27,11 +27,18 @@ public class UserController : ControllerBase
     [HttpPost("v1/accounts/register")]
     public async Task<IActionResult> Register(RegisterUserDTO user)
     {
-        var hashedPassword = _passwordService.Hash(user.Password);
-        var newUser = new User(user.Name, user.Email, hashedPassword);
-        await _userService.AddUser(newUser);
+        try
+        {
+            var hashedPassword = _passwordService.Hash(user.Password);
+            var newUser = new User(user.Name, user.Email, hashedPassword);
+            await _userService.AddUser(newUser);
 
-        return Ok(newUser);
+            return Ok(newUser);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
+        }
     }
 
     [HttpPost("v1/accounts/login")]
@@ -53,9 +60,46 @@ public class UserController : ControllerBase
         }
     }
 
+    [Authorize]
+    [HttpPost("v1/accounts/resetPassword")]
+    public async Task<IActionResult> ResetPassword([FromQuery, Required] string email, [FromQuery, Required] string oldPassword, [FromQuery, Required] string newPassword)
+    {
+        try
+        {
+            var user = await _userService.ListUserByEmail(email);
+
+            await _userService.UpdatePassword(user, oldPassword, newPassword);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
+        }
+    }
+
     [HttpPost("v1/accounts/verifyEmail")]
-    public async Task<IActionResult> VerifyEmail([FromQuery, Required] string email, [FromQuery, Required] string verificationCode) => Ok(await _userService.VerifyEmail(verificationCode, email));
+    public async Task<IActionResult> VerifyEmail([FromQuery, Required] string email, [FromQuery, Required] string verificationCode)
+    {
+        try
+        {
+            return Ok(await _userService.VerifyEmail(verificationCode, email));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
+        }
+    }
 
     [HttpPost("v1/accounts/resendVerificationCode/{email}")]
-    public async Task<IActionResult> Resend(string email) => Ok(await _userService.ResendEmailVerificationCode(email));
+    public async Task<IActionResult> Resend(string email)
+    {
+        try
+        {
+            return Ok(await _userService.ResendEmailVerificationCode(email));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message} \nError stacktrace: {ex.StackTrace}");
+        }
+    }
 }

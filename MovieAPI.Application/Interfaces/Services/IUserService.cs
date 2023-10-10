@@ -13,4 +13,5 @@ public interface IUserService
     Task<User> DeleteUser(int id);
     Task<User> VerifyEmail(string verificatinCode, string email);
     Task<User> ResendEmailVerificationCode(string email);
+    Task<User> UpdatePassword(User user, string oldPassword, string newPassword);
 }
