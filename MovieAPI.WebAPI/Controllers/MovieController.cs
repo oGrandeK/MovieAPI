@@ -23,12 +23,28 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet("v1/movies")]
-    public async Task<IActionResult> GetAllMovies()
+    public async Task<IActionResult> GetAllMovies([FromQuery] int page = 1)
     {
-        var movies = await _movieService.ListAllMovies();
-        var moviesDTO = _mapper.Map<IEnumerable<GetMoviesDTO>>(movies);
+        try
+        {
+            int pageSize = 5;
 
-        return Ok(moviesDTO);
+            var movies = await _movieService.ListAllMovies();
+
+            var paginatedMovies = movies.Skip((page - 1) * pageSize).Take(pageSize);
+
+            var moviesDTO = _mapper.Map<IEnumerable<GetMoviesDTO>>(paginatedMovies);
+
+            return Ok(moviesDTO);
+        }
+        catch (DomainExceptionValidation ex)
+        {
+            return NotFound($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Error message: {ex.Message}; \nError stacktrace: {ex.StackTrace}");
+        }
     }
 
     [HttpGet("v1/movies/{id:int}")]
