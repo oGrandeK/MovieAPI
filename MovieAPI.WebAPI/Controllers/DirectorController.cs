@@ -26,7 +26,7 @@ public class DirectorController : ControllerBase
     {
         try
         {
-            int pageSize = 10;
+            int pageSize = 3;
 
             var directors = await _directorService.ListAllDirectors();
 

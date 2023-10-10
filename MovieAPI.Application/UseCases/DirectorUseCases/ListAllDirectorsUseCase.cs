@@ -17,7 +17,19 @@ public class ListAllDirectorsUseCase : IListAllDirectorsUseCase
     {
         try
         {
-            return await _directorRepository.GetDirectorsMoviesAsync();
+            var directors = await _directorRepository.GetDirectorsMoviesAsync();
+
+            List<Director> newDirectors = new();
+
+            foreach (var director in directors)
+            {
+                if (director.Movies != null && director.Movies.Count > 3)
+                    director.Movies.RemoveRange(3, director.Movies.Count - 3);
+
+                newDirectors.Add(director);
+            }
+
+            return newDirectors;
         }
         catch (Exception ex)
         {
