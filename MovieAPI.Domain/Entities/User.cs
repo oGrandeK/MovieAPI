@@ -27,4 +27,9 @@ public class User : Entity
         Email = email;
         Password = hash;
     }
+
+    public void UpdatePassword(string hash)
+    {
+        Password = hash;
+    }
 }
