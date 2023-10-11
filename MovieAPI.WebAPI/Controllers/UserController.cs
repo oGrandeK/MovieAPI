@@ -23,17 +23,12 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [Authorize]
     [HttpPost("v1/accounts/register")]
     public async Task<IActionResult> Register(RegisterUserDTO user)
     {
         try
         {
-            var hashedPassword = _passwordService.Hash(user.Password);
-            var newUser = new User(user.Name, user.Email, hashedPassword);
-            await _userService.AddUser(newUser);
-
-            return Ok(newUser);
+            return Ok(await _userService.RegisterUser(user.Name.FirstName, user.Name.LastName, user.Email, user.Password));
         }
         catch (Exception ex)
         {
