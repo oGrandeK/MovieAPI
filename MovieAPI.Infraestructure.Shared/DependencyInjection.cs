@@ -49,8 +49,8 @@ public static class DependencyInjection
         services.AddScoped<IListMoviesByTitleUseCase, ListMoviesByTitleUseCase>();
         services.AddScoped<IUpdateMovieUseCase, UpdateMovieUseCase>();
 
-        //services.AddScoped<IAddUserUseCase, AddUserUseCase>();
         services.AddTransient<IRegisterUserUseCase, RegisterUserUseCase>();
+        services.AddTransient<ILoginUseCase, LoginUseCase>();
         services.AddScoped<IDeleteUserUseCase, DeleteUserUseCase>();
         services.AddScoped<IListAllUsersUseCase, ListAllUsersUseCase>();
         services.AddScoped<IListUserByIdUseCase, ListUserByIdUseCase>();

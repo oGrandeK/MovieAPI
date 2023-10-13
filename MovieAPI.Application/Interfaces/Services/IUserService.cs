@@ -9,6 +9,7 @@ public interface IUserService
     Task<User> ListUserByEmail(string email);
     Task<IEnumerable<User>> ListUserByName(string fullname);
     Task<User> RegisterUser(string firstName, string lastName, string email, string password);
+    Task<string> Login(string email, string password);
     Task<User> UpdateUser(int id, User user, string newHash);
     Task<User> DeleteUser(int id);
     Task<User> VerifyEmail(string verificatinCode, string email);

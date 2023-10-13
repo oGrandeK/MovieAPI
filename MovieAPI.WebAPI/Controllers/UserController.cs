@@ -37,17 +37,11 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("v1/accounts/login")]
-    public async Task<IActionResult> Login(LoginUserDTO userData)
+    public async Task<IActionResult> Login(LoginUserDTO user)
     {
         try
         {
-            var user = await _userService.ListUserByEmail(userData.Email);
-            if (!_passwordService.Verify(user.Password.Hash, userData.Password)) throw new Exception("Usuário ou senha inválido");
-
-            if (!user.Email.Verification.IsActive) return BadRequest("Email não verificado");
-
-            var token = _tokenService.GenerateToken(user);
-            return Ok(token);
+            return Ok(await _userService.Login(user.Email, user.Password));
         }
         catch (DomainExceptionValidation)
         {

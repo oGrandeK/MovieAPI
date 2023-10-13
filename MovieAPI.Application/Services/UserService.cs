@@ -11,13 +11,14 @@ public class UserService : IUserService
     private readonly IListUserByEmailUseCase _listUserByEmailUseCase;
     private readonly IListUsersByNameUseCase _listUsersByNameUseCase;
     private readonly IRegisterUserUseCase _RegisterUserUseCase;
+    private readonly ILoginUseCase _LoginUseCase;
     private readonly IUpdateUserUseCase _UpdateUserUseCase;
     private readonly IDeleteUserUseCase _DeleteUserUseCase;
     private readonly IVerifyEmailUseCase _VerifyEmailUseCase;
     private readonly IResendEmailVerificationCodeUseCase _ResendEmailVerificationCodeUseCase;
     private readonly IChangePasswordUseCase _ChangePasswordUseCase;
 
-    public UserService(IListAllUsersUseCase listAllUsersUseCase, IListUserByIdUseCase listUserByIdUseCase, IListUserByEmailUseCase listUserByEmailUseCase, IListUsersByNameUseCase listUsersByNameUseCase, IUpdateUserUseCase updateUserUseCase, IDeleteUserUseCase deleteUserUseCase, IVerifyEmailUseCase verifyEmailUseCase, IResendEmailVerificationCodeUseCase resendEmailVerificationCodeUseCase, IChangePasswordUseCase changePasswordUseCase, IRegisterUserUseCase registerUserUseCase)
+    public UserService(IListAllUsersUseCase listAllUsersUseCase, IListUserByIdUseCase listUserByIdUseCase, IListUserByEmailUseCase listUserByEmailUseCase, IListUsersByNameUseCase listUsersByNameUseCase, IUpdateUserUseCase updateUserUseCase, IDeleteUserUseCase deleteUserUseCase, IVerifyEmailUseCase verifyEmailUseCase, IResendEmailVerificationCodeUseCase resendEmailVerificationCodeUseCase, IChangePasswordUseCase changePasswordUseCase, IRegisterUserUseCase registerUserUseCase, ILoginUseCase loginUseCase)
     {
         _listAllUsersUseCase = listAllUsersUseCase;
         _listUserByIdUseCase = listUserByIdUseCase;
@@ -29,6 +30,7 @@ public class UserService : IUserService
         _ResendEmailVerificationCodeUseCase = resendEmailVerificationCodeUseCase;
         _ChangePasswordUseCase = changePasswordUseCase;
         _RegisterUserUseCase = registerUserUseCase;
+        _LoginUseCase = loginUseCase;
     }
 
     public async Task<IEnumerable<User>> ListAllUsers() => await _listAllUsersUseCase.Execute();
@@ -40,6 +42,6 @@ public class UserService : IUserService
     public async Task<User> VerifyEmail(string verificatinCode, string email) => await _VerifyEmailUseCase.Verify(verificatinCode, email);
     public async Task<User> ResendEmailVerificationCode(string email) => await _ResendEmailVerificationCodeUseCase.Resend(email);
     public async Task<User> UpdatePassword(User user, string oldPassword, string newPassword) => await _ChangePasswordUseCase.Change(user, oldPassword, newPassword);
-
     public async Task<User> RegisterUser(string firstName, string lastName, string email, string password) => await _RegisterUserUseCase.Register(firstName, lastName, email, password);
+    public async Task<string> Login(string email, string password) => await _LoginUseCase.Login(email, password);
 }
