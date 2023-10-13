@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Application.Interfaces.Services;
-using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.Validation;
 using MovieAPI.WebAPI.DTOs.Users;
 
@@ -12,14 +11,10 @@ namespace MovieAPI.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly IPasswordService _passwordService;
-    private readonly ITokenService _tokenService;
     private readonly IUserService _userService;
 
-    public UserController(IPasswordService passwordService, ITokenService tokenService, IUserService userService)
+    public UserController(IUserService userService)
     {
-        _passwordService = passwordService;
-        _tokenService = tokenService;
         _userService = userService;
     }
 
