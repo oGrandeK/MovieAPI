@@ -87,7 +87,7 @@ public class DirectorController : ControllerBase
     {
         try
         {
-            var newDirector = new Director(directorData.Name);
+            var newDirector = _mapper.Map<Director>(directorData);
             await _directorService.AddDirector(newDirector);
             return CreatedAtAction(nameof(GetDirectorById), new { id = newDirector.Id }, newDirector);
         }

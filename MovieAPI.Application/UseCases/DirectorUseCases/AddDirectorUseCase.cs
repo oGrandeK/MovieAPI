@@ -1,6 +1,7 @@
 using MovieAPI.Application.Interfaces.UseCases.DirectorUseCases;
 using MovieAPI.Domain.Entities;
 using MovieAPI.Domain.interfaces;
+using MovieAPI.Domain.Validation;
 
 namespace MovieAPI.Application.UseCases.DirectorUseCases;
 
@@ -19,10 +20,13 @@ public class AddDirectorUseCase : IAddDirectorUseCase
         {
             await _directorRepository.CreateDirectorAsync(director);
         }
-        catch (Exception ex)
+        catch (DomainExceptionValidation)
         {
-            Console.WriteLine($"Error message: {ex.Message}");
-            Console.WriteLine($"Error source: {ex.Source}");
+            throw;
+        }
+        catch (Exception)
+        {
+            throw;
         }
     }
 }
