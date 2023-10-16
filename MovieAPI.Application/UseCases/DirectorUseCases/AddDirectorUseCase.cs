@@ -15,7 +15,6 @@ public class AddDirectorUseCase : IAddDirectorUseCase
 
     public async Task Execute(Director director)
     {
-        // TODO: Adicionar método que verifica se já existe esse Diretor dentro do repositorio
         try
         {
             await _directorRepository.CreateDirectorAsync(director);
