@@ -11,6 +11,7 @@ public class TwilioSmsService : ISmsService
 
     public TwilioSmsService()
     {
+        //TODO: Adicionar classe de configuração vide SendGridConfig????
         _accountSid = Environment.GetEnvironmentVariable("TwilioSid") ?? throw new NullReferenceException("Twilio SID cannot be found");
         _authToken = Environment.GetEnvironmentVariable("TwilioToken") ?? throw new NullReferenceException("Twilio Token cannot be found");
     }

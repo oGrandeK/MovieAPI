@@ -9,6 +9,7 @@ public class SendGridEmailService : IEmailService
     private readonly SendGridConfig _sendGridConfig;
     public SendGridEmailService()
     {
+        //TODO: Criar injeção de dependência para SendGridConfig pra não precisar instânciar no construtor ?????
         _sendGridConfig = new SendGridConfig();
     }
 

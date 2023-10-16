@@ -19,6 +19,7 @@ public class TokenService : ITokenService
 
     public string GenerateToken(User user)
     {
+        //TODO: Adicionar classe de configuração vide SendGridConfig??????
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration["JwtKey"]);
         var claims = new ClaimsIdentity(new[]
