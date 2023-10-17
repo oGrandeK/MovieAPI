@@ -6,7 +6,7 @@ using MovieAPI.Domain.ValueObjects;
 
 namespace MovieAPI.Domain.Entities;
 
-public class Director : Entity 
+public class Director : Entity
 {
     // Properties
     public Name Name { get; private set; } = null!;
@@ -22,8 +22,9 @@ public class Director : Entity
         Name = ValidateName(name);
     }
 
-    public Director(int id, Name name) {
-        if(id < 1) throw new DomainExceptionValidation("Id não pode ser inferior a 1");
+    public Director(int id, Name name)
+    {
+        if (id < 1) throw new DomainExceptionValidation("Id não pode ser inferior a 1");
 
         Id = id;
         Name = name;
@@ -31,16 +32,20 @@ public class Director : Entity
         Name = ValidateName(name);
     }
 
-    private Director() {}
+    private Director() { }
 
     // Methods
-    private static Name ValidateName(Name name) {
+    private static Name ValidateName(Name name)
+    {
         var nameParts = name.ToString().Split(" ");
 
         return new Name(nameParts[0], nameParts[1]);
     }
 
-    public void UpdateName(Name name) {
+    public void UpdateName(Name name)
+    {
         Name = ValidateName(name);
     }
+
+    public override string ToString() => Name;
 }

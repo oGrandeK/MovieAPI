@@ -73,5 +73,7 @@ namespace MovieAPI.Domain.Entities
             ReleaseDate = releaseDate;
             Rating = rating;
         }
+
+        public override string ToString() => Title;
     }
 }
