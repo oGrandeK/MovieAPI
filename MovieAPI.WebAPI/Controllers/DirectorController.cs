@@ -107,7 +107,7 @@ public class DirectorController : ControllerBase
     {
         try
         {
-            var director = new Director(directorData.Name);
+            var director = _mapper.Map<Director>(directorData);
             await _directorService.UpdateDirector(id, director);
             return NoContent();
         }
