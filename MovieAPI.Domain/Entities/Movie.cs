@@ -7,6 +7,9 @@ using MovieAPI.Domain.ValueObjects;
 
 namespace MovieAPI.Domain.Entities
 {
+    /// <summary>
+    /// Classe que representa um filme.
+    /// </summary>
     public class Movie : Entity
     {
         // Properties
