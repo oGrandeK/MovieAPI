@@ -30,7 +30,7 @@ public class Director : Entity
 
     // Constructors
     /// <summary>
-    /// Construtor padrão usado para desserialização JSON.
+    /// Inicializa uma nova instância da classe <see cref="Director"/>.
     /// </summary.
     /// <param name="name">O nome do diretor.</param>
     [JsonConstructor]
