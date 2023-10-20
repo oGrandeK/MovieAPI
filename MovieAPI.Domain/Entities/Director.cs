@@ -44,6 +44,7 @@ public class Director : Entity
     /// </summary>
     /// <param name="id">O ID do diretor.</param>
     /// <param name="name">O nome do diretor.</param>
+    /// <exception cref="DomainExceptionValidation">Disparada se o ID do diretor for inferior a 1.</exception>
     public Director(int id, Name name)
     {
         if (id < 1) throw new DomainExceptionValidation("Id não pode ser inferior a 1");
