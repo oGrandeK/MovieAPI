@@ -53,12 +53,13 @@ namespace MovieAPI.Domain.Entities
         /// Inicializa uma nova instância da classe <see cref="Movie"/>.
         /// </summary>
         /// <param name="title">O título do filme.</param>
-        /// <param name="directorId">O ID do diretor associado ao filme. Consulte <see cref="Director" para mais informações sobre diretores.</param>
+        /// <param name="directorId">O ID do diretor associado ao filme. Consulte <see cref="Director"/> para mais informações sobre diretores.</param>
         /// <param name="description">A descrição do filme.</param>
         /// <param name="genre">O gênero do filme.</param>
         /// <param name="durationInMinutes">A duração do filme em minutos.</param>
         /// <param name="releaseDate">A data de lançamento do filme.</param>
         /// <param name="rating">A classificação do filme.</param>
+        /// <exception cref="DomainExceptionValidation">Disparada se alguma das propriedades violar alguma regra de validação.</exception>
         [JsonConstructor]
         public Movie(Title title, int directorId, string? description = null, GenreEnumerator? genre = null, short? durationInMinutes = null, DateTime? releaseDate = null, double? rating = null)
         {
@@ -72,13 +73,13 @@ namespace MovieAPI.Domain.Entities
         /// </summary>
         /// <param name="id">O ID único do filme</param>
         /// <param name="title">O título do filme.</param>
-        /// <param name="directorId">O ID do diretor associado ao filme. Consulte <see cref="Director" para mais informações sobre diretores.</param>
+        /// <param name="directorId">O ID do diretor associado ao filme. Consulte <see cref="Director"/> para mais informações sobre diretores.</param>
         /// <param name="description">A descrição do filme.</param>
         /// <param name="genre">O gênero do filme.</param>
         /// <param name="durationInMinutes">A duração do filme em minutos.</param>
         /// <param name="releaseDate">A data de lançamento do filme.</param>
         /// <param name="rating">A classificação do filme.</param>
-        /// <exception cref="DomainExceptionValidation">Disparada se o ID do diretor for inferior a 1.</exception>
+        /// <exception cref="DomainExceptionValidation">Disparada se alguma das propriedades violar alguma regra de validação.</exception>
         public Movie(int id, Title title, int directorId, string? description = null, GenreEnumerator? genre = null, short? durationInMinutes = null, DateTime? releaseDate = null, double? rating = null)
         {
             Validate(title, description, genre, durationInMinutes, releaseDate, rating);
@@ -99,15 +100,15 @@ namespace MovieAPI.Domain.Entities
         /// <summary>
         /// Método para atualizar propriedades do filme.
         /// </summary>
-        /// <param name="title">O título do filme. Consulte <see cref="Title" para mais informações sobre títulos.</param>
-        /// <param name="directorId">O ID do diretor associado ao filme. Consulte <see cref="Director" para mais informações sobre diretores.</param>
+        /// <param name="title">O título do filme. Consulte <see cref="Title"/> para mais informações sobre títulos.</param>
+        /// <param name="directorId">O ID do diretor associado ao filme. Consulte <see cref="Director"/> para mais informações sobre diretores.</param>
         /// <param name="description">A descrição do filme.</param>
         /// <param name="genre">O gênero do filme.</param>
         /// <param name="durationInMinutes">A duração do filme em minutos.</param>
         /// <param name="releaseDate">A data de lançamento do filme.</param>
         /// <param name="rating">A classificação do filme.</param>
         /// <returns>O filme validado e atualizado.</returns>
-        /// <exception cref="DomainExceptionValidation">Disparada se o ID do diretor for inferior a 1.</exception>
+        /// <exception cref="DomainExceptionValidation">Disparada se alguma das propriedades violar alguma regra de validação.</exception>
         public void UpdateMovie(Title title, int directorId, string? description = null, GenreEnumerator? genre = null, short? durationInMinutes = null, DateTime? releaseDate = null, double? rating = null)
         {
             Validate(title, description, genre, durationInMinutes, releaseDate, rating);
@@ -127,7 +128,7 @@ namespace MovieAPI.Domain.Entities
         /// <param name="durationInMinutes">A duração do filme em minutos a ser validado.</param>
         /// <param name="releaseDate">A data de lançamento do filme a ser validado.</param>
         /// <param name="rating">A classificação do filme a ser validado.</param>
-        /// <exception cref="DomainExceptionValidation">Disparado se algumas das propriedades violar as regras de validação.</exception>
+        /// <exception cref="DomainExceptionValidation">Disparado se algumas das propriedades violar alguma regra de validação.</exception>
         public void Validate(Title title, string? description = null, GenreEnumerator? genre = null, short? durationInMinutes = null, DateTime? releaseDate = null, double? rating = null)
         {
             if (!string.IsNullOrEmpty(description) && description.Trim().Length > 255) throw new DomainExceptionValidation("Descrição do filme não pode conter mais que 255 caracteres");
