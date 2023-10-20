@@ -67,6 +67,7 @@ public class Director : Entity
     /// <param name="name">O nome a ser validado.</param>
     /// <returns>O nome validado</returns>
     /// <exception cref="DomainExceptionValidation">Disparada se o nome violar alguma regra de validação. Consulte <see cref="Name"/> para mais detalhes sobre nome.</exception>
+    //TODO: Aprimorar a validação.
     private static Name ValidateName(Name name)
     {
         var nameParts = name.ToString().Split(" ");
