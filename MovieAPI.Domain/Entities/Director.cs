@@ -31,8 +31,8 @@ public class Director : Entity
     // Constructors
     /// <summary>
     /// Inicializa uma nova instância da classe <see cref="Director"/>.
-    /// </summary.
-    /// <param name="name">O nome do diretor.</param>
+    /// </summary>
+    /// <param name="name">O nome do diretor. Consulte <see cref="Name"/> para mais detalhes sobre nome. </param>
     [JsonConstructor]
     public Director(Name name)
     {
@@ -44,7 +44,7 @@ public class Director : Entity
     /// </summary>
     /// <param name="id">O ID do diretor.</param>
     /// <param name="name">O nome do diretor.</param>
-    /// <exception cref="DomainExceptionValidation">Disparada se o ID do diretor for inferior a 1.</exception>
+    /// <exception cref="DomainExceptionValidation">Disparada se alguma das propriedades violar alguma regra de validação.</exception>
     public Director(int id, Name name)
     {
         if (id < 1) throw new DomainExceptionValidation("Id não pode ser inferior a 1");
@@ -61,12 +61,12 @@ public class Director : Entity
     private Director() { }
 
     // Methods
-
     /// <summary>
     /// Método para validar nome do diretor.
     /// </summary>
     /// <param name="name">O nome a ser validado.</param>
     /// <returns>O nome validado</returns>
+    /// <exception cref="DomainExceptionValidation">Disparada se o nome violar alguma regra de validação. Consulte <see cref="Name"/> para mais detalhes sobre nome.</exception>
     private static Name ValidateName(Name name)
     {
         var nameParts = name.ToString().Split(" ");
@@ -77,7 +77,8 @@ public class Director : Entity
     /// <summary>
     /// Método para atualizar nome do diretor.
     /// </summary>
-    /// <param name="name">O novo nome do diretor.</param> 
+    /// <param name="name">O novo nome do diretor.</param>
+    /// <exception cref="DomainExceptionValidation">Disparada se o nome violar alguma regra de validação. Consulte <see cref="Name"/> para mais detalhes sobre nome.</exception>
     public void UpdateName(Name name)
     {
         Name = ValidateName(name);
