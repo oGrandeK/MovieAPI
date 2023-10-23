@@ -38,7 +38,7 @@ public interface IDirectorRepository
     /// Atualiza as informações do diretor.
     /// </summary>
     /// <param name="director">O diretor com as informações atualizadas.</param>
-    /// <returns>O diretor atualizado detalhes de seus filmes.</returns>
+    /// <returns>O diretor atualizado com detalhes de seus filmes.</returns>
     Task<Director> UpdateDirectorAsync(Director director);
 
     /// <summary>
