@@ -20,8 +20,8 @@ public interface IMovieRepository
     /// </summary>
     /// <param name="id">O ID do filme a ser pesquisado.</param>
     /// <returns>O filme com detalhes sobre seu diretor.</returns>
-
     Task<Movie> GetMovieDirectorsByIdAsync(int id);
+
     /// <summary>
     /// Obtém uma coleção de filmes com informações sobre seus diretores pelo nome do filme.
     /// </summary>
@@ -46,14 +46,14 @@ public interface IMovieRepository
     /// <summary>
     /// Atualiza as informações do filme.
     /// </summary>
-    /// <param name="movie">O filme com as informações atualizadas.</param>
+    /// <param name="movie">O filme com as informações atualizadas. Consulte <see cref="Movie"/> para mais detalhes sobre filmes.</param>
     /// <returns>O filme atualizado com detalhes sobre seu diretor.</returns>
     Task<Movie> UpdateMovieAsync(Movie movie);
 
     /// <summary>
     /// Deleta o filme.
     /// </summary>
-    /// <param name="movie">O filme a ser deletado. Consulte <seea cref="Movie"/> para mais detalhes sobre diretor.</param>
+    /// <param name="movie">O filme a ser deletado. Consulte <see cref="Movie"/> para mais detalhes sobre filmes.</param>
     /// <returns>O filme deletado.</returns>
     Task<Movie> DeleteMovieAsync(Movie movie);
 
