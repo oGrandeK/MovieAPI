@@ -58,6 +58,7 @@ public class Name : ValueObject
     /// Converte implicitamente uma representação de string para um objeto <see cref="Name"/>.
     /// </summary>
     /// <param name="fullname">A representação de string do nome completo.</param>
+    /// <returns>Uma nova instância de <see cref="Name"/>.</returns>
     public static implicit operator Name(string fullname)
     {
         var parts = fullname.Split(" ");
