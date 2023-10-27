@@ -12,7 +12,7 @@ public class Password : ValueObject
     public string Hash { get; set; }
 
     /// <summary>
-    /// Construtor vazio em sem parâmetro para permitir a criação via ORM e serialização.
+    /// Construtor privado e sem parâmetros para permitir a criação via ORM e serialização.
     /// </summary>
     private Password() { }
 
