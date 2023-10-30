@@ -14,7 +14,7 @@ public class Title : ValueObject
     public string MovieTitle { get; private set; }
 
     /// <summary>
-    /// Inicializa uma nova classe <see cref="Title"/>.
+    /// Inicializa uma nova instância da classe <see cref="Title"/>.
     /// </summary>
     /// <param name="movieTitle">O título do filme a ser encapsulado.</param>
     /// <exception cref="DomainExceptionValidation">Lançada se os critérios de validação não forem atendidos.</exception>
