@@ -13,7 +13,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
     /// <summary>
     /// Configura o mapeamento da entidade <see cref="Movie"/>.
     /// </summary>
-    /// <param name="builder">O construtor da entidade</param>
+    /// <param name="builder">O construtor da entidade.</param>
     public void Configure(EntityTypeBuilder<Movie> builder)
     {
         builder.HasKey(x => x.Id);
