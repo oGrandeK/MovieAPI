@@ -4,8 +4,15 @@ using MovieAPI.Domain.Entities;
 
 namespace MovieAPI.Infraestructure.EntitiesConfiguration;
 
+/// <summary>
+/// Configuração da entidade <see cref="User"/> para mapeamento no banco de dados.
+/// </summary>
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
+    /// <summary>
+    /// Configura o mapeamento da entidade <see cref="User"/>.
+    /// </summary>
+    /// <param name="builder">O construtor da entidade.</param>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.HasKey(x => x.Id);
