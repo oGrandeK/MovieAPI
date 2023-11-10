@@ -33,7 +33,7 @@ public interface IMovieRepository
     /// Obtém uma coleção de filmes com informações sobre seus diretores pelo gênero do filme.
     /// </summary>
     /// <param name="movieGenre">O gênero do filme a ser pesquisado.</param>
-    /// <returns>Uma coleção de filmes com detalhes de seus diretores.></returns>
+    /// <returns>Uma coleção de filmes com detalhes de seus diretores.</returns>
     Task<IEnumerable<Movie>> GetMoviesDirectorsByGenreAsync(GenreEnumerator movieGenre);
 
     /// <summary>

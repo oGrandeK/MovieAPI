@@ -11,6 +11,9 @@ namespace MovieAPI.Infraestructure.Repositories;
 /// </summary>
 public class DirectorRepository : IDirectorRepository
 {
+    /// <summary>
+    /// Contexto do banco de dados utilizado pelo repositório para realizar operações.
+    /// </summary>
     private readonly ApplicationContext _context;
 
     /// <summary>

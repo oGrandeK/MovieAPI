@@ -7,18 +7,32 @@ using MovieAPI.Infraestructure.Context;
 
 namespace MovieAPI.Infraestructure.Repositories;
 
+/// <summary>
+/// Implementação do repositório para operações relacionadas aos filmes no banco de dados.
+/// </summary>
 public class MovieRepository : IMovieRepository
 {
+    /// <summary>
+    /// Contexto do banco de dados utilizado pelo repositório para realizar operações.
+    /// </summary>
     private readonly ApplicationContext _context;
 
+    /// <summary>
+    /// Inicializa uma nova instância da classe <see cref="MovieRepository"/>.
+    /// </summary>
+    /// <param name="context">O contexto do banco de dados.</param>
     public MovieRepository(ApplicationContext context)
     {
         _context = context;
     }
+
+    /// <inheritdoc/>
     public async Task<IEnumerable<Movie>> GetMoviesDirectorsAsync() => await _context.Movies.Include(x => x.Director).AsNoTracking().ToListAsync();
 
+    /// <inheritdoc/>
     public async Task<Movie> GetMovieDirectorsByIdAsync(int id) => await _context.Movies.Include(x => x.Director).AsNoTracking().SingleOrDefaultAsync(x => x.Id == id) ?? throw new DomainExceptionValidation($"Movie Cannot be found by id - {id}");
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<Movie>> GetMoviesDirectorsByNameAsync(string movieTitle)
     {
         var names = movieTitle.Split(" ", StringSplitOptions.RemoveEmptyEntries);
@@ -36,11 +50,13 @@ public class MovieRepository : IMovieRepository
         return movies;
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<Movie>> GetMoviesDirectorsByGenreAsync(GenreEnumerator movieGenre)
     {
         return await _context.Movies.Include(x => x.Director).AsNoTracking().Where(x => x.Genre == movieGenre).ToListAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<Movie> CreateMovieAsync(Movie movie)
     {
         var movieExist = await MovieExist(movie.Title);
@@ -56,6 +72,7 @@ public class MovieRepository : IMovieRepository
         throw new DomainExceptionValidation("Movie already exists");
     }
 
+    /// <inheritdoc/>
     public async Task<Movie> UpdateMovieAsync(Movie movie)
     {
         await _context.Entry(movie).Reference(m => m.Director).LoadAsync();
@@ -65,6 +82,7 @@ public class MovieRepository : IMovieRepository
         return movie;
     }
 
+    /// <inheritdoc/>
     public async Task<Movie> DeleteMovieAsync(Movie movie)
     {
         _context.Movies.Remove(movie);
@@ -73,6 +91,7 @@ public class MovieRepository : IMovieRepository
         return movie;
     }
 
+    /// <inheritdoc/>
     public async Task<bool> MovieExist(string movieTitle)
     {
         try
