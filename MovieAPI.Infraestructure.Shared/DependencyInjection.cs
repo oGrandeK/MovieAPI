@@ -17,8 +17,17 @@ using MovieAPI.Infraestructure.Repositories;
 
 namespace MovieAPI.Infraestructure.Shared;
 
+/// <summary>
+/// Configuração de injeção de dependência para serviços e casos de uso.
+/// </summary>
 public static class DependencyInjection
 {
+    /// <summary>
+    /// Adiciona serviços e casos de uso ä coleção de serviços.
+    /// </summary>
+    /// <param name="services">A coleção de serviços.</param>
+    /// <param name="configuration">A configuração da aplicação.</param>
+    /// <returns>A coleção de serviços configurada.</returns>
     public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("Não foi possivel conectar com o banco"), b => b.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName)));
