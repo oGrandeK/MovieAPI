@@ -35,7 +35,7 @@ public class Verification : ValueObject
     }
 
     /// <summary>
-    /// Verifica se o código de verificação.
+    /// Verifica se o código de verificação é válido..
     /// </summary>
     /// <param name="code">O código a ser verificado.</param>
     /// <exception cref="Exception">Lançada se o código já foi verificado, expirou ou é inválido.</exception>
