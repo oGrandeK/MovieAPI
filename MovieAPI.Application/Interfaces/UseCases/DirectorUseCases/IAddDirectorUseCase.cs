@@ -10,6 +10,6 @@ public interface IAddDirectorUseCase
     /// <summary>
     /// Cria um novo <see cref="Director"/> com base nas informações fornecidas.
     /// </summary>
-    /// <param name="director">As informações do diretor a serem usadas para a criação.</param>
+    /// <param name="director">As informações do <see cref="Director"/> a serem usadas para a criação.</param>
     public Task Execute(Director director);
 }
