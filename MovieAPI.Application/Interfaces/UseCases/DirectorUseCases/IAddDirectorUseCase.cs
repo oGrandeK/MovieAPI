@@ -8,8 +8,8 @@ namespace MovieAPI.Application.Interfaces.UseCases.DirectorUseCases;
 public interface IAddDirectorUseCase
 {
     /// <summary>
-    /// Cria um novo <see cref="Director"/> com base nas informações passadas.
+    /// Cria um novo <see cref="Director"/> com base nas informações fornecidas.
     /// </summary>
-    /// <returns>Uma tarefa que representa a operação assíncrona.</returns>
+    /// <param name="director">As informações do diretor a serem usadas para a criação.</param>
     public Task Execute(Director director);
 }
